@@ -34,8 +34,7 @@ private:
     
     std::shared_ptr<entity_impl> _self = nullptr;
 
-    entity(const std::string &name)
-    : _self{new entity_impl()}
+    entity(const std::string &name)	: _self{new entity_impl()}
     {
         _self->_id = counter++;
         _self->_name = name;
