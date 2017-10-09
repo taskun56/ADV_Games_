@@ -23,7 +23,10 @@ private:
     entity_manager()
     : _self{new entity_manager_impl()} 
     { 
-        register_constructor("ENTITY", [this](std::string name){ return this->create_entity(name); });
+        register_constructor("ENTITY", [this](std::string name)
+		{ 
+			return this->create_entity(name); 
+		});
     }
 
 public:

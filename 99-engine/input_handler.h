@@ -3,6 +3,8 @@
 #include <iostream>
 #include "singleton.h"
 #include "entity.h"
+//R// to_string is not a member of std error
+#include <string>
 
 // This class is purely code so we don't worry about
 // PIMPL here.

@@ -25,10 +25,12 @@ private:
     render_data &_data;
 
     entity &_parent;
+	//R//std::shared_ptr<entity> _parent;
 public:
-    render_component(entity &e, render_data &data)
-    : _parent(e), _data(data)
+    render_component(entity &e, render_data &data) : _parent(e), _data(data)
     {
+		this->_parent = e;		//J//
+		//R//_active = false
         _data.visible = true;
     }
 
@@ -69,7 +71,7 @@ public:
     }
 };
 
-class renderer : public singleton<renderer>, public factory<render_component, std::string, entity, std::string, std::string, std::string>
+class renderer : public singleton<renderer>, public factory<render_component, std::string, entity&, std::string, std::string, std::string>
 {
     friend class singleton<renderer>;
 private:
@@ -80,15 +82,18 @@ private:
 
     std::shared_ptr<renderer_impl> _self = nullptr;
 
-    renderer()
-    : _self{new renderer_impl()}
+    renderer()	: _self{new renderer_impl()}
     {
-        register_constructor("RENDER", [this](entity e, std::string colour, std::string shape, std::string shader) { return this->build_component(e, colour, shape, shader); });
+        register_constructor("RENDER", [this](entity &e, std::string colour, std::string shape, std::string shader) 
+		{ 
+			return this->build_component(e, colour, shape, shader); 
+		});
     }
 
 public:
     render_component build_component(entity &e, std::string colour, std::string shape, std::string shader)
     {
+		
         _self->_data.push_back(render_data());
         _self->_data.back().colour = colour;
         _self->_data.back().shape = shape;
@@ -98,6 +103,7 @@ public:
 
     bool initialise()
     {
+		
         std::cout << "Renderer initialising" << std::endl;
         return true;
     }

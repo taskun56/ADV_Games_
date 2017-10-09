@@ -40,8 +40,10 @@ public:
     component() = default;
 
     template<typename T>
-    component(T t, bool active = true, bool visible = true)
-    : _self{std::make_unique<model_t<T>>(std::move(t))}, _active(active), _visible(visible) {}
+    component(T t, bool active = true, bool visible = true) : _self{std::make_unique<model_t<T>>(std::move(t))}, _active(active), _visible(visible) 
+	{
+	
+	}
 
     void set_active(bool value) noexcept { _active = value; }
     void set_visible(bool value) noexcept { _visible = value; }

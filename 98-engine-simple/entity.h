@@ -68,6 +68,7 @@ public:
     void update(float delta_time)
     {
         std::cout << "Entity " << _id << " updating" << std::endl;
+		std::cout << "Entity '" << _name << "' updating" << std::endl;		//R//
         std::cout << _components.size() << std::endl;
 		
 		//Call update on all components

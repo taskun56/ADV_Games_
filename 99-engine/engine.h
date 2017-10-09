@@ -92,6 +92,7 @@ public:
             // If initialise fails exit run.
             if (!sys.second.initialise())
             {
+				std::cout << "initalizer failed" << std::endl;
                 return;
             }
         }
@@ -102,6 +103,7 @@ public:
             // If load_content fails exit run.
             if (!sys.second.load_content())
             {
+				std::cout << "load content failed" << std::endl;
                 return;
             }
         }
