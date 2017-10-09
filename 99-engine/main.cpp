@@ -9,62 +9,62 @@ using namespace std;
 
 void enter_state_1(engine &eng)
 {
-
+	std::cout << "Entering state 1" << std::endl;
 }
 
 void do_state_1(engine &eng)
 {
-
+	std::cout << "Doing state 1" << std::endl;
 }
 
 void exit_state_1(engine &eng)
 {
-
+	std::cout << "Exiting state 1" << std::endl;
 }
 
 void enter_state_2(engine &eng)
 {
-
+	std::cout << "Entering state 2" << std::endl;
 }
 
 void do_state_2(engine &eng)
 {
-
+	std::cout << "Doing state 2" << std::endl;
 }
 
 void exit_state_2(engine &eng)
 {
-
+	std::cout << "Exiting state 2" << std::endl;
 }
 
 void enter_state_3(engine &eng)
 {
-
+	std::cout << "Entering state 3" << std::endl;
 }
 
 void do_state_3(engine &eng)
 {
-
+	std::cout << "Doing state 3" << std::endl;
 }
 
 void exit_state_3(engine &eng)
 {
-
+	std::cout << "Exiting state 3" << std::endl;
 }
 
 void enter_state_4(engine &eng)
 {
-
+	std::cout << "Entering state 4" << std::endl;
 }
 
 void do_state_4(engine &eng)
 {
-
+	std::cout << "Doing state 4" << std::endl;
 }
 
 void exit_state_4(engine &eng)
 {
-
+	std::cout << "Exiting state 4" << std::endl;
 }
 
 int main(int arg, char **argv)
