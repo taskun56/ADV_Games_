@@ -7,6 +7,7 @@
 
 using namespace std;
 
+
 void enter_state_1(engine &eng)
 {
 	std::cout << "Entering state 1" << std::endl;
@@ -86,11 +87,31 @@ int main(int arg, char **argv)
     eng.add_subsystem(renderer::get(), false, true);
 
     auto e = entity_manager::get().create("ENTITY", "Test");
-    e.get_trans().x;
-    e.add_component<physics_component>(physics_system::get().create("RIGID", e));
+	
+	//R//Appears at the top of the console when the program is first run 
+	std::cout << "e.get_trans: " << e.get_trans().x << " " << e.get_trans().y << " " << e.get_trans().z << std::endl << std::endl;
+    
+	e.add_component<physics_component>(physics_system::get().create("RIGID", e));
     e.add_component<render_component>(renderer::get().create("RENDER", e, string("Blue"), "Box", "Physical"));
+	
+	//e.update(delta_time);
+
+
+	//R//Messing around with how to create a player entity
+	auto Player1 = entity_manager::get().create("ENTITY", "playerplayer");
+	//Player1.set_trans(21.0f, 5.0f, 16.0f);
+	cout << "Player 1 exists and is located at X/Y/Z:" << endl;
+	//cout << Player1.get_trans().x << "/" << Player1.get_trans().y << "/" << Player1.get_trans().z << endl << endl;
+	Player1.add_component<physics_component>(physics_system::get().create("RIGID", Player1));
+	Player1.add_component<render_component>(renderer::get().create("RENDER", Player1, string("Blue"), "Box", "Physical"));
+
 
     eng.run();
+
+
+
+
+	
     
     return 0;
 }

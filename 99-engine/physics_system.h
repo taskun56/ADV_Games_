@@ -27,14 +27,18 @@ private:
     // We'll also keep a reference to the parent entity
     entity &_parent;
 public:
-    physics_component(entity &e, physics_data &data)
-    : _parent(e), _data(data)
+    physics_component(entity &e, physics_data &data)	: _parent(e), _data(data)
     {
         _data.active = true;
     }
 
     bool initialise()
     {
+		//R//Probably take in the entity here
+		//R//Possibly a switch case to see what kind of entity we have and determine the spawn point based on that
+		_data.x = 2;
+		_data.y = 3;
+		_data.z = 4;
         return true;
     }
 
@@ -76,8 +80,7 @@ private:
 
     std::shared_ptr<physics_system_impl> _self = nullptr;
 
-    physics_system()
-    : _self{new physics_system_impl()}
+    physics_system()	: _self{new physics_system_impl()}
     {
         register_constructor("RIGID", [this](entity e){ return this->build_component(e); });
     }

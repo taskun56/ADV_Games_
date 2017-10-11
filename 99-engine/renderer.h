@@ -55,8 +55,8 @@ public:
         {
             // "Generate" the transform matrix.
             std::stringstream ss;
-            ss << "(" << _parent.get_trans().x << ", " << _parent.get_trans().y << ", " << _parent.get_trans().z << ")" << std::endl;
-            _data.transform = ss.str();
+            //ss << "(" << _parent.get_trans().x << ", " << _parent.get_trans().y << ", " << _parent.get_trans().z << ")" << std::endl;
+            //_data.transform = ss.str();
         }
     }
 

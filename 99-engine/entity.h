@@ -44,7 +44,23 @@ public:
 
     entity() = default;
 
-    transform& get_trans() { return _self->trans; }
+    transform& get_trans() 
+	{ 
+		return _self->trans; 
+	}
+
+
+	//R//Setter method for transform
+	//R//To be used when spawning entities
+	transform& set_trans(float x, float y, float z)
+	{
+		_self->trans.x = x;
+		_self->trans.y = y;
+		_self->trans.z = z;
+
+		return _self->trans;
+	}
+
 
     bool initialise()
     {
