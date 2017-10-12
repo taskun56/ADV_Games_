@@ -19,6 +19,14 @@ public:
         float z = 1.0f;
     };
 
+	//R//
+	struct Scale
+	{
+		float x = 1.0f;
+		float y = 1.0f;
+		float z = 1.0f;
+	};
+
 private:
     // Counter to ID entities
     static size_t counter;
@@ -30,6 +38,8 @@ private:
         std::unordered_map<std::type_index, component> _components;
 
         transform trans;
+		//R//
+		Scale scale;
     };
     
     std::shared_ptr<entity_impl> _self = nullptr;
@@ -59,6 +69,24 @@ public:
 		_self->trans.z = z;
 
 		return _self->trans;
+	}
+
+
+	//R//Getter method for scale
+	Scale& get_scale()
+	{
+		return _self->scale;
+	}
+
+
+	//R//Setter method for scale
+	Scale& set_scale(float x, float y, float z)
+	{
+		_self->scale.x = x;
+		_self->scale.y = y;
+		_self->scale.z = z;
+
+		return _self->scale;
 	}
 
 
