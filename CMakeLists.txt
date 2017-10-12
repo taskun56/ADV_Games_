@@ -5,4 +5,11 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_executable(adv-games-dev adv-games-dev/main.cpp)
+find_package(OpenGL REQUIRED)
+
+
+add_executable(adv-games-dev adv-games-dev/main.cpp
+		     adv-games-dev/OpenGLRender.cpp	
+
+)
+

@@ -45,10 +45,12 @@ public:
 
     void update(float delta_time)
     {
+		/*
         // We will just update the entity position.
         _parent.get_trans().x = _data.x;
         _parent.get_trans().y = _data.y;
         _parent.get_trans().z = _data.z;
+		*/
     }
 
     void render()

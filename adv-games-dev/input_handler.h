@@ -32,7 +32,7 @@ public:
         std::cout << "Input handler updating" << std::endl;
         int choice = 1;
         std::cout << "Change state to 1-4: ";
-        std::cin >> choice;
+        
         engine::get().change_state(std::to_string(choice), engine::get());
     }
 

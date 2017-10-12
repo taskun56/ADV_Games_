@@ -1,7 +1,8 @@
 #pragma once
-
 #include <iostream>
 #include <vector>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <functional>
 #include <string>
 #include <sstream>
@@ -9,14 +10,13 @@
 #include "factory.h"
 #include "entity.h"
 
+
 struct render_data
 {
 	bool visible = false;
-	// Let's pretend this is a matrix that was built.
-	std::string transform = "(0, 0, 0)";
-	std::string colour = "Red";
-	std::string shape = "Sphere";
-	std::string shader = "Phong";
+	Mesh *mesh;
+	Shader *shade;
+	int flag;
 };
 
 struct render_component
@@ -69,7 +69,7 @@ public:
 	}
 };
 
-class renderer : public singleton<renderer>, public factory<render_component, std::string, entity&, std::string, std::string, std::string>
+class renderer : public singleton<renderer>, public factory<render_component, std::string, entity&, std::string, std::string, int>
 {
 	friend class singleton<renderer>;
 private:
@@ -83,16 +83,16 @@ private:
 	renderer()
 		: _self{ new renderer_impl() }
 	{
-		register_constructor("RENDER", [this](entity &e, std::string colour, std::string shape, std::string shader) { return this->build_component(e, colour, shape, shader); });
+		register_constructor("RENDER", [this](entity &e, std::string shape, std::string shader, int state) { return this->build_component(e, shape, shader, state); });
 	}
 
 public:
-	render_component build_component(entity &e, std::string colour, std::string shape, std::string shader)
+	render_component build_component(entity &e, std::string shape, std::string shader, int state)
 	{
 		_self->_data.push_back(render_data());
-		_self->_data.back().colour = colour;
-		_self->_data.back().shape = shape;
-		_self->_data.back().shader = shader;
+		_self->_data.back().mesh = GetMesh(shape);
+		_self->_data.back().shade = GetShaders(shader);
+		_self->_data.back().flag = state;
 		return render_component(e, _self->_data.back());
 	}
 
@@ -116,14 +116,27 @@ public:
 
 	void render()
 	{
-		std::cout << "Renderer rendering" << std::endl;
 		for (auto &d : _self->_data)
 		{
+			if (d.flag == 0)
+			{
+				d.visible = false;
+			}
 			if (d.visible)
 			{
-				std::cout << "Rendering " << d.colour << " ";
-				std::cout << d.shape << " using " << d.shader;
-				std::cout << " shading at position " << d.transform << std::endl;
+				glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+				// Camera matrix
+				glm::mat4 View = glm::lookAt(
+					glm::vec3(5, 10, 3), // Camera is at (4,3,3), in World Space
+					glm::vec3(0, 0, 0), // and looks at the origin
+					glm::vec3(0, -1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
+				);
+				// Model matrix : an identity matrix (model will be at the origin)
+				glm::mat4 Model = glm::mat4(1.0f);
+
+
+				const glm::mat4 MVP = Projection * View * Model;
+				GLRender(d.mesh, d.shade, MVP);
 			}
 		}
 	}
