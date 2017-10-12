@@ -86,9 +86,15 @@ int main(int arg, char **argv)
     eng.add_subsystem(renderer::get(), false, true);
 
     auto e = entity_manager::get().create("ENTITY", "Test");
-    e.get_trans().x;
+    //e.get_trans().x;
     e.add_component<physics_component>(physics_system::get().create("RIGID", e));
     e.add_component<render_component>(renderer::get().create("RENDER", e, string("Blue"), "Box", "Physical"));
+
+	auto f = entity_manager::get().create("ENTITY", "buttsbuttsbutts");
+
+	f.add_component<physics_component>(physics_system::get().create("RIGID", f));
+	f.add_component<render_component>(renderer::get().create("RENDER", f, string("Blue"), "Box", "Physical"));
+
 
     eng.run();
     

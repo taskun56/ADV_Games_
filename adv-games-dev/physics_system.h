@@ -27,14 +27,14 @@ private:
     // We'll also keep a reference to the parent entity
     entity &_parent;
 public:
-    physics_component(entity &e, physics_data &data)
-    : _parent(e), _data(data)
+    physics_component(entity &e, physics_data &data) : _parent(e), _data(data)
     {
         _data.active = true;
     }
 
     bool initialise()
     {
+
         return true;
     }
 
@@ -61,6 +61,7 @@ public:
 
     void shutdown()
     {
+
     }
 };
 
