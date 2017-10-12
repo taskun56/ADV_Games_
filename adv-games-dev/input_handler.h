@@ -3,6 +3,7 @@
 #include <iostream>
 #include "singleton.h"
 #include "entity.h"
+#include <string>
 
 // This class is purely code so we don't worry about
 // PIMPL here.
