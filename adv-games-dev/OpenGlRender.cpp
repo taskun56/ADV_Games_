@@ -387,7 +387,7 @@ Mesh *GetMesh(const std::string &file)
 			else
 			{
 
-				nw->colour.push_back(glm::vec4(0.0f, 0.10f, 0.23, 1.0f));
+				nw->colour.push_back(glm::vec4(0.82f, 0.58f, 0.23, 1.0f));
 
 			}
 			//see if mesh has normals

@@ -94,7 +94,7 @@ int main(int arg, char **argv)
 	auto f = entity_manager::get().create("ENTITY", "buttsbuttsbutts");
 
 	f.add_component<physics_component>(physics_system::get().create("RIGID", f));
-	f.add_component<render_component>(renderer::get().create("RENDER", f, "EnemyShip2.obj", "basic", 0));
+	f.add_component<render_component>(renderer::get().create("RENDER", f, "EnemyShip2.obj", "basic", 1));
 
 
     eng.run();
