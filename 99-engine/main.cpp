@@ -99,12 +99,15 @@ int main(int arg, char **argv)
 
 	//R//Messing around with how to create a player entity
 	auto Player1 = entity_manager::get().create("ENTITY", "playerplayer");
-	//Player1.set_trans(21.0f, 5.0f, 16.0f);
+	Player1.set_trans(21.0f, 5.0f, 16.0f);
 	cout << "Player 1 exists and is located at X/Y/Z:" << endl;
-	//cout << Player1.get_trans().x << "/" << Player1.get_trans().y << "/" << Player1.get_trans().z << endl << endl;
+	cout << Player1.get_trans().x << "/" << Player1.get_trans().y << "/" << Player1.get_trans().z << endl << endl;
 	Player1.add_component<physics_component>(physics_system::get().create("RIGID", Player1));
 	Player1.add_component<render_component>(renderer::get().create("RENDER", Player1, string("Blue"), "Box", "Physical"));
-
+	
+	cout << "entityType: " << Player1.get_entityType() << endl << endl;
+	Player1.set_entityType("Enemy");
+	cout << "entityType: " << Player1.get_entityType() << endl << endl;
 
     eng.run();
 

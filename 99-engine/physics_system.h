@@ -8,6 +8,11 @@
 #include "factory.h"
 #include "entity.h"
 
+
+//R// trying to use graphics bitbucket to figure out sine wave movement
+float total_time = 0.0f;
+float sine = 0.0f;
+
 struct physics_data
 {
     bool active = false;
@@ -49,10 +54,47 @@ public:
 
     void update(float delta_time)
     {
+		//R//Trying to use graphics bitbucket to work out sine wave movement
+		//Accumulate time
+		total_time += delta_time;
+		//Update sine based on sin wave
+		sine = sinf(total_time);
+		//Multiply by 5
+		sine *= 5;
+
+
         // We will just update the entity position.
         _parent.get_trans().x = _data.x;
         _parent.get_trans().y = _data.y;
         _parent.get_trans().z = _data.z;
+
+		//R//Checking what type of entity we are updating	-- Not sure _parent.[entityType] works
+		//R//If entity = player
+		if (_parent.get_entityType() == _parent.Player)
+		{
+			//Move based on input stuff
+		}
+
+		//R//if entity = enemy
+		if (_parent.get_entityType() == _parent.Enemy)
+		{
+			//Determine what kind of enemy it is
+			//Give it movement based on enemy types
+
+			//Straight down enemy movement
+			_parent.set_trans(_parent.get_trans().x, _parent.get_trans().y--, _parent.get_trans().z);
+
+			//Sine wave enemy movement 
+			//R//bb computer-graphics-cw1: s = 1.0f + sinf(total_time);
+			//R//s is then used to scale something based on time. 
+			//_parent.set_trans(_parent.get_trans().x * sine, _parent.get_trans().y--, _parent.get_trans().z);
+		}
+
+		//R//if entity = object
+		if (_parent.get_entityType() == _parent.Object)
+		{
+			//
+		}
     }
 
     void render()

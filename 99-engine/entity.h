@@ -27,6 +27,10 @@ public:
 		float z = 1.0f;
 	};
 
+	//R//enum to determine what the entity is - behaviours to be dictated by this -- May be declaring this in the wrong place
+	enum entityType{Player, Enemy, Object};
+
+
 private:
     // Counter to ID entities
     static size_t counter;
@@ -40,6 +44,9 @@ private:
         transform trans;
 		//R//
 		Scale scale;
+
+		//R//
+		entityType et;
     };
     
     std::shared_ptr<entity_impl> _self = nullptr;
@@ -62,13 +69,11 @@ public:
 
 	//R//Setter method for transform
 	//R//To be used when spawning entities
-	transform& set_trans(float x, float y, float z)
+	void set_trans(float x, float y, float z)
 	{
 		_self->trans.x = x;
 		_self->trans.y = y;
 		_self->trans.z = z;
-
-		return _self->trans;
 	}
 
 
@@ -80,15 +85,42 @@ public:
 
 
 	//R//Setter method for scale
-	Scale& set_scale(float x, float y, float z)
+	void set_scale(float x, float y, float z)
 	{
 		_self->scale.x = x;
 		_self->scale.y = y;
 		_self->scale.z = z;
-
-		return _self->scale;
 	}
 
+	//R//Getter for entityType enum
+	entityType& get_entityType()
+	{
+		return _self->et;
+	}
+
+	//R//Setter for entityType enum -- "Player" / "Enemy" / "Object"
+	void set_entityType(std::string type)
+	{
+		if (type == "Player")
+		{
+			_self->et = entityType::Player;
+		}
+		if (type == "Enemy")
+		{
+			_self->et = entityType::Enemy;
+		}
+		if (type == "Object")
+		{
+			_self->et = entityType::Object;
+		}
+		else
+		{
+			//R//Throw an exception
+			std::cout << "set_entityType recieved something other than the following:" << std::endl << "'Player'" << std::endl << "'Enemy'" << std::endl << "'Object'" << std::endl << std::endl;
+			//throw std::invalid_argument("Incorrect string sent to set_entityType()");
+			//R//This is being called even though it works when I comment out the exception...
+		}
+	}
 
     bool initialise()
     {
