@@ -4,6 +4,7 @@
 #include "entity_manager.h"
 #include "physics_system.h"
 #include "renderer.h"
+#include "../include/SDL.h"
 
 using namespace std;
 
