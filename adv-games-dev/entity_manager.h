@@ -35,7 +35,7 @@ public:
 
     bool initialise()
     {
-        std::cout << "Entity manager initialising" << std::endl;
+        //std::cout << "Entity manager initialising" << std::endl;
         for (auto &e : _self->_entities)
             if (!e.second.initialise())
                 return false;
@@ -44,7 +44,7 @@ public:
 
     bool load_content()
     {
-        std::cout << "Entity manager loading content" << std::endl;
+        //std::cout << "Entity manager loading content" << std::endl;
         for (auto &e : _self->_entities)
             if (!e.second.load_content())
                 return false;
@@ -53,28 +53,28 @@ public:
 
     void update(float delta_time)
     {
-        std::cout << "Entity manager updating" << std::endl;
+        //std::cout << "Entity manager updating" << std::endl;
         for (auto &e : _self->_entities)
             e.second.update(delta_time);
     }
 
     void render()
     {
-        std::cout << "Entity manager rendering" << std::endl;
+        //std::cout << "Entity manager rendering" << std::endl;
         for (auto &e : _self->_entities)
             e.second.render();
     }
 
     void unload_content()
     {
-        std::cout << "Entity manager unloading content" << std::endl;
+        //std::cout << "Entity manager unloading content" << std::endl;
         for (auto &e : _self->_entities)
             e.second.unload_content();
     }
 
     void shutdown()
     {  
-         std::cout << "Entity manager shutting down" << std::endl;
+         //std::cout << "Entity manager shutting down" << std::endl;
          for (auto &e : _self->_entities)
             e.second.shutdown();
         // Clear the entity map

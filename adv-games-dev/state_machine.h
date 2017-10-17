@@ -43,25 +43,35 @@ public:
         _self->_states[name] = details;
     }
 
-    void change_state(const std::string &name, T& owner)
-    {
-        if (name != _self->_current_state)
-        {
-            auto found = _self->_states.find(name);
-            if (found != _self->_states.end())
-            {
-                if (_self->_current_state != "")
-                    _self->_current_state_functions._exit(owner);
-                _self->_current_state_functions = found->second;
-                _self->_current_state_functions._enter(owner);
-                _self->_current_state = name;
-            }
-            else
-            {
-                throw std::invalid_argument("state not found");
-            }
-        }
-    }
+	void change_state(const std::string &name, T& owner)
+	{
+		if (name != _self->_current_state)
+		{
+			auto found = _self->_states.find(name);
+			if (found != _self->_states.end())
+			{
+				//if (_self->_current_state != "")
+				//	return;
+				_self->_current_state_functions = found->second;
+				_self->_current_state_functions._enter(owner);
+				_self->_current_state = name;
+			}
+			else if (name == "")
+			{
+				//std::cout << "no state change this frmae" << std::endl;
+			}
+			else
+			{
+				throw std::invalid_argument("state not found");
+			}
+
+			// CHANGE TO BOOL/INT GIVEN ON FINISH - if state change was true
+			// we can try this because we only need to worry about state change if the state had actually changed from one thing to another
+			// if the state was already MAIN we dont need to do anything???
+
+			// We want to have three states, MAIN menu, GAME, GAME paused
+		}
+	}
 
     void update(T& owner)
     {

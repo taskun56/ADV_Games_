@@ -94,19 +94,19 @@ public:
 
     bool initialise()
     {
-        std::cout << "Physics system initialising" << std::endl;
+        //std::cout << "Physics system initialising" << std::endl;
         return true;
     }
 
     bool load_content()
     {
-        std::cout << "Physics system loading content" << std::endl;
+        //std::cout << "Physics system loading content" << std::endl;
         return true;
     }
 
     void update(float delta_time)
     {
-        std::cout << "Physics system updating" << std::endl;
+        //std::cout << "Physics system updating" << std::endl;
         for (auto &d : _self->_data)
         {
             // If active physics object add 1 to each component.
@@ -122,16 +122,16 @@ public:
     void render()
     {
         // This should never be called.
-        std::cout << "Physics system rendering" << std::endl;
+        //std::cout << "Physics system rendering" << std::endl;
     }
 
     void unload_content()
     {
-        std::cout << "Physics system unloading content" << std::endl;
+        //std::cout << "Physics system unloading content" << std::endl;
     }
 
     void shutdown()
     {
-        std::cout << "Physics system shutting down" << std::endl;
+        //std::cout << "Physics system shutting down" << std::endl;
     }
 };

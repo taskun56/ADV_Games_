@@ -1,4 +1,5 @@
 #pragma once
+#include "input_handler.h"
 #include <gl\glew.h>
 #include <memory>
 #include <typeindex>
@@ -37,10 +38,14 @@ private:
     // Flag to indicate if the engine is running or not.
     bool _running = true;
 
+	// SDL Event for taking all events each window
+	SDL_Event e;
+	bool _joy = false;
+
     // Private constructor.  Called when we call get.
-    engine()
-    : _self(new engine_impl())
+    engine() : _self(new engine_impl())
     {
+
     }
 
 public:
@@ -96,7 +101,7 @@ public:
 		bool success = true;
 
 		//Initialize SDL
-		if (SDL_Init(SDL_INIT_VIDEO) < 0)
+		if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 		{
 			printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
 			success = false;
@@ -107,6 +112,16 @@ public:
 			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 			SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
+			// Check if there is at least one controller attached 
+			if (SDL_NumJoysticks() < 1)
+			{
+				printf("No joysticks connected.");
+			}
+			else
+			{
+				this->_joy = true;
+			}
 
 			//Create window
 			gWindow = SDL_CreateWindow("Works?", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
@@ -148,7 +163,10 @@ public:
 		return success;
 	}
 
-
+	bool get_joystick_status()
+	{
+		return this->_joy;
+	}
 
 
 
@@ -157,9 +175,6 @@ public:
     // If subsystem order is important consider using another mechanism.
     void run()
     {
-		SDL_Event e;
-
-
         // Initialise all the subsystems
         for (auto &sys : _self->_subsystems)
         {
@@ -180,20 +195,69 @@ public:
             }
         }
 
+		static unsigned int captureTypes[] =
+		{
+			SDL_KEYDOWN,
+			SDL_KEYUP,
+			SDL_MOUSEMOTION,
+			SDL_MOUSEBUTTONDOWN,
+			SDL_MOUSEBUTTONUP,
+			SDL_MOUSEWHEEL,
+			SDL_JOYAXISMOTION,
+			SDL_JOYBALLMOTION,
+			SDL_JOYHATMOTION,
+			SDL_JOYBUTTONDOWN,
+			SDL_JOYBUTTONUP,
+			SDL_JOYDEVICEADDED,
+			SDL_JOYDEVICEREMOVED,
+			SDL_CONTROLLERAXISMOTION,
+			SDL_CONTROLLERBUTTONDOWN,
+			SDL_CONTROLLERBUTTONUP,
+			SDL_CONTROLLERDEVICEADDED,
+			SDL_CONTROLLERDEVICEREMOVED,
+			SDL_FINGERDOWN,
+			SDL_FINGERUP,
+			SDL_FINGERMOTION,
+		};
+
         // Loop until not running.
         while (_running)
         {
-            std::cout << "Engine Running" << std::endl;
-
+            //std::cout << "Engine Running" << std::endl;
+			std::string state_set = "";
 			while (SDL_PollEvent(&e) != 0)
 			{
+				///// Check all input and compare - current version checks ALL input so no events are lost.
+				///// Uncommented version compares only the input types we seek for checking if keys are pressed
+
+				//for (const auto &etype : captureTypes)
+				//{
+				//	if (e.type == etype)
+				//	{
+				//		//std::cout << "EVENT matched." << e.type << std::endl;
+				state_set = this->get_subsystem<input_handler>().HandleInputEvent(e);
+				//		continue;
+				//	}
+				//}
 				//User requests quit
 				if (e.type == SDL_QUIT)
 				{
-					std::cout << "Anything" << std::endl;
+					//std::cout << "Anything" << std::endl;
 					_running = false;
 				}
 			}
+			if (state_set != "")
+			{
+				// If the string was set to anything other than it's default "" value then the stae has been changed. see next slippet for more.
+				std::cout << "State changed." << std::endl;
+				this->change_state(state_set, *this);
+			}
+			//else
+			//{
+			//	// If the return of the input handler's method hasn't changed the state_set string then the state has not changed -  WIP functionality as the state
+			//	// will not be changed simply by button presses. there will be more logic to it than that. 
+			//	//std::cout << "state unchanged" << std::endl;
+			//}
 
 
 

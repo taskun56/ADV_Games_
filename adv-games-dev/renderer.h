@@ -51,7 +51,7 @@ public:
 		if (_data.visible)
 		{
 			// "Generate" the transform matrix.
-			std::cout << "Rendering component of entity " << std::endl;
+			//std::cout << "Rendering component of entity " << std::endl;
 			//std::stringstream ss;
 			//ss << "(" << _parent.get_trans().x << ", " << _parent.get_trans().y << ", " << _parent.get_trans().z << ")" << std::endl;
 			//_data.transform = ss.str();
@@ -97,20 +97,20 @@ public:
 
 	bool initialise()
 	{
-		std::cout << "Renderer initialising" << std::endl;
+		//std::cout << "Renderer initialising" << std::endl;
 		return true;
 	}
 
 	bool load_content()
 	{
-		std::cout << "Renderer loading content" << std::endl;
+		//std::cout << "Renderer loading content" << std::endl;
 		return true;
 	}
 
 	void update(float delta_time)
 	{
 		// Should never be called
-		std::cout << "Renderer updating" << std::endl;
+		//std::cout << "Renderer updating" << std::endl;
 	}
 
 	void render()
@@ -142,11 +142,11 @@ public:
 
 	void unload_content()
 	{
-		std::cout << "Renderer unloading content" << std::endl;
+		//std::cout << "Renderer unloading content" << std::endl;
 	}
 
 	void shutdown()
 	{
-		std::cout << "Renderer shutting down" << std::endl;
+		//std::cout << "Renderer shutting down" << std::endl;
 	}
 };

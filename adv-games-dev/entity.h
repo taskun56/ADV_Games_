@@ -48,7 +48,7 @@ public:
 
     bool initialise()
     {
-        std::cout << "Entity " << _self->_id << " initialising" << std::endl;
+        //std::cout << "Entity " << _self->_id << " initialising" << std::endl;
         // Call initialise on all components
         for (auto &c : _self->_components)
             if (!c.second.initialise())
@@ -58,7 +58,7 @@ public:
 
     bool load_content()
     {
-        std::cout << "Entity " << _self->_id << " loading content" << std::endl;
+        //std::cout << "Entity " << _self->_id << " loading content" << std::endl;
         // Call load_content on all components
         for (auto &c : _self->_components)
             if (!c.second.load_content())
@@ -68,29 +68,29 @@ public:
 
     void update(float delta_time)
     {
-        std::cout << "Entity " << _self->_id << " updating" << " " << _self->trans.x << std::endl;
-        std::cout << _self->_components.size() << std::endl;
+        //std::cout << "Entity " << _self->_id << " updating" << " " << _self->trans.x << std::endl;
+        //std::cout << _self->_components.size() << std::endl;
         for (auto &c : _self->_components)
             c.second.update(delta_time);
     }
 
     void render()
     {
-        std::cout << "Entity " << _self->_id << " rendering" << std::endl;
+        //std::cout << "Entity " << _self->_id << " rendering" << std::endl;
         for (auto &c : _self->_components)
             c.second.render();
     }
 
     void unload_content()
     {
-        std::cout << "Entity " << _self->_id << " unloading content" << std::endl;
+        //std::cout << "Entity " << _self->_id << " unloading content" << std::endl;
         for (auto &c : _self->_components)
             c.second.unload_content();
     }
 
     void shutdown()
     {
-        std::cout << "Entity " << _self->_id << " shutting down" << std::endl;
+        //std::cout << "Entity " << _self->_id << " shutting down" << std::endl;
         for (auto &c : _self->_components)
             c.second.shutdown();
         _self->_components.clear();
