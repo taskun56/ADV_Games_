@@ -22,7 +22,6 @@ struct Shader
 
 struct Mesh
 {
-
 	std::vector<glm::vec3> Position;
 	std::vector<glm::vec3> Normal;
 	std::vector<glm::vec2> TexCoords;
@@ -30,7 +29,6 @@ struct Mesh
 
 	void *Data;
 	std::vector<unsigned int> indices;
-
 };
 
 struct opengl_shader
@@ -65,7 +63,6 @@ enum BUFFERS
 	COLOUR_BUFFER = 1,
 	NORMAL_BUFFER = 2,
 	TEXTURE_COORDS_0 = 10
-
 };
 
 
