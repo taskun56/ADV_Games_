@@ -27,6 +27,17 @@ public:
 		float z = 1.0f;
 	};
 
+
+	//R//Bounding circle (hitbox)	--Using SDL 29 circular collisions --Probably don't actually need this cause we could just set the radius and use the transform for the position
+	struct circle
+	{
+		int x;
+		int y;
+		int z;
+		int radius;
+	};
+
+
 	//R//enum to determine what the entity is - behaviours to be dictated by this -- May be declaring this in the wrong place
 	enum entityType{Player, Enemy, Object};
 
