@@ -204,9 +204,9 @@ public:
         auto ptr = _self.get();
         // Now cast to model_t of type T.  Use dynamic cast.  If it fails this will
         // be a nullptr and crash your program.
-        auto ptr_model = dynamic_cast<model_t<T>>(ptr);
+        auto ptr_model = dynamic_cast<model_t<T>*>(ptr);
         // We then just return the self value in ptr_model.
-        return ptr_model._self;
+        return ptr_model->_self;
         // This is returned as a reference.  No copying occurs.
     }
 };

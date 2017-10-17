@@ -80,8 +80,7 @@ private:
 
 	std::shared_ptr<renderer_impl> _self = nullptr;
 
-	renderer()
-		: _self{ new renderer_impl() }
+	renderer() : _self{ new renderer_impl() }
 	{
 		register_constructor("RENDER", [this](entity &e, std::string colour, std::string shape, std::string shader) { return this->build_component(e, colour, shape, shader); });
 	}

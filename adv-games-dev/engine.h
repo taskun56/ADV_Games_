@@ -7,6 +7,8 @@
 #include "subsystem.h"
 #include "singleton.h"
 #include "state_machine.h"
+#include "input_handler.h"
+#include "../include/SDL.h"
 
 class engine : public singleton<engine>, public state_machine<engine>
 {
@@ -33,10 +35,13 @@ private:
     // Flag to indicate if the engine is running or not.
     bool _running = true;
 
+	// SDL Event for taking all events each window
+	SDL_Event e;
+
     // Private constructor.  Called when we call get.
-    engine()
-    : _self(new engine_impl())
+    engine() : _self(new engine_impl())
     {
+
     }
 
 public:
@@ -109,6 +114,11 @@ public:
         // Loop until not running.
         while (_running)
         {
+			while (SDL_PollEvent(&e) != 0)
+			{
+				this->get_subsystem<input_handler>().HandleInputEvent(e));
+				std::cout << "event in the lop" << std::endl;
+			}
             std::cout << "Engine Running" << std::endl;
             // Update the subsystems.  At the moment use dummy time of 1.0s.  You
             // will want to use a proper timer.

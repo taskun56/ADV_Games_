@@ -68,6 +68,33 @@ void exit_state_4(engine &eng)
 
 }
 
+bool init(engine &eng)
+{
+	//Initialization flag
+	bool success = true;
+
+	//Initialize SDL
+	if (SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC) < 0)
+	{
+		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
+		success = false;
+	}
+	else
+	{
+		// Check if there is at least one controller attached 
+		if (SDL_NumJoysticks() < 1)
+		{
+			printf("No joysticks connected.");
+		}
+		else
+		{
+			eng.get_subsystem<input_handler>().initialise();
+		}
+	}
+
+	return success;
+}
+
 int main(int arg, char **argv)
 {
     auto eng = engine::get();
@@ -96,6 +123,7 @@ int main(int arg, char **argv)
 	f.add_component<physics_component>(physics_system::get().create("RIGID", f));
 	f.add_component<render_component>(renderer::get().create("RENDER", f, string("Blue"), "Box", "Physical"));
 
+	init(eng);
 
     eng.run();
     

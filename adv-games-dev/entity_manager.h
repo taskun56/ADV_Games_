@@ -20,8 +20,7 @@ private:
 
     std::shared_ptr<entity_manager_impl> _self = nullptr;
 
-    entity_manager()
-    : _self{new entity_manager_impl()} 
+    entity_manager() : _self{new entity_manager_impl()} 
     { 
         register_constructor("ENTITY", [this](std::string name){ return this->create_entity(name); });
     }
