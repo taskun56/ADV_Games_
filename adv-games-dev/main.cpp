@@ -4,6 +4,7 @@
 #include "entity_manager.h"
 #include "physics_system.h"
 #include "renderer.h"
+#include "../include/SDL.h"
 
 using namespace std;
 
@@ -70,6 +71,7 @@ void exit_state_4(engine &eng)
 int main(int arg, char **argv)
 {
     auto eng = engine::get();
+	eng.init();
 
     eng.add_state("1", enter_state_1, do_state_1, exit_state_1);
     eng.add_state("2", enter_state_2, do_state_2, exit_state_2);
@@ -88,12 +90,12 @@ int main(int arg, char **argv)
     auto e = entity_manager::get().create("ENTITY", "Test");
     //e.get_trans().x;
     e.add_component<physics_component>(physics_system::get().create("RIGID", e));
-    e.add_component<render_component>(renderer::get().create("RENDER", e, string("Blue"), "Box", "Physical"));
+    e.add_component<render_component>(renderer::get().create("RENDER", e, "PlayerShip.obj", "basic", 1));
 
 	auto f = entity_manager::get().create("ENTITY", "buttsbuttsbutts");
 
 	f.add_component<physics_component>(physics_system::get().create("RIGID", f));
-	f.add_component<render_component>(renderer::get().create("RENDER", f, string("Blue"), "Box", "Physical"));
+	f.add_component<render_component>(renderer::get().create("RENDER", f, "EnemyShip2.obj", "basic", 1));
 
 
     eng.run();
