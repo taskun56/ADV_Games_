@@ -83,4 +83,97 @@ public:
         // Clear the entity map
         _self->_entities.clear();
     }
+
+
+
+
+
+
+	//R//Squaring the distance
+	double SquaredDistance(int x1, int y1, int x2, int y2)
+	{
+		int deltaX = x2 - x1;
+		int deltaY = y2 - y1;
+
+		return deltaX*deltaX + deltaY*deltaY;
+	}
+
+	//R//Check for circle vs circle collisions
+	bool checkCollision(entity::circle& a, entity::circle& b)
+	{
+		//Calculate total radius squared
+		int SquaredTotalRadius = a.radius + b.radius;
+		SquaredTotalRadius *= SquaredTotalRadius;
+
+		//If the distance between the centers of the circles is less than the sum of their radii
+		if (SquaredDistance(a.x, a.y, b.x, b.y) < (SquaredTotalRadius))
+		{
+			//The circles have collided
+			return true;
+		}
+		return false;
+	}
+
+	//R//Check for circle vs SDL_Rect collisions -- commented out for now as I don't have SDL set up
+	/*
+	bool checkCollision(entity::circle& a, SDL_Rect& b)
+	{
+	//Closest point on collision box
+	int cX, cY;
+
+	//Find closest x offset
+	if (a.x < b.x)
+	{
+	cX = b.x;
+	}
+	else if (a.x > b.x + b.w)
+	{
+	cX = b.x + b.w;
+	}
+	else
+	{
+	cX = a.x;
+	}
+
+	//Find closest y offset
+	if (a.y < b.y)
+	{
+	cY = b.y;
+	}
+	else if (a.y > b.y + b.h)
+	{
+	cY = b.y + b.h;
+	}
+	else
+	{
+	cY = a.y;
+	}
+
+	//If the closest point is inside the circle
+	if (SquaredDistance(a.x, a.y, cX, cY) < a.r * a.r)
+	{
+	//This box and the circle have collided
+	return true;
+	}
+	return false;
+	}*/
+
+
+
+
+
+
+
+
+	//R//Cycling through all entities for physics (trying to anyway)
+	//entity& GetAllEntities()
+	//{
+	//	for (auto &ent : _self->_entities)
+	//	{
+	//		//return ent;
+	//	}
+	//}
+
+
+
 };

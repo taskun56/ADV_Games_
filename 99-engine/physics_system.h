@@ -51,6 +51,19 @@ public:
     {
         return true;
     }
+	
+
+	//R//Getter for physics_data Jeremy asked for 
+	physics_data& getData()
+	{
+		return _data;
+	}
+
+
+	
+
+
+	
 
     void update(float delta_time)
     {
@@ -68,15 +81,17 @@ public:
         _parent.get_trans().y = _data.y;
         _parent.get_trans().z = _data.z;
 
+
+
 		//R//Checking what type of entity we are updating	-- Not sure _parent.[entityType] works
 		//R//If entity = player
-		if (_parent.get_entityType() == _parent.Player)
+		if (_parent.get_entityType() == entity::entityType::Player)
 		{
 			//Move based on input stuff
 		}
 
 		//R//if entity = enemy
-		if (_parent.get_entityType() == _parent.Enemy)
+		if (_parent.get_entityType() == entity::entityType::Enemy)
 		{
 			//Determine what kind of enemy it is
 			//Give it movement based on enemy types
@@ -91,10 +106,11 @@ public:
 		}
 
 		//R//if entity = object
-		if (_parent.get_entityType() == _parent.Object)
+		if (_parent.get_entityType() == entity::entityType::Object)
 		{
 			//
 		}
+
     }
 
     void render()
