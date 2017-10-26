@@ -160,20 +160,31 @@ public:
 
 
 
-
-
-
-
-
 	//R//Cycling through all entities for physics (trying to anyway)
-	//entity& GetAllEntities()
-	//{
-	//	for (auto &ent : _self->_entities)
-	//	{
-	//		//return ent;
-	//	}
-	//}
+	/*entity& GetAllEntities()
+	{
+		for (auto &ent : _self->_entities)
+		{
+			_self
+		}
+	}*/
 
+	/*for(int i = 0; i < _self->_entities.size(); i++)
+	{
+		_self->_entities
+	}*/
 
+	std::string something()
+	{
+		//R// For each entity in _entities
+		for (auto iterator = _self->_entities.begin(); iterator != _self->_entities.end(); iterator++)
+		{
+			return iterator->second._self->_name;
+
+			/*_self->_entities.at(iterator);
+			_self->_entities.begin();
+			_self->_entities.*/
+		}
+	}
 
 };

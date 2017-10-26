@@ -109,6 +109,10 @@ int main(int arg, char **argv)
 	Player1.set_entityType("Enemy");
 	cout << "entityType: " << Player1.get_entityType() << endl << endl;
 
+
+	//R//Testing cycling through _entities
+	cout << entity_manager::get().something() << endl;
+
     eng.run();
 
 
