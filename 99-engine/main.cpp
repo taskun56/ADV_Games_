@@ -110,6 +110,22 @@ int main(int arg, char **argv)
 	cout << "entityType: " << Player1.get_entityType() << endl << endl;
 
 
+
+
+	auto Player2 = entity_manager::get().create("ENTITY", "Barker");
+	auto Player3 = entity_manager::get().create("ENTITY", "Murray");
+	auto Player4 = entity_manager::get().create("ENTITY", "Boyle");
+	auto Player5 = entity_manager::get().create("ENTITY", "McGinn");
+	auto Player6 = entity_manager::get().create("ENTITY", "Bartley");
+	auto Player7 = entity_manager::get().create("ENTITY", "McGeouch");
+	auto Player8 = entity_manager::get().create("ENTITY", "Stevenson");
+	auto Player9 = entity_manager::get().create("ENTITY", "Hanlon");
+	auto Player10 = entity_manager::get().create("ENTITY", "Ambrose");
+	auto Player11 = entity_manager::get().create("ENTITY", "Whittaker");
+	auto Player12 = entity_manager::get().create("ENTITY", "Marciano");
+
+
+
 	//R//Testing cycling through _entities
 	cout << entity_manager::get().something() << endl;
 
