@@ -127,7 +127,7 @@ int main(int arg, char **argv)
 
 
 	//R//Testing cycling through _entities
-	entity_manager::get().something();
+	entity_manager::get().CycleThroughEntities();
 
     eng.run();
 

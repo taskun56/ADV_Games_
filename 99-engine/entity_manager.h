@@ -160,30 +160,18 @@ public:
 
 
 
-	//R//Cycling through all entities for physics (trying to anyway)
-	/*entity& GetAllEntities()
-	{
-		for (auto &ent : _self->_entities)
-		{
-			_self
-		}
-	}*/
 
-	/*for(int i = 0; i < _self->_entities.size(); i++)
-	{
-		_self->_entities
-	}*/
-
-	void something()
+	void CycleThroughEntities()
 	{
 		//R// For each entity in _entities
 		for (auto iterator = _self->_entities.begin(); iterator != _self->_entities.end(); iterator++)
 		{
+			//R//Print the name of the entity 
 			std::cout << iterator->second._self->_name << std::endl;
 
-			/*_self->_entities.at(iterator);
-			_self->_entities.begin();
-			_self->_entities.*/
+			//R//This we should now use this to check for collisions 
+			//R//We need to find the player entity, and then cycle through the other entities and decide whether or not the player has collided with anything
+			//R//We can then worry about a second player at a later stage
 		}
 	}
 
