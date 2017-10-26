@@ -174,12 +174,12 @@ public:
 		_self->_entities
 	}*/
 
-	std::string something()
+	void something()
 	{
 		//R// For each entity in _entities
 		for (auto iterator = _self->_entities.begin(); iterator != _self->_entities.end(); iterator++)
 		{
-			return iterator->second._self->_name;
+			std::cout << iterator->second._self->_name << std::endl;
 
 			/*_self->_entities.at(iterator);
 			_self->_entities.begin();

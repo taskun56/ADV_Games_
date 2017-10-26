@@ -127,7 +127,7 @@ int main(int arg, char **argv)
 
 
 	//R//Testing cycling through _entities
-	cout << entity_manager::get().something() << endl;
+	entity_manager::get().something();
 
     eng.run();
 
