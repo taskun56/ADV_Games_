@@ -13,6 +13,8 @@
 
 struct render_data
 {
+
+	glm::dmat4 Transform;
 	bool visible = false;
 	Mesh *mesh;
 	Shader *shade;
@@ -55,6 +57,13 @@ public:
 			//std::stringstream ss;
 			//ss << "(" << _parent.get_trans().x << ", " << _parent.get_trans().y << ", " << _parent.get_trans().z << ")" << std::endl;
 			//_data.transform = ss.str();
+
+			//sets transform
+
+
+			_data.Transform = _parent.get_trans().Transform;
+			
+			
 		}
 	}
 
@@ -123,18 +132,16 @@ public:
 			}
 			if (d.visible)
 			{
-				glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+				glm::dmat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 				// Camera matrix
-				glm::mat4 View = glm::lookAt(
-					glm::vec3(5, 6, 3), // Camera is at (4,3,3), in World Space
-					glm::vec3(0, 0, 0), // and looks at the origin
-					glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
+				glm::dmat4 View = glm::lookAt(
+					glm::dvec3(5, 6, 3), // Camera is at (4,3,3), in World Space
+					glm::dvec3(0, 0, 0), // and looks at the origin
+					glm::dvec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
 				);
-				// Model matrix : an identity matrix (model will be at the origin)
-				glm::mat4 Model = glm::mat4(1.0f);
 
-
-				const glm::mat4 MVP = Projection * View * Model;
+				
+				const glm::dmat4 MVP = Projection * View * d.Transform;
 				GLRender(d.mesh, d.shade, MVP);
 			}
 		}

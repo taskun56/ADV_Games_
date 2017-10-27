@@ -6,6 +6,9 @@
 #include <exception>
 #include "component.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 // We will just define an entity as a collection of components.
 class entity
 {
@@ -14,9 +17,9 @@ public:
     // A little dirty, but simplifies our definition.
     struct transform
     {
-        float x = 1.0f;
-        float y = 1.0f;
-        float z = 1.0f;
+        glm::dmat4 Transform;
+
+		int test;
     };
 
 private:
@@ -45,6 +48,7 @@ public:
     entity() = default;
 
     transform& get_trans() { return _self->trans; }
+	void set_trans(const glm::dmat4 m4, int i) { _self->trans.Transform = m4; _self->trans.test = i; }
 
     bool initialise()
     {

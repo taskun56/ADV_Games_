@@ -99,11 +99,11 @@
  *  }
  *  \endcode
  */
-
+/*
 #if defined(SDL_MAIN_NEEDED) || defined(SDL_MAIN_AVAILABLE)
 #define main    SDL_main
 #endif
-
+*/
 /**
  *  The prototype for the application's main() function
  */

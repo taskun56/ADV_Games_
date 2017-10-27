@@ -4,7 +4,7 @@
 #include "entity_manager.h"
 #include "physics_system.h"
 #include "renderer.h"
-#include "../include/SDL.h"
+
 
 using namespace std;
 
@@ -69,6 +69,8 @@ void exit_state_4(engine &eng)
 	cout << "State not implemented. State 4 Exit." << endl;
 }
 
+//sdl main  102 - 106
+
 int main(int arg, char **argv)
 {
     auto eng = engine::get();
@@ -89,14 +91,16 @@ int main(int arg, char **argv)
     eng.add_subsystem(renderer::get(), false, true);
 
     auto e = entity_manager::get().create("ENTITY", "Test");
-    //e.get_trans().x;
-    e.add_component<physics_component>(physics_system::get().create("RIGID", e));
-    e.add_component<render_component>(renderer::get().create("RENDER", e, "PlayerShip.obj", "basic", 1));
 
-	auto f = entity_manager::get().create("ENTITY", "buttsbuttsbutts");
 
-	f.add_component<physics_component>(physics_system::get().create("RIGID", f));
-	f.add_component<render_component>(renderer::get().create("RENDER", f, "EnemyShip2.obj", "basic", 1));
+	e.add_component<render_component>(renderer::get().create("RENDER", e, "PlayerShip.obj", "basic", 1));
+    e.add_component<physics_component>(physics_system::get().create("RIGID", e, glm::dvec3(0.0, 0.0, 0.0), glm::dquat(0.0,0.0,0.0,0.0) ,glm::dvec3(1.0, 1.0, 1.0)));
+  
+
+	//auto f = entity_manager::get().create("ENTITY", "buttsbuttsbutts");
+
+	//f.add_component<physics_component>(physics_system::get().create("RIGID", f, glm::dvec3(0.0, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(1.0, 1.0, 1.0)));
+	//f.add_component<render_component>(renderer::get().create("RENDER", f, "EnemyShip2.obj", "basic", 1));
 
 	if(eng.get_joystick_status()) eng.get_subsystem<input_handler>().InitializeJoysticks();
 

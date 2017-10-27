@@ -7,6 +7,9 @@
 #include "singleton.h"
 #include "factory.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 // entity manager just holds our entities in a lookup table.
 // This is a simple system - you might want more.
 class entity_manager : public singleton<entity_manager>, public factory<entity, std::string, std::string>

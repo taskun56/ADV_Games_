@@ -8,14 +8,25 @@
 #include "factory.h"
 #include "entity.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/euler_angles.hpp>
+#include <glm/gtx/transform.hpp>
+
 struct physics_data
 {
     bool active = false;
     // This is position
-    float x = 0.0f;
-    float y = 0.0f;
-    float z = 0.0f;
+	glm::dvec3 Position;
+	glm::dquat Rotation;
+	glm::dvec3 Scale;
+
 };
+
+
+
+
 
 struct physics_component
 {
@@ -23,6 +34,9 @@ private:
     // We'll just keep a reference here.  The physics system
     // will maintain the actual data.
     physics_data &_data;
+	glm::dmat4 transform;
+	int test;
+	glm::dmat4 Test;
 
     // We'll also keep a reference to the parent entity
     entity &_parent;
@@ -51,6 +65,19 @@ public:
         _parent.get_trans().y = _data.y;
         _parent.get_trans().z = _data.z;
 		*/
+
+		
+		//Testing physics system
+
+		transform = glm::translate(_data.Position) * glm::mat4_cast(_data.Rotation) * glm::scale(_data.Scale);
+		_parent.set_trans(transform, 5);
+		//_parent.get_trans().Transform = transform;
+
+		test = _parent.get_trans().test;
+		Test = _parent.get_trans().Transform;
+
+		
+		
     }
 
     void render()
@@ -67,7 +94,7 @@ public:
     }
 };
 
-class physics_system : public singleton<physics_system>, public factory<physics_component, std::string, entity>
+class physics_system : public singleton<physics_system>, public factory<physics_component, std::string, entity&, glm::dvec3 , glm::dquat , glm::dvec3>
 {
     friend class singleton<physics_system>;
 private:
@@ -82,13 +109,16 @@ private:
     physics_system()
     : _self{new physics_system_impl()}
     {
-        register_constructor("RIGID", [this](entity e){ return this->build_component(e); });
+        register_constructor("RIGID", [this](entity &e, glm::dvec3 pos, glm::dquat rot, glm::dvec3 scale){ return this->build_component(e, pos, rot, scale); });
     }
 
 public:
-    physics_component build_component(entity e)
+    physics_component build_component(entity &e, glm::dvec3 pos, glm::dquat rot, glm::dvec3 scale)
     {
         _self->_data.push_back(physics_data());
+		_self->_data.back().Position = pos;
+		_self->_data.back().Scale = scale;
+		_self->_data.back().Rotation = rot;
         return physics_component(e, _self->_data.back());
     }
 
@@ -109,12 +139,15 @@ public:
         //std::cout << "Physics system updating" << std::endl;
         for (auto &d : _self->_data)
         {
-            // If active physics object add 1 to each component.
+            // Updates the entity so change pos rot and scale here   
             if (d.active)
             {
-                d.x += 1.0f;
-                d.y += 1.0f;
-                d.z += 1.0f;
+
+
+				//d.Position = glm::dvec3(d.Position.x + 50.0f, d.Position.y, d.Position.z);
+				//d.Rotation = glm::dquat(d.Rotation.x + 0.01, d.Rotation.y, d.Rotation.z, d.Rotation.w);
+				
+        
             }
         }
     }
@@ -134,4 +167,5 @@ public:
     {
         //std::cout << "Physics system shutting down" << std::endl;
     }
+
 };
