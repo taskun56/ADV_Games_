@@ -109,6 +109,7 @@ public:
 		if (SquaredDistance(a.x, a.y, b.x, b.y) < (SquaredTotalRadius))
 		{
 			//The circles have collided
+			std::cout << "COLLISION DETECTED!" << std::endl;
 			return true;
 		}
 		return false;
@@ -163,13 +164,52 @@ public:
 
 	void CycleThroughEntities()
 	{
+		
+
+
+
+		//R//Find the player (to compare against everything else for collisions
+		auto player = _self->_entities.find("playerplayer");// ->second._self->;
+
 		//R// For each entity in _entities
 		for (auto iterator = _self->_entities.begin(); iterator != _self->_entities.end(); iterator++)
 		{
+			//R//TEMPORARY
+			//R//Updating the colliders, needs to be done elsewhere later instead of here
+			iterator->second.update_collider(iterator->second._self->trans.x, iterator->second._self->trans.y, iterator->second._self->trans.z);
+
+
+			//R//If the current entity in _entities IS the player
+			if (iterator->first == "playerplayer")
+			{
+				//R//Print the name of the entity 
+				std::cout << iterator->second._self->_name << std::endl;
+				std::cout << iterator->second.get_trans().x << " " << iterator->second.get_trans().y << " " << iterator->second.get_trans().z << std::endl;
+				std::cout << "Found the player, skipping..." << std::endl;
+
+				//R//Skip that loop cycle and go to the next entity in _entities
+				continue;
+			}
+
+			//R//Collision Detection
+			//R//player circle a, iterator->second._self circle b
+			bool check = checkCollision(player->second._self->collider, iterator->second._self->collider);
+			if (check == true)
+			{
+				std::cout << player->second._self->_name << " collided with " << iterator->second._self->_name << std::endl;
+			}
+
+			//player->second._self->
+
 			//R//Print the name of the entity 
 			std::cout << iterator->second._self->_name << std::endl;
+			std::cout << iterator->second.get_trans().x << " " << iterator->second.get_trans().y << " " << iterator->second.get_trans().z << std::endl;
+			std::cout << "collider: " << iterator->second._self->collider.x << " " << iterator->second._self->collider.y << " " << iterator->second._self->collider.z << std::endl;
 
-			//R//This we should now use this to check for collisions 
+			//auto player = _self->_entities.find("playerplayer");
+			//std::cout << player->second._self->_name << " has a position of " << player->second._self->trans.x << " " << player->second._self->trans.y << " " << player->second._self->trans.z << std::endl;
+
+			//R//This we should now use this to check for collisions
 			//R//We need to find the player entity, and then cycle through the other entities and decide whether or not the player has collided with anything
 			//R//We can then worry about a second player at a later stage
 		}

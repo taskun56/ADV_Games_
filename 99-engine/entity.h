@@ -31,10 +31,10 @@ public:
 	//R//Bounding circle (hitbox)	--Using SDL 29 circular collisions --Probably don't actually need this cause we could just set the radius and use the transform for the position
 	struct circle
 	{
-		int x;
-		int y;
-		int z;
-		int radius;
+		float x;
+		float y;
+		float z;
+		float radius = 2;
 	};
 
 
@@ -58,6 +58,9 @@ private:
 
 		//R//
 		entityType et;
+
+		//R//
+		circle collider;
     };
     
     std::shared_ptr<entity_impl> _self = nullptr;
@@ -87,6 +90,13 @@ public:
 		_self->trans.z = z;
 	}
 
+	//R//Keeping collider position up to data --get_trans().x, y
+	void update_collider(float x, float y, float z)
+	{
+		_self->collider.x = x;
+		_self->collider.y = y;
+		_self->collider.z = z;
+	}
 
 	//R//Getter method for scale
 	Scale& get_scale()
@@ -157,8 +167,12 @@ public:
     {
         std::cout << "Entity " << _self->_id << " updating" << " " << _self->trans.x << std::endl;
         std::cout << _self->_components.size() << std::endl;
-        for (auto &c : _self->_components)
-            c.second.update(delta_time);
+		for (auto &c : _self->_components)
+		{
+			c.second.update(delta_time);
+		}
+
+		//R//Update
     }
 
     void render()
