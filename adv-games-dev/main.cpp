@@ -100,7 +100,7 @@ int main(int arg, char **argv)
 
 
 	//R//Messing around with how to create a player entity
-	/*auto Player1 = entity_manager::get().create("ENTITY", "playerplayer");
+	auto Player1 = entity_manager::get().create("ENTITY", "playerplayer");
 	Player1.set_trans(0.0f, 0.0f, 0.0f);
 	cout << "Player 1 exists and is located at X/Y/Z:" << endl;
 	cout << Player1.get_trans().x << "/" << Player1.get_trans().y << "/" << Player1.get_trans().z << endl << endl;
@@ -122,9 +122,9 @@ int main(int arg, char **argv)
 	auto Player10 = entity_manager::get().create("ENTITY", "Ambrose");		Player10.set_trans(10, 10, 10);
 	auto Player11 = entity_manager::get().create("ENTITY", "Whittaker");	Player11.set_trans(11, 11, 11);
 	auto Player12 = entity_manager::get().create("ENTITY", "Marciano");		Player12.set_trans(12, 12, 12);
-*/
+
 	//R//Testing cycling through _entities
-	//entity_manager::get().CycleThroughEntities();
+	entity_manager::get().CycleThroughEntities();
 
 
 	if(eng.get_joystick_status()) eng.get_subsystem<input_handler>().InitializeJoysticks();
