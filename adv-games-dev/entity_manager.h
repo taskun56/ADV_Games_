@@ -157,12 +157,8 @@ public:
 
 	void CycleThroughEntities()
 	{
-
-
-
-
 		//R//Find the player (to compare against everything else for collisions
-		auto player = _self->_entities.find("playerplayer");// ->second._self->;
+		auto player = _self->_entities.find("Barker");// ->second._self->;
 
 															//R// For each entity in _entities
 		for (auto iterator = _self->_entities.begin(); iterator != _self->_entities.end(); iterator++)
@@ -173,12 +169,12 @@ public:
 
 
 			//R//If the current entity in _entities IS the player
-			if (iterator->first == "playerplayer")
+			if (iterator->first == "Barker")
 			{
 				//R//Print the name of the entity 
 				std::cout << iterator->second._self->_name << std::endl;
 				std::cout << iterator->second.get_trans().x << " " << iterator->second.get_trans().y << " " << iterator->second.get_trans().z << std::endl;
-				std::cout << "Found the player, skipping..." << std::endl;
+				std::cout << "Found the player (Barker), skipping..." << std::endl;
 
 				//R//Skip that loop cycle and go to the next entity in _entities
 				continue;
