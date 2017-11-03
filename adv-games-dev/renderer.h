@@ -9,6 +9,7 @@
 #include "singleton.h"
 #include "factory.h"
 #include "entity.h"
+#include "ai_system.h"
 
 
 struct render_data
@@ -92,6 +93,7 @@ private:
 	renderer() : _self{ new renderer_impl() }
 	{
 		register_constructor("RENDER", [this](entity &e, std::string shape, std::string shader, int state) { return this->build_component(e, shape, shader, state); });
+		register_constructor("REER", [this](entity &e, std::string shape, std::string shader, int state) { return this->build_component(e, shape, shader, state); });
 	}
 
 public:
@@ -140,8 +142,11 @@ public:
 					glm::dvec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
 				);
 
+				glm::dmat4 PV = Camera::GetActiveCam().getVP();
+
 				
-				const glm::dmat4 MVP = Projection * View * d.Transform;
+				
+				const glm::dmat4 MVP = PV * d.Transform;
 				GLRender(d.mesh, d.shade, MVP);
 			}
 		}

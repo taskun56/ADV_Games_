@@ -35,7 +35,7 @@ private:
     // will maintain the actual data.
     physics_data &_data;
 	glm::dmat4 transform;
-	int test;
+
 	glm::dmat4 Test;
 
     // We'll also keep a reference to the parent entity
@@ -66,15 +66,15 @@ public:
         _parent.get_trans().z = _data.z;
 		*/
 
-		
+		_data.Position =_data.Position;
 		//Testing physics system
 
 		transform = glm::translate(_data.Position) * glm::mat4_cast(_data.Rotation) * glm::scale(_data.Scale);
-		_parent.set_trans(transform, 5);
+		_parent.set_trans(transform);
 		//_parent.get_trans().Transform = transform;
 
-		test = _parent.get_trans().test;
-		Test = _parent.get_trans().Transform;
+		
+//		Test = _parent.get_trans().Transform;
 
 		
 		
@@ -145,7 +145,7 @@ public:
 
 
 				//d.Position = glm::dvec3(d.Position.x + 50.0f, d.Position.y, d.Position.z);
-				//d.Rotation = glm::dquat(d.Rotation.x + 0.01, d.Rotation.y, d.Rotation.z, d.Rotation.w);
+				d.Rotation = glm::dquat(d.Rotation.x + 0.01, d.Rotation.y, d.Rotation.z, d.Rotation.w);
 				
         
             }

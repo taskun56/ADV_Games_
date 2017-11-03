@@ -3,6 +3,7 @@
 #include "input_handler.h"
 #include "entity_manager.h"
 #include "physics_system.h"
+#include "ai_System.h"
 #include "renderer.h"
 
 
@@ -89,18 +90,41 @@ int main(int arg, char **argv)
     eng.add_subsystem(physics_system::get(), true, false);
     // Renderer does not update.
     eng.add_subsystem(renderer::get(), false, true);
+	eng.add_subsystem(AI_System::get(), true, false);
 
-    auto e = entity_manager::get().create("ENTITY", "Test");
+
+	auto f = entity_manager::get().create("ENTITY", "ob1");
+
+	f.add_component<physics_component>(physics_system::get().create("RIGID", f, glm::dvec3(0.0, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(1.0, 1.0, 1.0)));
+	f.add_component<render_component>(renderer::get().create("RENDER", f, "EnemyShip2.obj", "basic", 1));
+
+	auto b = entity_manager::get().create("ENTITY", "ob2");
+
+	//b.add_component<physics_component>(physics_system::get().create("RIGID", b, glm::dvec3(2.0, 2.0, 2.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(1.0, 1.0, 1.0)));
+	//b.add_component<render_component>(renderer::get().create("RENDER", b, "PlayerShip.obj", "basic", 1));
 
 
-	e.add_component<render_component>(renderer::get().create("RENDER", e, "PlayerShip.obj", "basic", 1));
-    e.add_component<physics_component>(physics_system::get().create("RIGID", e, glm::dvec3(0.0, 0.0, 0.0), glm::dquat(0.0,0.0,0.0,0.0) ,glm::dvec3(1.0, 1.0, 1.0)));
-  
+  // auto e = entity_manager::get().create("ENTITY", "Test");
 
-	//auto f = entity_manager::get().create("ENTITY", "buttsbuttsbutts");
 
-	//f.add_component<physics_component>(physics_system::get().create("RIGID", f, glm::dvec3(0.0, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(1.0, 1.0, 1.0)));
-	//f.add_component<render_component>(renderer::get().create("RENDER", f, "EnemyShip2.obj", "basic", 1));
+//	e.add_component<render_component>(renderer::get().create("REER", e, "PlayerShip.obj", "basic", 1));
+ //   e.add_component<physics_component>(physics_system::get().create("RIGID", e, glm::dvec3(0.0, 0.0, 0.0), glm::dquat(0.0,0.0,0.0,0.0) ,glm::dvec3(1.0, 1.0, 1.0)));
+	
+
+
+
+
+
+
+	auto camera = entity_manager::get().create("ENTITY", "Camera");
+	camera.add_component<physics_component>(physics_system::get().create("RIGID", camera, glm::dvec3(0.0, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(1.0, 1.0, 1.0)));
+	camera.add_component<AI_component>(AI_System::get().create("Camera", camera));
+	
+	
+
+
+
+
 
 	if(eng.get_joystick_status()) eng.get_subsystem<input_handler>().InitializeJoysticks();
 

@@ -19,7 +19,6 @@ public:
     {
         glm::dmat4 Transform;
 
-		int test;
     };
 
 private:
@@ -48,7 +47,7 @@ public:
     entity() = default;
 
     transform& get_trans() { return _self->trans; }
-	void set_trans(const glm::dmat4 m4, int i) { _self->trans.Transform = m4; _self->trans.test = i; }
+	void set_trans(const glm::dmat4 m4) { _self->trans.Transform = m4; }
 
     bool initialise()
     {
