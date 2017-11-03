@@ -142,11 +142,11 @@ public:
 					glm::dvec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
 				);
 
-				glm::dmat4 PV = Camera::GetActiveCam().getVP();
+				//glm::dmat4 PV = Camera::GetActiveCam().getVP();
 
 				
 				
-				const glm::dmat4 MVP = PV * d.Transform;
+				const glm::dmat4 MVP = Projection * View * d.Transform;
 				GLRender(d.mesh, d.shade, MVP);
 			}
 		}

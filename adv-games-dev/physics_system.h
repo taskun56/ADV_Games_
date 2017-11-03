@@ -34,6 +34,7 @@ private:
     // We'll just keep a reference here.  The physics system
     // will maintain the actual data.
     physics_data &_data;
+	
 	glm::dmat4 transform;
 
 	glm::dmat4 Test;
@@ -48,7 +49,6 @@ public:
 
     bool initialise()
     {
-
         return true;
     }
 
@@ -66,8 +66,13 @@ public:
         _parent.get_trans().z = _data.z;
 		*/
 
+
+		//Breaks here when multiple entities
+
 		_data.Position =_data.Position;
 		//Testing physics system
+
+		
 
 		transform = glm::translate(_data.Position) * glm::mat4_cast(_data.Rotation) * glm::scale(_data.Scale);
 		_parent.set_trans(transform);
@@ -109,15 +114,15 @@ private:
     physics_system()
     : _self{new physics_system_impl()}
     {
-        register_constructor("RIGID", [this](entity &e, glm::dvec3 pos, glm::dquat rot, glm::dvec3 scale){ return this->build_component(e, pos, rot, scale); });
+        register_constructor("RIGID", [this](entity &e, glm::dvec3 pos, glm::dquat rot, glm::dvec3 scal){ return this->build_component(e, pos, rot, scal); });
     }
 
 public:
-    physics_component build_component(entity &e, glm::dvec3 pos, glm::dquat rot, glm::dvec3 scale)
+    physics_component build_component(entity &e, glm::dvec3 pos, glm::dquat rot, glm::dvec3 scal)
     {
         _self->_data.push_back(physics_data());
 		_self->_data.back().Position = pos;
-		_self->_data.back().Scale = scale;
+		_self->_data.back().Scale = scal;
 		_self->_data.back().Rotation = rot;
         return physics_component(e, _self->_data.back());
     }

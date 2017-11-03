@@ -100,7 +100,7 @@ int main(int arg, char **argv)
 
 	auto b = entity_manager::get().create("ENTITY", "ob2");
 
-	//b.add_component<physics_component>(physics_system::get().create("RIGID", b, glm::dvec3(2.0, 2.0, 2.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(1.0, 1.0, 1.0)));
+	b.add_component<physics_component>(physics_system::get().create("RIGID", b, glm::dvec3(2.0, 2.0, 2.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(1.0, 1.0, 1.0)));
 	//b.add_component<render_component>(renderer::get().create("RENDER", b, "PlayerShip.obj", "basic", 1));
 
 
@@ -116,9 +116,9 @@ int main(int arg, char **argv)
 
 
 
-	auto camera = entity_manager::get().create("ENTITY", "Camera");
-	camera.add_component<physics_component>(physics_system::get().create("RIGID", camera, glm::dvec3(0.0, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(1.0, 1.0, 1.0)));
-	camera.add_component<AI_component>(AI_System::get().create("Camera", camera));
+//	auto camera = entity_manager::get().create("ENTITY", "Camera");
+//	camera.add_component<physics_component>(physics_system::get().create("RIGID", camera, glm::dvec3(0.0, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(1.0, 1.0, 1.0)));
+//	camera.add_component<AI_component>(AI_System::get().create("Camera", camera));
 	
 	
 
