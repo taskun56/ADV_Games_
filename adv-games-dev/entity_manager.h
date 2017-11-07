@@ -153,6 +153,16 @@ public:
 	}*/
 
 
+	//R//
+	void update_all_colliders()
+	{
+		//R// For each entity in _entities
+		for (auto iterator = _self->_entities.begin(); iterator != _self->_entities.end(); iterator++)
+		{
+			iterator->second.update_collider(iterator->second._self->trans.x, iterator->second._self->trans.y, iterator->second._self->trans.z);
+		}
+	}
+
 
 
 	void CycleThroughEntities()
@@ -160,12 +170,11 @@ public:
 		//R//Find the player (to compare against everything else for collisions
 		auto player = _self->_entities.find("Barker");// ->second._self->;
 
-															//R// For each entity in _entities
+		//R// For each entity in _entities
 		for (auto iterator = _self->_entities.begin(); iterator != _self->_entities.end(); iterator++)
 		{
 			//R//TEMPORARY
-			//R//Updating the colliders, needs to be done elsewhere later instead of here
-			iterator->second.update_collider(iterator->second._self->trans.x, iterator->second._self->trans.y, iterator->second._self->trans.z);
+			//update_all_colliders();
 
 
 			//R//If the current entity in _entities IS the player
@@ -198,7 +207,7 @@ public:
 			//auto player = _self->_entities.find("playerplayer");
 			//std::cout << player->second._self->_name << " has a position of " << player->second._self->trans.x << " " << player->second._self->trans.y << " " << player->second._self->trans.z << std::endl;
 
-			//R//This we should now use this to check for collisions
+			//R//We should now use this to check for collisions
 			//R//We need to find the player entity, and then cycle through the other entities and decide whether or not the player has collided with anything
 			//R//We can then worry about a second player at a later stage
 		}

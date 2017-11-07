@@ -12,6 +12,7 @@
 #include "SDL_opengl.h"
 #include <GL\GLU.h>
 #include "OpenGLRender.cpp"
+#include "entity_manager.h"
 
 class engine : public singleton<engine>, public state_machine<engine>
 {
@@ -258,6 +259,14 @@ public:
 			//	// will not be changed simply by button presses. there will be more logic to it than that. 
 			//	//std::cout << "state unchanged" << std::endl;
 			//}
+
+
+
+			//R//Trying to update all the entities' colliders every frame
+			entity_manager::get().update_all_colliders();
+
+			//R//Temporarily the "cycle through entities" method, but detect collisions here
+			entity_manager::get().entity_manager::CycleThroughEntities();
 
 
 
