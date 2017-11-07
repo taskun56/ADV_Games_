@@ -13,36 +13,38 @@
 
 
 
-struct Camera
-{
-private:
-	glm::dmat4 ProjMatrix;
-	glm::dmat4 ViewMatrix;
-	static Camera *activeCam_;
-	
-	
 
-public:
-
-	Camera::Camera()
-		:ProjMatrix(glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f)),
-		ViewMatrix(glm::lookAt(glm::vec3(5, 6, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0))) {}
-
-	void Camera::SetActive() { activeCam_ = this; }
-	static Camera &Camera::GetActiveCam() { return *activeCam_; }
-
-	glm::dmat4 Camera::getVP() const
-	{
-		return ProjMatrix * ViewMatrix;
-	}
-
-};
 
 
 struct AI_data
 {
+
+public:
+
 	bool active = false;
-	static Camera _Camera;
+	glm::dmat4 ProjMatrix;
+	glm::dmat4 ViewMatrix;
+	static AI_data *ActiveCam_; 
+	
+
+	AI_data::AI_data()
+	{
+		ProjMatrix = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+		// Camera matrix
+		ViewMatrix = glm::lookAt(
+			glm::dvec3(5, 6, 3), // Camera is at (4,3,3), in World Space
+			glm::dvec3(0, 0, 0), // and looks at the origin
+			glm::dvec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
+		);
+	}
+	
+	static AI_data &GetActiveCam() { static AI_data activeCam_{*ActiveCam_}; return activeCam_; }
+	void SetActive() { ActiveCam_ = this; }
+	glm::dmat4 AI_data::getVP() const
+	{
+		return ProjMatrix * ViewMatrix;
+	}
+	
 };
 
 
@@ -52,15 +54,21 @@ private:
 	AI_data &_data;
 
 	entity &_parent;
+
+
+
 public:
+	
+
 	AI_component(entity &e, AI_data &data) : _parent(e), _data(data)
 	{
 		_data.active = true;
+		_data.SetActive();
+		
 	}
 
 	bool initialise()
 	{
-		_data._Camera.SetActive();
 
 		return true;
 	}
@@ -148,3 +156,4 @@ public:
 	}
 };
 
+AI_data *AI_data::ActiveCam_ = nullptr;

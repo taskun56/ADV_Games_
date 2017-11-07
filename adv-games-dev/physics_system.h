@@ -33,7 +33,7 @@ struct physics_component
 private:
     // We'll just keep a reference here.  The physics system
     // will maintain the actual data.
-    physics_data &_data;
+    physics_data *_data;
 	
 	glm::dmat4 transform;
 
@@ -42,9 +42,9 @@ private:
     // We'll also keep a reference to the parent entity
     entity &_parent;
 public:
-    physics_component(entity &e, physics_data &data) : _parent(e), _data(data)
+    physics_component(entity &e, physics_data *data) : _parent(e), _data(data)
     {
-        _data.active = true;
+        _data->active = true;
     }
 
     bool initialise()
@@ -67,14 +67,9 @@ public:
 		*/
 
 
-		//Breaks here when multiple entities
-
-		_data.Position =_data.Position;
-		//Testing physics system
-
 		
 
-		transform = glm::translate(_data.Position) * glm::mat4_cast(_data.Rotation) * glm::scale(_data.Scale);
+		transform = glm::translate(_data->Position) * glm::mat4_cast(_data->Rotation) * glm::scale(_data->Scale);
 		_parent.set_trans(transform);
 		//_parent.get_trans().Transform = transform;
 
@@ -106,7 +101,7 @@ private:
     struct physics_system_impl
     {
         // Maintain a vector of physics_data
-        std::vector<physics_data> _data;
+        std::vector<physics_data*> _data;
     };
 
     std::shared_ptr<physics_system_impl> _self = nullptr;
@@ -118,14 +113,18 @@ private:
     }
 
 public:
+
+
+
     physics_component build_component(entity &e, glm::dvec3 pos, glm::dquat rot, glm::dvec3 scal)
     {
-        _self->_data.push_back(physics_data());
-		_self->_data.back().Position = pos;
-		_self->_data.back().Scale = scal;
-		_self->_data.back().Rotation = rot;
+        _self->_data.push_back(new physics_data());
+		_self->_data.back()->Position = pos;
+		_self->_data.back()->Scale = scal;
+		_self->_data.back()->Rotation = rot;
         return physics_component(e, _self->_data.back());
     }
+
 
     bool initialise()
     {
@@ -145,14 +144,13 @@ public:
         for (auto &d : _self->_data)
         {
             // Updates the entity so change pos rot and scale here   
-            if (d.active)
+            if (d->active)
             {
 
 
-				//d.Position = glm::dvec3(d.Position.x + 50.0f, d.Position.y, d.Position.z);
-				d.Rotation = glm::dquat(d.Rotation.x + 0.01, d.Rotation.y, d.Rotation.z, d.Rotation.w);
-				
-        
+				d->Position = glm::dvec3(d->Position.x + 0.01f, d->Position.y, d->Position.z);
+			//	d.Rotation = glm::dquat(d.Rotation.x + 0.01, d.Rotation.y, d.Rotation.z, d.Rotation.w);
+	
             }
         }
     }
