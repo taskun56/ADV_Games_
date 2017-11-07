@@ -153,12 +153,13 @@ public:
 	}*/
 
 
-	//R//
+	//R// - Currently just updates the colliders to match entitiy position, needs to be changed so that it depends on whether or not there was a collision
 	void update_all_colliders()
 	{
 		//R// For each entity in _entities
 		for (auto iterator = _self->_entities.begin(); iterator != _self->_entities.end(); iterator++)
 		{
+			std::cout << iterator->second._self->_name << " collider updating..." << std::endl;
 			iterator->second.update_collider(iterator->second._self->trans.x, iterator->second._self->trans.y, iterator->second._self->trans.z);
 		}
 	}
@@ -194,7 +195,7 @@ public:
 			bool check = checkCollision(player->second._self->collider, iterator->second._self->collider);
 			if (check == true)
 			{
-				std::cout << player->second._self->_name << " collided with " << iterator->second._self->_name << std::endl;
+				std::cout << player->second._self->_name << " collided with " << iterator->second._self->_name << std::endl << std::endl;
 			}
 
 			//player->second._self->

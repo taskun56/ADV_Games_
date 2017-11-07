@@ -262,11 +262,15 @@ public:
 
 
 
+
+
 			//R//Trying to update all the entities' colliders every frame
 			entity_manager::get().update_all_colliders();
 
 			//R//Temporarily the "cycle through entities" method, but detect collisions here
 			entity_manager::get().entity_manager::CycleThroughEntities();
+
+
 
 
 
