@@ -245,6 +245,9 @@ public:
 					//std::cout << "Anything" << std::endl;
 					_running = false;
 				}
+
+				
+
 			}
 			if (state_set != "")
 			{
@@ -265,7 +268,7 @@ public:
             // will want to use a proper timer.
 			for (auto &sys : _self->_subsystems)
 			{
-				sys.second.update(1.0);
+				sys.second.update(1.0);		
 			}
 
 			glEnable(GL_DEPTH_TEST);

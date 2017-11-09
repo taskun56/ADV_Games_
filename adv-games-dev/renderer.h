@@ -53,16 +53,11 @@ public:
 	{
 		if (_data->visible)
 		{
-			// "Generate" the transform matrix.
-			//std::cout << "Rendering component of entity " << std::endl;
-			//std::stringstream ss;
-			//ss << "(" << _parent.get_trans().x << ", " << _parent.get_trans().y << ", " << _parent.get_trans().z << ")" << std::endl;
-			//_data.transform = ss.str();
+
 
 			//sets transform
-
-
 			_data->Transform = _parent.get_trans().Transform;
+			
 			
 			
 		}
@@ -134,18 +129,10 @@ public:
 			}
 			if (d->visible)
 			{
-				glm::dmat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
-				// Camera matrix
-				glm::dmat4 View = glm::lookAt(
-					glm::dvec3(5, 6, 3), // Camera is at (4,3,3), in World Space
-					glm::dvec3(0, 0, 0), // and looks at the origin
-					glm::dvec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
-				);
 
 				glm::dmat4 PV = AI_data::GetActiveCam().getVP();
 
-				
-				
+
 				const glm::dmat4 MVP = PV * d->Transform;
 				GLRender(d->mesh, d->shade, MVP);
 			}

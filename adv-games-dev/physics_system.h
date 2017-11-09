@@ -59,25 +59,9 @@ public:
 
     void update(float delta_time)
     {
-		/*
-        // We will just update the entity position.
-        _parent.get_trans().x = _data.x;
-        _parent.get_trans().y = _data.y;
-        _parent.get_trans().z = _data.z;
-		*/
-
-
 		
-
 		transform = glm::translate(_data->Position) * glm::mat4_cast(_data->Rotation) * glm::scale(_data->Scale);
 		_parent.set_trans(transform);
-		//_parent.get_trans().Transform = transform;
-
-		
-//		Test = _parent.get_trans().Transform;
-
-		
-		
     }
 
     void render()
@@ -146,14 +130,14 @@ public:
             // Updates the entity so change pos rot and scale here   
             if (d->active)
             {
-
-
-				d->Position = glm::dvec3(d->Position.x + 0.01f, d->Position.y, d->Position.z);
-			//	d.Rotation = glm::dquat(d.Rotation.x + 0.01, d.Rotation.y, d.Rotation.z, d.Rotation.w);
+				d->Position = glm::dvec3(d->Position.x + 0.0001f, d->Position.y, d->Position.z);
+			//	d->Rotation = glm::dquat(d->Rotation.x + 0.0001, d->Rotation.y, d->Rotation.z, d->Rotation.w);
 	
             }
         }
     }
+
+
 
     void render()
     {
