@@ -165,8 +165,8 @@ public:
 
 	void update(float delta_time)
 	{
-		std::cout << "Entity " << _self->_id << " updating" << " " << _self->trans.x << std::endl;
-		std::cout << _self->_components.size() << std::endl;
+		//std::cout << "Entity " << _self->_id << " updating" << " " << _self->trans.x << std::endl;
+		//std::cout << _self->_components.size() << std::endl;
 		for (auto &c : _self->_components)
 		{
 			c.second.update(delta_time);
@@ -177,7 +177,7 @@ public:
 
 	void render()
 	{
-		std::cout << "Entity " << _self->_id << " rendering" << std::endl;
+		//std::cout << "Entity " << _self->_id << " rendering" << std::endl;
 		for (auto &c : _self->_components)
 			c.second.render();
 	}
