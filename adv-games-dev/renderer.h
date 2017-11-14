@@ -9,7 +9,7 @@
 #include "singleton.h"
 #include "factory.h"
 #include "entity.h"
-#include "ai_system.h"
+
 
 
 struct render_data
@@ -130,9 +130,7 @@ public:
 			if (d->visible)
 			{
 
-				glm::dmat4 PV = AI_data::GetActiveCam().getVP();
-
-
+				glm::dmat4 PV = AI_data::ActiveCam_->getVP();
 				const glm::dmat4 MVP = PV * d->Transform;
 				GLRender(d->mesh, d->shade, MVP);
 			}

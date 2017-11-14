@@ -37,8 +37,6 @@ private:
 	
 	glm::dmat4 transform;
 
-	glm::dmat4 Test;
-
     // We'll also keep a reference to the parent entity
     entity &_parent;
 public:
@@ -46,6 +44,9 @@ public:
     {
         _data->active = true;
     }
+
+	glm::dvec3 get_pos() { return _data->Position; }
+	void set_pos(const glm::dvec3 v3) { _data->Position = v3; }
 
     bool initialise()
     {
@@ -130,7 +131,7 @@ public:
             // Updates the entity so change pos rot and scale here   
             if (d->active)
             {
-				d->Position = glm::dvec3(d->Position.x + 0.0001f, d->Position.y, d->Position.z);
+			//	d->Position = glm::dvec3(d->Position.x + 0.1f, d->Position.y, d->Position.z);
 			//	d->Rotation = glm::dquat(d->Rotation.x + 0.0001, d->Rotation.y, d->Rotation.z, d->Rotation.w);
 	
             }

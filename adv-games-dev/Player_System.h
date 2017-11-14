@@ -21,11 +21,18 @@ struct Player_data
 public:
 
 	bool active = false;
-	int Health;
+	int Health = 67;
 	static Player_data *ActivePlayer_;
 
-	static Player_data &GetActivePlayer() { static Player_data activePlayer_{ *ActivePlayer_ }; return activePlayer_; }
+	
 	void SetActive() { ActivePlayer_ = this; }
+
+	glm::dvec3 get_pos() { return position; }
+	void set_pos(const glm::dvec3 v3) { position = v3; }
+
+	glm::dvec3 position;
+
+	
 
 };
 
@@ -34,7 +41,7 @@ struct Player_component
 {
 private:
 
-	Player_data &_data;
+	Player_data *_data;
 
 	entity &_parent;
 
@@ -43,18 +50,23 @@ private:
 public:
 
 
-	Player_component(entity &e, Player_data &data) : _parent(e), _data(data)
+	Player_component(entity &e, Player_data *data) : _parent(e), _data(data)
 	{
-		_data.active = true;
-		_data.SetActive();
+		_data->active = true;
+		_data->SetActive();
 
 	}
+
+
+
+
 
 	bool initialise()
 	{
 
 		return true;
 	}
+
 
 	bool load_content()
 	{
@@ -64,7 +76,12 @@ public:
 	void update(float delta_time)
 	{
 
-		
+		_data->set_pos(_parent.get_component<physics_component>().get_pos());
+
+		_data->set_pos(glm::dvec3(_data->position.x + 0.01f, _data->position.y, _data->position.z));
+
+		_parent.get_component<physics_component>().set_pos(_data->get_pos());
+
 
 	}
 
@@ -90,7 +107,7 @@ class Player_System : public singleton<Player_System>, public factory<Player_com
 private:
 	struct Player_impl
 	{
-		std::vector<Player_data> _data;
+		std::vector<Player_data*> _data;
 	};
 
 	std::shared_ptr<Player_impl> _self = nullptr;
@@ -103,7 +120,7 @@ private:
 public:
 	Player_component build_component(entity &e)
 	{
-		_self->_data.push_back(Player_data());
+		_self->_data.push_back(new Player_data());
 
 		return Player_component(e, _self->_data.back());
 	}
@@ -142,3 +159,4 @@ public:
 };
 
 Player_data *Player_data::ActivePlayer_ = nullptr;
+

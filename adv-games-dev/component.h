@@ -83,7 +83,7 @@ public:
     }
 
     template<typename T>
-    const T& get() const
+    T& get() 
     {
         return (dynamic_cast<model_t<T>*>(_self.get()))->_self;
     }

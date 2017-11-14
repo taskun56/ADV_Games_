@@ -38,7 +38,6 @@ public:
 		);
 	}
 	
-	static AI_data &GetActiveCam() { static AI_data activeCam_{*ActiveCam_}; return activeCam_; }
 	void SetActive() { ActiveCam_ = this; }
 	glm::dmat4 AI_data::getVP() const
 	{
@@ -51,19 +50,19 @@ public:
 struct AI_component
 {
 private:
-	AI_data &_data;
+	AI_data *_data;
 
 	entity &_parent;
 
-
+	glm::dvec3 hi;
 
 public:
 	
 
-	AI_component(entity &e, AI_data &data) : _parent(e), _data(data)
+	AI_component(entity &e, AI_data *data) : _parent(e), _data(data)
 	{
-		_data.active = true;
-		_data.SetActive();
+		_data->active = true;
+		_data->SetActive();
 		
 	}
 
@@ -81,6 +80,22 @@ public:
 	void update(float delta_time)
 	{
 		
+		
+
+		auto his = Player_data::ActivePlayer_->get_pos();
+
+		
+		hi = his;
+
+	//	Player_data::GetActivePlayer().position;
+
+		_data->ViewMatrix = glm::lookAt(
+			glm::dvec3(hi.x, 20, 1), // Camera is at (Player, 20, 1), in World Space
+			glm::dvec3(hi.x, 0, 0), // and looks at the origin
+			glm::dvec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
+		);
+
+	
 	}
 
 	void render()
@@ -105,7 +120,7 @@ class AI_System : public singleton<AI_System>, public factory<AI_component, std:
 private:
 	struct AI_impl
 	{
-		std::vector<AI_data> _data;
+		std::vector<AI_data*> _data;
 	};
 
 	std::shared_ptr<AI_impl> _self = nullptr;
@@ -118,7 +133,7 @@ private:
 public:
 	AI_component build_component(entity &e)
 	{
-		_self->_data.push_back(AI_data());
+		_self->_data.push_back(new AI_data());
 		
 		return AI_component(e, _self->_data.back());
 	}
@@ -137,7 +152,9 @@ public:
 
 	void update(float delta_time)
 	{
-	
+
+
+
 	}
 
 	void render()

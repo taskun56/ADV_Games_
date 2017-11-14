@@ -107,7 +107,7 @@ public:
     }
 
     template<typename T>
-    const T& get_component() const
+    T& get_component() 
     {
         auto found = _self->_components.find(std::type_index(typeid(T)));
         if (found != _self->_components.end())
