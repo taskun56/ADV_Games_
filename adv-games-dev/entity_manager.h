@@ -7,6 +7,9 @@
 #include "singleton.h"
 #include "factory.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 // entity manager just holds our entities in a lookup table.
 // This is a simple system - you might want more.
 class entity_manager : public singleton<entity_manager>, public factory<entity, std::string, std::string>
@@ -82,11 +85,13 @@ public:
     }
 
 
+
+
 	//R//Squaring the distance
-	double SquaredDistance(int x1, int y1, int x2, int y2)
+	double SquaredDistance(float x1, float y1, float x2, float y2)
 	{
-		int deltaX = x2 - x1;
-		int deltaY = y2 - y1;
+		float deltaX = x2 - x1;
+		float deltaY = y2 - y1;
 
 		return deltaX*deltaX + deltaY*deltaY;
 	}
@@ -99,7 +104,7 @@ public:
 		SquaredTotalRadius *= SquaredTotalRadius;
 
 		//If the distance between the centers of the circles is less than the sum of their radii
-		if (SquaredDistance(a.x, a.y, b.x, b.y) < (SquaredTotalRadius))
+		if (SquaredDistance(a.Transform[3].x, a.Transform[3].z, b.Transform[3].x, b.Transform[3].z) < (SquaredTotalRadius))
 		{
 			//The circles have collided
 			std::cout << "COLLISION DETECTED!" << std::endl;
@@ -108,49 +113,7 @@ public:
 		return false;
 	}
 
-	//R//Check for circle vs SDL_Rect collisions -- commented out for now as I don't have SDL set up
-	/*
-	bool checkCollision(entity::circle& a, SDL_Rect& b)
-	{
-	//Closest point on collision box
-	int cX, cY;
 
-	//Find closest x offset
-	if (a.x < b.x)
-	{
-	cX = b.x;
-	}
-	else if (a.x > b.x + b.w)
-	{
-	cX = b.x + b.w;
-	}
-	else
-	{
-	cX = a.x;
-	}
-
-	//Find closest y offset
-	if (a.y < b.y)
-	{
-	cY = b.y;
-	}
-	else if (a.y > b.y + b.h)
-	{
-	cY = b.y + b.h;
-	}
-	else
-	{
-	cY = a.y;
-	}
-
-	//If the closest point is inside the circle
-	if (SquaredDistance(a.x, a.y, cX, cY) < a.r * a.r)
-	{
-	//This box and the circle have collided
-	return true;
-	}
-	return false;
-	}*/
 
 
 	//R// - Currently just updates the colliders to match entitiy position, needs to be changed so that it depends on whether or not there was a collision
@@ -159,8 +122,8 @@ public:
 		//R// For each entity in _entities
 		for (auto iterator = _self->_entities.begin(); iterator != _self->_entities.end(); iterator++)
 		{
-			std::cout << iterator->second._self->_name << " collider updating..." << std::endl;
-			iterator->second.update_collider(iterator->second._self->trans.x, iterator->second._self->trans.y, iterator->second._self->trans.z);
+			std::cout << iterator->second._self->_name << " collider updating..." << std::endl << std::endl;
+			iterator->second.update_collider(iterator->second._self->trans.Transform);
 		}
 	}
 
@@ -169,9 +132,9 @@ public:
 	void CycleThroughEntities()
 	{
 		//R//Find the player (to compare against everything else for collisions
-		auto player = _self->_entities.find("Barker");// ->second._self->;
+		auto player = _self->_entities.find("ob1");// ->second._self->;
 
-		//R// For each entity in _entities
+													  //R// For each entity in _entities
 		for (auto iterator = _self->_entities.begin(); iterator != _self->_entities.end(); iterator++)
 		{
 			//R//TEMPORARY
@@ -179,16 +142,29 @@ public:
 
 
 			//R//If the current entity in _entities IS the player
-			if (iterator->first == "Barker")
+			if (iterator->first == "ob1")
 			{
 				//R//Print the name of the entity 
 				std::cout << iterator->second._self->_name << std::endl;
-				std::cout << iterator->second.get_trans().x << " " << iterator->second.get_trans().y << " " << iterator->second.get_trans().z << std::endl;
-				std::cout << "Found the player (Barker), skipping..." << std::endl;
+				std::cout << iterator->second.get_trans().Transform[3].x << " " << iterator->second.get_trans().Transform[3].y << " " << iterator->second.get_trans().Transform[3].z << std::endl;
+				std::cout << "Found the player (ob1), skipping..." << std::endl << std::endl;
 
 				//R//Skip that loop cycle and go to the next entity in _entities
 				continue;
 			}
+
+			//R//If the current entity in _entities IS the player
+			if (iterator->first == "Camera")
+			{
+				//R//Print the name of the entity 
+				std::cout << iterator->second._self->_name << std::endl;
+				std::cout << iterator->second.get_trans().Transform[3].x << " " << iterator->second.get_trans().Transform[3].y << " " << iterator->second.get_trans().Transform[3].z << std::endl;
+				std::cout << "Found the camera, skipping..." << std::endl << std::endl;
+
+				//R//Skip that loop cycle and go to the next entity in _entities
+				continue;
+			}
+
 
 			//R//Collision Detection
 			//R//player circle a, iterator->second._self circle b
@@ -201,9 +177,10 @@ public:
 			//player->second._self->
 
 			//R//Print the name of the entity 
-			std::cout << iterator->second._self->_name << std::endl;
-			std::cout << iterator->second.get_trans().x << " " << iterator->second.get_trans().y << " " << iterator->second.get_trans().z << std::endl;
-			std::cout << "collider: " << iterator->second._self->collider.x << " " << iterator->second._self->collider.y << " " << iterator->second._self->collider.z << std::endl;
+			std::cout << iterator->second._self->_name << ": ";
+			std::cout << iterator->second.get_trans().Transform[3].x << " " << iterator->second.get_trans().Transform[3].y << " " << iterator->second.get_trans().Transform[3].z << std::endl;
+			std::cout << "collider: " << iterator->second._self->collider.Transform[3].x << " " << iterator->second._self->collider.Transform[3].y << " " << iterator->second._self->collider.Transform[3].z << std::endl;
+			std::cout << "collider radius: " << iterator->second._self->collider.radius << std::endl << std::endl;
 
 			//auto player = _self->_entities.find("playerplayer");
 			//std::cout << player->second._self->_name << " has a position of " << player->second._self->trans.x << " " << player->second._self->trans.y << " " << player->second._self->trans.z << std::endl;
@@ -213,4 +190,7 @@ public:
 			//R//We can then worry about a second player at a later stage
 		}
 	}
+
+
+
 };

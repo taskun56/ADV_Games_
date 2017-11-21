@@ -9,10 +9,13 @@
 #include "singleton.h"
 #include "factory.h"
 #include "entity.h"
+#include "ai_system.h"
 
 
 struct render_data
 {
+
+	glm::dmat4 Transform;
 	bool visible = false;
 	Mesh *mesh;
 	Shader *shade;
@@ -22,13 +25,13 @@ struct render_data
 struct render_component
 {
 private:
-	render_data &_data;
+	render_data *_data;
 
 	entity &_parent;
 public:
-	render_component(entity &e, render_data &data) : _parent(e), _data(data)
+	render_component(entity &e, render_data *data) : _parent(e), _data(data)
 	{
-		_data.visible = true;
+		_data->visible = true;
 	}
 
 	bool initialise()
@@ -48,13 +51,15 @@ public:
 
 	void render()
 	{
-		if (_data.visible)
+		if (_data->visible)
 		{
-			// "Generate" the transform matrix.
-			//std::cout << "Rendering component of entity " << std::endl;
-			//std::stringstream ss;
-			//ss << "(" << _parent.get_trans().x << ", " << _parent.get_trans().y << ", " << _parent.get_trans().z << ")" << std::endl;
-			//_data.transform = ss.str();
+
+
+			//sets transform
+			_data->Transform = _parent.get_trans().Transform;
+			
+			
+			
 		}
 	}
 
@@ -75,7 +80,7 @@ class renderer : public singleton<renderer>, public factory<render_component, st
 private:
 	struct renderer_impl
 	{
-		std::vector<render_data> _data;
+		std::vector<render_data*> _data;
 	};
 
 	std::shared_ptr<renderer_impl> _self = nullptr;
@@ -83,15 +88,16 @@ private:
 	renderer() : _self{ new renderer_impl() }
 	{
 		register_constructor("RENDER", [this](entity &e, std::string shape, std::string shader, int state) { return this->build_component(e, shape, shader, state); });
+		register_constructor("REER", [this](entity &e, std::string shape, std::string shader, int state) { return this->build_component(e, shape, shader, state); });
 	}
 
 public:
 	render_component build_component(entity &e, std::string shape, std::string shader, int state)
 	{
-		_self->_data.push_back(render_data());
-		_self->_data.back().mesh = GetMesh(shape);
-		_self->_data.back().shade = GetShaders(shader);
-		_self->_data.back().flag = state;
+		_self->_data.push_back(new render_data());
+		_self->_data.back()->mesh = GetMesh(shape);
+		_self->_data.back()->shade = GetShaders(shader);
+		_self->_data.back()->flag = state;
 		return render_component(e, _self->_data.back());
 	}
 
@@ -117,25 +123,18 @@ public:
 	{
 		for (auto &d : _self->_data)
 		{
-			if (d.flag == 0)
+			if (d->flag == 0)
 			{
-				d.visible = false;
+				d->visible = false;
 			}
-			if (d.visible)
+			if (d->visible)
 			{
-				glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
-				// Camera matrix
-				glm::mat4 View = glm::lookAt(
-					glm::vec3(5, 6, 3), // Camera is at (4,3,3), in World Space
-					glm::vec3(0, 0, 0), // and looks at the origin
-					glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
-				);
-				// Model matrix : an identity matrix (model will be at the origin)
-				glm::mat4 Model = glm::mat4(1.0f);
+
+				glm::dmat4 PV = AI_data::GetActiveCam().getVP();
 
 
-				const glm::mat4 MVP = Projection * View * Model;
-				GLRender(d.mesh, d.shade, MVP);
+				const glm::dmat4 MVP = PV * d->Transform;
+				GLRender(d->mesh, d->shade, MVP);
 			}
 		}
 	}

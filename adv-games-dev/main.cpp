@@ -3,10 +3,14 @@
 #include "input_handler.h"
 #include "entity_manager.h"
 #include "physics_system.h"
+#include "ai_System.h"
 #include "renderer.h"
+#include "Player_System.h"
 
 
 using namespace std;
+
+
 
 void enter_state_1(engine &eng)
 {
@@ -69,11 +73,14 @@ void exit_state_4(engine &eng)
 	cout << "State not implemented. State 4 Exit." << endl;
 }
 
+//sdl main  102 - 106
+
+
 int main(int arg, char **argv)
 {
     auto eng = engine::get();
 	eng.init();
-
+	
     eng.add_state("MAIN", enter_state_1, do_state_1, exit_state_1);
 	eng.add_state("GAME", enter_state_2, do_state_2, exit_state_2);
 	eng.add_state("PAUSED", enter_state_3, do_state_3, exit_state_3);
@@ -87,44 +94,46 @@ int main(int arg, char **argv)
     eng.add_subsystem(physics_system::get(), true, false);
     // Renderer does not update.
     eng.add_subsystem(renderer::get(), false, true);
+	// Camera does not render
+	eng.add_subsystem(AI_System::get(), true, false);
+	// Player does update
+	eng.add_subsystem(Player_System::get(), true, false);
 
-    auto e = entity_manager::get().create("ENTITY", "Test");
-    //e.get_trans().x;
-    e.add_component<physics_component>(physics_system::get().create("RIGID", e));
-    e.add_component<render_component>(renderer::get().create("RENDER", e, "PlayerShip.obj", "basic", 1));
 
-	auto f = entity_manager::get().create("ENTITY", "buttsbuttsbutts");
 
-	f.add_component<physics_component>(physics_system::get().create("RIGID", f));
+	auto f = entity_manager::get().create("ENTITY", "ob1");
+
+	f.add_component<physics_component>(physics_system::get().create("RIGID", f, glm::dvec3(0.0, 0.0, 3.9), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(1.0, 1.0, 1.0)));
 	f.add_component<render_component>(renderer::get().create("RENDER", f, "EnemyShip2.obj", "basic", 1));
+	f.add_component<Player_component>(Player_System::get().create("Player", f));
+
+	auto b = entity_manager::get().create("ENTITY", "ob2");
+
+	b.add_component<physics_component>(physics_system::get().create("RIGID", b, glm::dvec3(0.0, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(1.0, 1.0, 1.0)));
+	b.add_component<render_component>(renderer::get().create("RENDER", b, "PlayerShip.obj", "basic", 1));
 
 
-	//R//Messing around with how to create a player entity
-	auto Player1 = entity_manager::get().create("ENTITY", "playerplayer");
-	Player1.set_trans(0.0f, 0.0f, 0.0f);
-	cout << "Player 1 exists and is located at X/Y/Z:" << endl;
-	cout << Player1.get_trans().x << "/" << Player1.get_trans().y << "/" << Player1.get_trans().z << endl << endl;
-	//Player1.add_component<physics_component>(physics_system::get().create("RIGID", Player1));
-	//Player1.add_component<render_component>(renderer::get().create("RENDER", Player1, string("Blue"), "Box", 1));
 
-	cout << "entityType: " << Player1.get_entityType() << endl << endl;
-	Player1.set_entityType("Enemy");
-	cout << "entityType: " << Player1.get_entityType() << endl << endl;
+
+ //  auto e = entity_manager::get().create("ENTITY", "Test");
+
+
+//	e.add_component<render_component>(renderer::get().create("REER", e, "PlayerShip.obj", "basic", 1));
+//  e.add_component<physics_component>(physics_system::get().create("RIGID", e, glm::dvec3(0.0, 0.0, 0.0), glm::dquat(0.0,0.0,0.0,0.0) ,glm::dvec3(0.50, 1.0, 1.0)));
 	
-	auto Player2 = entity_manager::get().create("ENTITY", "Barker");		Player2.set_trans(2, 2, 2);
-	auto Player3 = entity_manager::get().create("ENTITY", "Murray");		Player3.set_trans(3, 3, 3);
-	auto Player4 = entity_manager::get().create("ENTITY", "Boyle");			Player4.set_trans(4, 4, 4);
-	auto Player5 = entity_manager::get().create("ENTITY", "McGinn");		Player5.set_trans(5, 5, 5);
-	auto Player6 = entity_manager::get().create("ENTITY", "Bartley");		Player6.set_trans(6, 6, 6);
-	auto Player7 = entity_manager::get().create("ENTITY", "McGeouch");		Player7.set_trans(7, 7, 7);
-	auto Player8 = entity_manager::get().create("ENTITY", "Stevenson");		Player8.set_trans(8, 8, 8);
-	auto Player9 = entity_manager::get().create("ENTITY", "Hanlon");		Player9.set_trans(9, 9, 9);
-	auto Player10 = entity_manager::get().create("ENTITY", "Ambrose");		Player10.set_trans(10, 10, 10);
-	auto Player11 = entity_manager::get().create("ENTITY", "Whittaker");	Player11.set_trans(11, 11, 11);
-	auto Player12 = entity_manager::get().create("ENTITY", "Marciano");		Player12.set_trans(12, 12, 12);
 
-	//R//Testing cycling through _entities
-	entity_manager::get().CycleThroughEntities();
+
+	
+
+
+
+	auto camera = entity_manager::get().create("ENTITY", "Camera");
+	camera.add_component<AI_component>(AI_System::get().create("Camera", camera));
+
+	
+	
+
+
 
 
 	if(eng.get_joystick_status()) eng.get_subsystem<input_handler>().InitializeJoysticks();

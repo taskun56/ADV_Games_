@@ -65,6 +65,10 @@ enum BUFFERS
 	TEXTURE_COORDS_0 = 10
 };
 
+//Random Colour used if no other colour thingy found
+const static glm::vec4 RandC[3] = { glm::vec4(0.533f, 0.898f, 0.231, 1.0f), glm::vec4(1.0f, 0.698f, 0.259, 1.0f),
+glm::vec4(0.412f, 0.227f, 0.702f, 1.0f) };
+
 
 bool add_buffer(opengl_mesh &om, const void *data, GLuint stride, GLuint size, GLuint index, GLenum buffer_type)
 {
@@ -383,8 +387,8 @@ Mesh *GetMesh(const std::string &file)
 			}
 			else
 			{
-
-				nw->colour.push_back(glm::vec4(0.82f, 0.58f, 0.23, 1.0f));
+	
+				nw->colour.push_back(RandC[j % 3]);
 
 			}
 			//see if mesh has normals

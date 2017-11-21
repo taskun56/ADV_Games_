@@ -246,6 +246,9 @@ public:
 					//std::cout << "Anything" << std::endl;
 					_running = false;
 				}
+
+				
+
 			}
 			if (state_set != "")
 			{
@@ -263,7 +266,6 @@ public:
 
 
 
-
 			//R//Trying to update all the entities' colliders every frame
 			entity_manager::get().update_all_colliders();
 
@@ -274,11 +276,14 @@ public:
 
 
 
+
+
+
             // Update the subsystems.  At the moment use dummy time of 1.0s.  You
             // will want to use a proper timer.
 			for (auto &sys : _self->_subsystems)
 			{
-				sys.second.update(1.0);
+				sys.second.update(1.0);		
 			}
 
 			glEnable(GL_DEPTH_TEST);
