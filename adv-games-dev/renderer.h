@@ -130,7 +130,7 @@ public:
 			if (d->visible)
 			{
 
-				glm::dmat4 PV = AI_data::ActiveCam_->getVP();
+				glm::dmat4 PV = Camera_data::ActiveCam_->getVP();
 				const glm::dmat4 MVP = PV * d->Transform;
 				GLRender(d->mesh, d->shade, MVP);
 			}

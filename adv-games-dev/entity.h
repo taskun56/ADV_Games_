@@ -51,7 +51,7 @@ public:
 
     bool initialise()
     {
-        //std::cout << "Entity " << _self->_id << " initialising" << std::endl;
+        std::cout << "Entity " << _self->_id << " initialising" << std::endl;
         // Call initialise on all components
         for (auto &c : _self->_components)
             if (!c.second.initialise())

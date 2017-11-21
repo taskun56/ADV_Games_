@@ -16,7 +16,7 @@
 
 
 
-struct AI_data
+struct Camera_data
 {
 
 public:
@@ -24,10 +24,10 @@ public:
 	bool active = false;
 	glm::dmat4 ProjMatrix;
 	glm::dmat4 ViewMatrix;
-	static AI_data *ActiveCam_; 
+	static Camera_data *ActiveCam_; 
 	
 
-	AI_data::AI_data()
+	Camera_data::Camera_data()
 	{
 		ProjMatrix = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 		// Camera matrix
@@ -39,7 +39,7 @@ public:
 	}
 	
 	void SetActive() { ActiveCam_ = this; }
-	glm::dmat4 AI_data::getVP() const
+	glm::dmat4 Camera_data::getVP() const
 	{
 		return ProjMatrix * ViewMatrix;
 	}
@@ -47,10 +47,10 @@ public:
 };
 
 
-struct AI_component
+struct Camera_component
 {
 private:
-	AI_data *_data;
+	Camera_data *_data;
 
 	entity &_parent;
 
@@ -59,7 +59,7 @@ private:
 public:
 	
 
-	AI_component(entity &e, AI_data *data) : _parent(e), _data(data)
+	Camera_component(entity &e, Camera_data *data) : _parent(e), _data(data)
 	{
 		_data->active = true;
 		_data->SetActive();
@@ -114,28 +114,28 @@ public:
 	}
 };
 
-class AI_System : public singleton<AI_System>, public factory<AI_component, std::string, entity&>
+class Camera_System : public singleton<Camera_System>, public factory<Camera_component, std::string, entity&>
 {
-	friend class singleton<AI_System>;
+	friend class singleton<Camera_System>;
 private:
-	struct AI_impl
+	struct Camera_impl
 	{
-		std::vector<AI_data*> _data;
+		std::vector<Camera_data*> _data;
 	};
 
-	std::shared_ptr<AI_impl> _self = nullptr;
+	std::shared_ptr<Camera_impl> _self = nullptr;
 
-	AI_System() : _self{ new AI_impl() }
+	Camera_System() : _self{ new Camera_impl() }
 	{
 		register_constructor("Camera", [this](entity &e) { return this->build_component(e); });
 	}
 
 public:
-	AI_component build_component(entity &e)
+	Camera_component build_component(entity &e)
 	{
-		_self->_data.push_back(new AI_data());
+		_self->_data.push_back(new Camera_data());
 		
-		return AI_component(e, _self->_data.back());
+		return Camera_component(e, _self->_data.back());
 	}
 
 	bool initialise()
@@ -173,4 +173,4 @@ public:
 	}
 };
 
-AI_data *AI_data::ActiveCam_ = nullptr;
+Camera_data *Camera_data::ActiveCam_ = nullptr;

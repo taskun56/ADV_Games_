@@ -4,8 +4,13 @@
 #include "entity_manager.h"
 #include "physics_system.h"
 #include "Player_System.h"
-#include "ai_System.h"
+#include "Enemy_System.h"
+#include "Projectile_System.h"
+#include "PowerUp_System.h"
+#include "Camera_System.h"
 #include "renderer.h"
+
+
 
 
 
@@ -96,9 +101,15 @@ int main(int arg, char **argv)
     // Renderer does not update.
     eng.add_subsystem(renderer::get(), false, true);
 	// Camera does not render
-	eng.add_subsystem(AI_System::get(), true, false);
+	eng.add_subsystem(Camera_System::get(), true, false);
 	// Player does update
 	eng.add_subsystem(Player_System::get(), true, false);
+	// Enemy Updates
+	eng.add_subsystem(Enemy_System::get(), true, false);
+	//Projectile Updates
+	eng.add_subsystem(Projectile_System::get(), true, false);
+	//PowerUp Updates
+	eng.add_subsystem(PowerUp_System::get(), true, false);
 
 
 
@@ -129,7 +140,7 @@ int main(int arg, char **argv)
 
 
 	auto camera = entity_manager::get().create("ENTITY", "Camera");
-	camera.add_component<AI_component>(AI_System::get().create("Camera", camera));
+	camera.add_component<Camera_component>(Camera_System::get().create("Camera", camera));
 
 	
 	
