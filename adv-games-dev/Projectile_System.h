@@ -65,7 +65,7 @@ public:
 	void update(float delta_time)
 	{
 
-
+		_parent.get_trans();
 	}
 
 	void render()

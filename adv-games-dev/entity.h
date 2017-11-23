@@ -14,7 +14,7 @@ class entity
 {
     friend class entity_manager;
 public:
-    // A little dirty, but simplifies our definition.
+    
     struct transform
     {
         glm::dmat4 Transform;

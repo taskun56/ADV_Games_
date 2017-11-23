@@ -1,4 +1,3 @@
-#pragma once
 #include "input_handler.h"
 #include <gl\glew.h>
 #include <memory>
@@ -11,7 +10,9 @@
 #include "SDL.h"
 #include "SDL_opengl.h"
 #include <GL\GLU.h>
-#include "OpenGLRender.cpp"
+
+
+
 
 class engine : public singleton<engine>, public state_machine<engine>
 {
@@ -175,6 +176,8 @@ public:
     // If subsystem order is important consider using another mechanism.
     void run()
     {
+
+
         // Initialise all the subsystems
         for (auto &sys : _self->_subsystems)
         {
@@ -246,9 +249,9 @@ public:
 					_running = false;
 				}
 
-				
-
 			}
+
+
 			if (state_set != "")
 			{
 				// If the string was set to anything other than it's default "" value then the stae has been changed. see next slippet for more.
@@ -262,6 +265,8 @@ public:
 			//	//std::cout << "state unchanged" << std::endl;
 			//}
 
+
+	
 
 
             // Update the subsystems.  At the moment use dummy time of 1.0s.  You
@@ -310,3 +315,6 @@ public:
         // Engine will now exit.
     }
 };
+
+
+

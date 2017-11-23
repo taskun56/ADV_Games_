@@ -15,6 +15,7 @@
 
 
 
+
 struct Player_data
 {
 
@@ -48,28 +49,15 @@ private:
 
 public:
 
+	bool shot = false;
+
 
 	Player_component(entity &e, Player_data *data) : _parent(e), _data(data)
 	{
 		_data->active = true;
 		_data->SetActive();
 	
-
 	}
-
-	void Shoot()
-	{
-		//Try and get this working  transform doesnt like physics since parent is lost
-		
-
-		entity Laser = entity_manager::get().create("ENTITY", "ob9");
-
-		Laser.add_component<physics_component>(physics_system::get().create("RIGID", Laser, glm::dvec3(0.0, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(1.0, 1.0, 1.0)));
-		//	Laser.add_component<render_component>(renderer::get().create("RENDER", Laser, "PlayerShip.obj", "basic", 1));
-		//	Laser.add_component<Projectile_component>(Projectile_System::get().create("BasicProjectile", Laser));
-
-	}
-
 
 
 	bool initialise()
@@ -93,7 +81,7 @@ public:
 
 		_parent.get_component<physics_component>().set_pos(_data->get_pos());
 
-		Shoot();
+		shot = true;
 
 
 	}

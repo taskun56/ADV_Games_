@@ -9,7 +9,7 @@
 #include "singleton.h"
 #include "factory.h"
 #include "entity.h"
-
+#include "OpenGLRender.cpp"
 
 
 struct render_data
