@@ -103,16 +103,18 @@ int main(int arg, char **argv)
 
 	auto f = entity_manager::get().create("ENTITY", "ob1");
 
-	f.add_component<physics_component>(physics_system::get().create("RIGID", f, glm::dvec3(0.0, 0.0, 3.9), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(1.0, 1.0, 1.0)));
+	f.add_component<physics_component>(physics_system::get().create("RIGID", f, glm::dvec3(0.0, 0.0, 3.3), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(1.0, 1.0, 1.0)));
 	f.add_component<render_component>(renderer::get().create("RENDER", f, "EnemyShip2.obj", "basic", 1));
 	f.add_component<Player_component>(Player_System::get().create("Player", f));
+	//R//
+	f.setColliderSize(0.5);
 
 	auto b = entity_manager::get().create("ENTITY", "ob2");
 
 	b.add_component<physics_component>(physics_system::get().create("RIGID", b, glm::dvec3(0.0, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(1.0, 1.0, 1.0)));
 	b.add_component<render_component>(renderer::get().create("RENDER", b, "PlayerShip.obj", "basic", 1));
-
-
+	//R//
+	b.setColliderSize(1.5);
 
 
  //  auto e = entity_manager::get().create("ENTITY", "Test");

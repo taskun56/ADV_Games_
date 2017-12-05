@@ -66,6 +66,12 @@ public:
 	}
 
 
+	//R//setup collider radius
+	void setColliderSize(float rad)
+	{
+		_self->collider.radius = rad;
+	}
+
 	//void update_collider(glm::dmat4 Transform)
 	void update_collider(glm::dmat4 Transform)
 	{
