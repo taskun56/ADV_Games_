@@ -14,6 +14,15 @@
 #include "OpenGLRender.cpp"
 #include "entity_manager.h"
 
+//R//Messing about with multi-threaded collision detection with two players
+#include <thread>
+#include <vector>
+using namespace std;
+vector<thread> threads; 
+int num_threads = thread::hardware_concurrency();
+
+
+
 class engine : public singleton<engine>, public state_machine<engine>
 {
     friend class singleton<engine>;
@@ -270,12 +279,34 @@ public:
 			entity_manager::get().update_all_colliders();
 
 			//R//Temporarily the "cycle through entities" method, but detect collisions here
-			entity_manager::get().entity_manager::CycleThroughEntities();
+			//entity_manager::get().entity_manager::CycleThroughEntities();
+			//entity_manager::get().CycleThroughEntities("ob1");
 
+			string ob1 = "ob1";
+			string ob2 = "ob2";
+			//^^^^^^^^^^^^^^^^^^ these two will be replaced by the following when we have player1 and player2 set up
+			string p1 = "Player1";
+			string p2 = "Player2";
 
+			//entity_manager::get().CycleThroughEntities(p1);
+			//entity_manager::get().CycleThroughEntities(p2);
+			//entity_manager::get().CycleThroughEntities(test);
 
+			//int r = 0;
+			//while (r < 1)
+			{
+				threads.push_back(thread(&entity_manager::CycleThroughEntities, entity_manager::get(), ob1));
+				threads.push_back(thread(&entity_manager::CycleThroughEntities, entity_manager::get(), ob2));
+				//r++;
+			}
 
-
+			for (auto &t : threads)
+			{
+				if (t.joinable())
+				{
+					t.join();
+				}
+			}
 
 
 
