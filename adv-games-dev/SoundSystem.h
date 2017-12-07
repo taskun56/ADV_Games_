@@ -13,7 +13,7 @@ public:
 	{
 		PlaySound(TEXT("test.wav"), NULL, SND_FILENAME);
 
-		//system("pause");
+		//system("pause"); 
 	}
 
 	void PlayGameMusic()
