@@ -11,19 +11,19 @@ class SoundSystem
 public:
 	void PlayMenuMusic()
 	{
-		PlaySound(TEXT("test.wav"), NULL, SND_FILENAME);
+		PlaySound(TEXT("test.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 
 		//system("pause");
 	}
 
 	void PlayGameMusic()
 	{
-		PlaySound(TEXT("filename.wav"), NULL, SND_FILENAME);
+		PlaySound(TEXT("filename.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	}
 
 	void PlayShootingSound()
 	{
-		PlaySound(TEXT("filename.wav"), NULL, SND_FILENAME);
+		PlaySound(TEXT("filename.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	}
 
 	void PauseSoundSystem()
