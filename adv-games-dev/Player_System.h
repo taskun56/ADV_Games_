@@ -13,9 +13,6 @@
 
 
 
-
-
-
 struct Player_data
 {
 
@@ -43,16 +40,16 @@ private:
 
 	Player_data *_data;
 
-	entity &_parent;
+	entity *_parent;
 
 
 
 public:
 
-	bool shot = false;
+	
 
 
-	Player_component(entity &e, Player_data *data) : _parent(e), _data(data)
+	Player_component(entity *e, Player_data *data) : _parent(e), _data(data)
 	{
 		_data->active = true;
 		_data->SetActive();
@@ -66,6 +63,16 @@ public:
 		return true;
 	}
 
+	void shoot()
+	{
+	
+		auto test = entity_manager::get().create("ENTITY", "TestSpawn");
+
+		test.add_component<physics_component>(physics_system::get().create("RIGID", test, glm::dvec3(_data->get_pos().x, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(0.50, 1.0, 1.0)));
+
+		
+	}
+
 
 	bool load_content()
 	{
@@ -75,14 +82,14 @@ public:
 	void update(float delta_time)
 	{
 
-		_data->set_pos(_parent.get_component<physics_component>().get_pos());
+		_data->set_pos(_parent->get_component<physics_component>().get_pos());
 
-		_data->set_pos(glm::dvec3(_data->position.x + 0.0001f, _data->position.y, _data->position.z));
+		_data->set_pos(glm::dvec3(_data->position.x + 0.1f, _data->position.y, _data->position.z));
 
-		_parent.get_component<physics_component>().set_pos(_data->get_pos());
+		_parent->get_component<physics_component>().set_pos(_data->get_pos());
 
-		shot = true;
-
+		
+		//shoot();
 
 	}
 
@@ -123,7 +130,7 @@ public:
 	{
 		_self->_data.push_back(new Player_data());
 
-		return Player_component(e, _self->_data.back());
+		return Player_component(&e, _self->_data.back());
 	}
 
 	bool initialise()

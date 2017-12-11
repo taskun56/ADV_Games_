@@ -22,7 +22,7 @@ public:
 
 	bool active = false;
 	glm::dvec3 position;
-
+	int type;
 
 
 	glm::dvec3 get_pos() { return position; }

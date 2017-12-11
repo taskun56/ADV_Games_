@@ -38,9 +38,9 @@ private:
 	glm::dmat4 transform;
 
     // We'll also keep a reference to the parent entity
-    entity &_parent;
+    entity *_parent;
 public:
-    physics_component(entity &e, physics_data *data) : _parent(e), _data(data)
+    physics_component(entity *e, physics_data *data) : _parent(e), _data(data)
     {
         _data->active = true;
     }
@@ -62,7 +62,7 @@ public:
     {
 		
 		transform = glm::translate(_data->Position) * glm::mat4_cast(_data->Rotation) * glm::scale(_data->Scale);
-		_parent.set_trans(transform);
+		_parent->set_trans(transform);
     }
 
     void render()
@@ -107,7 +107,7 @@ public:
 		_self->_data.back()->Position = pos;
 		_self->_data.back()->Scale = scal;
 		_self->_data.back()->Rotation = rot;
-        return physics_component(e, _self->_data.back());
+        return physics_component(&e, _self->_data.back());
     }
 
 

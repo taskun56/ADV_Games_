@@ -77,4 +77,9 @@ public:
     {
         _self->_current_state_functions._update(owner);
     }
+
+	void quit(T& owner)
+	{
+		_self->_current_state_functions._exit(owner);
+	}
 };

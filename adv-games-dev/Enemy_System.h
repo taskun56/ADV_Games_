@@ -25,6 +25,7 @@ public:
 	glm::dvec3 position;
 	int Type;
 	int WType;
+	int Score;
 
 	glm::dvec3 get_pos() { return position; }
 	void set_pos(const glm::dvec3 v3) { position = v3; }
