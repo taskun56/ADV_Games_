@@ -21,6 +21,10 @@ using namespace std;
 vector<thread> threads; 
 int num_threads = thread::hardware_concurrency();
 
+//R//Need this to alter volume in game loop
+#include "SoundSystem.h"
+SoundSystem Sounds;
+
 
 
 class engine : public singleton<engine>, public state_machine<engine>
@@ -307,6 +311,28 @@ public:
 					t.join();
 				}
 			}
+
+
+
+
+			//R// chuck in the volume changing stuff here
+			//Not sure what the relevance of the & 0x8000 is but it doesn't work properly without it
+			//Bumped from here https://stackoverflow.com/questions/41600981/how-do-i-check-if-a-key-is-pressed-on-c
+			if(GetKeyState('M') & 0x8000/*check if high-order bit is set (1 << 15)*/)
+			{
+				Sounds.MuteMusic();
+			}
+			if (GetKeyState(VK_OEM_PLUS) & 0x8000/*check if high-order bit is set (1 << 15)*/)
+			{
+				Sounds.TurnUpMusic();
+			}
+			if (GetKeyState(VK_OEM_MINUS) & 0x8000/*check if high-order bit is set (1 << 15)*/)
+			{
+				Sounds.TurnDownMusic();
+			}
+			
+
+
 
 
 
