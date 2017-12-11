@@ -26,7 +26,10 @@ private:
         bool initialise() override { return _self.initialise(); }
         bool load_content() override { return _self.load_content(); }
         void update(float delta_time) override { _self.update(delta_time); }
-        void render() override { _self.render(); }
+        void render() override 
+		{ 
+			_self.render(); 
+		}
         void unload_content() override { _self.unload_content(); }
         void shutdown() override { _self.shutdown(); }
     };
@@ -83,7 +86,7 @@ public:
     }
 
     template<typename T>
-    const T& get() const
+    T& get() 
     {
         return (dynamic_cast<model_t<T>*>(_self.get()))->_self;
     }

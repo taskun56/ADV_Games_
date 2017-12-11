@@ -5,7 +5,6 @@
 #include <typeindex>
 #include <exception>
 #include "component.h"
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -14,7 +13,7 @@ class entity
 {
     friend class entity_manager;
 public:
-    // A little dirty, but simplifies our definition.
+    
     struct transform
     {
         glm::dmat4 Transform;
@@ -51,7 +50,7 @@ public:
 
     bool initialise()
     {
-        //std::cout << "Entity " << _self->_id << " initialising" << std::endl;
+        std::cout << "Entity " << _self->_id << " initialising" << std::endl;
         // Call initialise on all components
         for (auto &c : _self->_components)
             if (!c.second.initialise())
@@ -61,7 +60,7 @@ public:
 
     bool load_content()
     {
-        //std::cout << "Entity " << _self->_id << " loading content" << std::endl;
+        std::cout << "Entity " << _self->_id << " loading content" << std::endl;
         // Call load_content on all components
         for (auto &c : _self->_components)
             if (!c.second.load_content())
@@ -79,7 +78,7 @@ public:
 
     void render()
     {
-        //std::cout << "Entity " << _self->_id << " rendering" << std::endl;
+       std::cout << "Entity " << _self->_id << " rendering" << std::endl;
         for (auto &c : _self->_components)
             c.second.render();
     }
@@ -107,7 +106,7 @@ public:
     }
 
     template<typename T>
-    const T& get_component() const
+    T& get_component() 
     {
         auto found = _self->_components.find(std::type_index(typeid(T)));
         if (found != _self->_components.end())

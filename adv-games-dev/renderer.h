@@ -9,7 +9,7 @@
 #include "singleton.h"
 #include "factory.h"
 #include "entity.h"
-#include "ai_system.h"
+#include "OpenGLRender.cpp"
 
 
 struct render_data
@@ -28,11 +28,17 @@ private:
 	render_data *_data;
 
 	entity &_parent;
+
+	entity Test;
+
 public:
 	render_component(entity &e, render_data *data) : _parent(e), _data(data)
 	{
 		_data->visible = true;
+		Test = _parent;
+
 	}
+	
 
 	bool initialise()
 	{
@@ -56,7 +62,7 @@ public:
 
 
 			//sets transform
-			_data->Transform = _parent.get_trans().Transform;
+			_data->Transform = Test.get_trans().Transform;
 			
 			
 			
@@ -130,9 +136,7 @@ public:
 			if (d->visible)
 			{
 
-				glm::dmat4 PV = AI_data::GetActiveCam().getVP();
-
-
+				glm::dmat4 PV = Camera_data::ActiveCam_->getVP();
 				const glm::dmat4 MVP = PV * d->Transform;
 				GLRender(d->mesh, d->shade, MVP);
 			}

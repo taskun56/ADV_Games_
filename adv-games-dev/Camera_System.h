@@ -6,17 +6,11 @@
 #include <functional>
 #include <string>
 #include <sstream>
-#include "singleton.h"
-#include "factory.h"
 #include "entity.h"
 
 
 
-
-
-
-
-struct AI_data
+struct Camera_data
 {
 
 public:
@@ -24,23 +18,22 @@ public:
 	bool active = false;
 	glm::dmat4 ProjMatrix;
 	glm::dmat4 ViewMatrix;
-	static AI_data *ActiveCam_; 
+	static Camera_data *ActiveCam_; 
 	
 
-	AI_data::AI_data()
+	Camera_data::Camera_data()
 	{
 		ProjMatrix = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 		// Camera matrix
 		ViewMatrix = glm::lookAt(
-			glm::dvec3(0, 20, 1), // Camera is at (Player, 20, 1), in World Space
+			glm::dvec3(0, 50, 1), // Camera is at (Player, 20, 1), in World Space
 			glm::dvec3(0, 0, 0), // and looks at the origin
 			glm::dvec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
 		);
 	}
 	
-	static AI_data &GetActiveCam() { static AI_data activeCam_{*ActiveCam_}; return activeCam_; }
 	void SetActive() { ActiveCam_ = this; }
-	glm::dmat4 AI_data::getVP() const
+	glm::dmat4 Camera_data::getVP() const
 	{
 		return ProjMatrix * ViewMatrix;
 	}
@@ -48,22 +41,22 @@ public:
 };
 
 
-struct AI_component
+struct Camera_component
 {
 private:
-	AI_data &_data;
+	Camera_data *_data;
 
 	entity &_parent;
 
-
+	glm::dvec3 PositionX;
 
 public:
 	
 
-	AI_component(entity &e, AI_data &data) : _parent(e), _data(data)
+	Camera_component(entity &e, Camera_data *data) : _parent(e), _data(data)
 	{
-		_data.active = true;
-		_data.SetActive();
+		_data->active = true;
+		_data->SetActive();
 		
 	}
 
@@ -80,7 +73,17 @@ public:
 
 	void update(float delta_time)
 	{
-		
+	
+		PositionX.x = PositionX.x + 0.1;
+
+
+		_data->ViewMatrix = glm::lookAt(
+			glm::dvec3(PositionX.x, 50, 1), // Camera is at (Player, 20, 1), in World Space
+			glm::dvec3(PositionX.x, 0, 0), // and looks at the origin
+			glm::dvec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
+		);
+
+	
 	}
 
 	void render()
@@ -99,28 +102,28 @@ public:
 	}
 };
 
-class AI_System : public singleton<AI_System>, public factory<AI_component, std::string, entity&>
+class Camera_System : public singleton<Camera_System>, public factory<Camera_component, std::string, entity&>
 {
-	friend class singleton<AI_System>;
+	friend class singleton<Camera_System>;
 private:
-	struct AI_impl
+	struct Camera_impl
 	{
-		std::vector<AI_data> _data;
+		std::vector<Camera_data*> _data;
 	};
 
-	std::shared_ptr<AI_impl> _self = nullptr;
+	std::shared_ptr<Camera_impl> _self = nullptr;
 
-	AI_System() : _self{ new AI_impl() }
+	Camera_System() : _self{ new Camera_impl() }
 	{
 		register_constructor("Camera", [this](entity &e) { return this->build_component(e); });
 	}
 
 public:
-	AI_component build_component(entity &e)
+	Camera_component build_component(entity &e)
 	{
-		_self->_data.push_back(AI_data());
+		_self->_data.push_back(new Camera_data());
 		
-		return AI_component(e, _self->_data.back());
+		return Camera_component(e, _self->_data.back());
 	}
 
 	bool initialise()
@@ -137,7 +140,9 @@ public:
 
 	void update(float delta_time)
 	{
-	
+
+
+
 	}
 
 	void render()
@@ -156,4 +161,4 @@ public:
 	}
 };
 
-AI_data *AI_data::ActiveCam_ = nullptr;
+Camera_data *Camera_data::ActiveCam_ = nullptr;

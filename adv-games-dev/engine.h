@@ -1,4 +1,3 @@
-#pragma once
 #include "input_handler.h"
 #include <gl\glew.h>
 #include <memory>
@@ -10,8 +9,15 @@
 #include "state_machine.h"
 #include "SDL.h"
 #include "SDL_opengl.h"
+#include <SDL_ttf.h>
 #include <GL\GLU.h>
-#include "OpenGLRender.cpp"
+#include "Menu.cpp"
+#include "Options.cpp"
+#include "Controls.cpp"
+#include "Resolution.cpp"
+
+
+
 
 class engine : public singleton<engine>, public state_machine<engine>
 {
@@ -52,7 +58,9 @@ public:
 
 	SDL_Window* gWindow = NULL;
 	SDL_GLContext gContext;
-
+	std::string state_set = "MAIN";
+	std::string new_state_set;
+	int state;
     // Adds a subsystem to the engine.
     template<typename T>
     void add_subsystem(T sys, bool active = true, bool visible = true)
@@ -93,6 +101,52 @@ public:
 
     // Set the current running value.
     void set_running(bool value) noexcept { _running = value; }
+
+
+
+	int MainMenu()
+	{
+	
+		Menu menu;
+
+		state = menu.showmenu(SDL_GetWindowSurface(gWindow), e, gWindow);
+
+		return state;
+
+	}
+
+	int OptionsMenu()
+	{
+
+		Options opt;
+
+		state = opt.showoptions(SDL_GetWindowSurface(gWindow), e, gWindow);
+
+		return state;
+
+	}
+
+	int ResolutionMenu()
+	{
+
+		Resolution res;
+
+		state = res.showresolution(SDL_GetWindowSurface(gWindow), e, gWindow);
+
+		return state;
+
+	}
+
+	int ControllerMenu()
+	{
+
+		Control con;
+
+		state = con.showcontrols(SDL_GetWindowSurface(gWindow), e, gWindow);
+
+		return state;
+
+	}
 
 
 	bool init()
@@ -159,6 +213,13 @@ public:
 				}
 			}
 		}
+		if (TTF_Init() < 0)
+		{
+			printf("TTF could not initialize!");
+			success = false;
+		}
+
+		
 
 		return success;
 	}
@@ -175,6 +236,8 @@ public:
     // If subsystem order is important consider using another mechanism.
     void run()
     {
+		
+/*
         // Initialise all the subsystems
         for (auto &sys : _self->_subsystems)
         {
@@ -194,7 +257,7 @@ public:
                 return;
             }
         }
-
+*/
 		static unsigned int captureTypes[] =
 		{
 			SDL_KEYDOWN,
@@ -224,7 +287,7 @@ public:
         while (_running)
         {
             //std::cout << "Engine Running" << std::endl;
-			std::string state_set = "";
+			
 			while (SDL_PollEvent(&e) != 0)
 			{
 				///// Check all input and compare - current version checks ALL input so no events are lost.
@@ -235,7 +298,7 @@ public:
 				//	if (e.type == etype)
 				//	{
 				//		//std::cout << "EVENT matched." << e.type << std::endl;
-				state_set = this->get_subsystem<input_handler>().HandleInputEvent(e);
+				//state_set = this->get_subsystem<input_handler>().HandleInputEvent(e);
 				//		continue;
 				//	}
 				//}
@@ -246,13 +309,13 @@ public:
 					_running = false;
 				}
 
-				
-
 			}
+
+
 			if (state_set != "")
 			{
 				// If the string was set to anything other than it's default "" value then the stae has been changed. see next slippet for more.
-				std::cout << "State changed." << std::endl;
+				//std::cout << state_set << std::endl;
 				this->change_state(state_set, *this);
 			}
 			//else
@@ -261,31 +324,33 @@ public:
 			//	// will not be changed simply by button presses. there will be more logic to it than that. 
 			//	//std::cout << "state unchanged" << std::endl;
 			//}
+			state_set = new_state_set;
 
-
-
-            // Update the subsystems.  At the moment use dummy time of 1.0s.  You
-            // will want to use a proper timer.
-			for (auto &sys : _self->_subsystems)
+			if (state_set == "GAME")
 			{
-				sys.second.update(1.0);		
+				// Update the subsystems.  At the moment use dummy time of 1.0s.  You
+				// will want to use a proper timer.
+				for (auto &sys : _self->_subsystems)
+				{
+					sys.second.update(1.0);
+				}
+
+				glEnable(GL_DEPTH_TEST);
+				glDepthFunc(GL_LESS);
+				glClearColor(0.0, 1.0, 1.0, 0.0);
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+				// Render the subsystems.
+				for (auto &sys : _self->_subsystems)
+				{
+					sys.second.render();
+				}
+
+
+				SDL_GL_SetSwapInterval(1);
+
+				SDL_GL_SwapWindow(gWindow);
 			}
-
-			glEnable(GL_DEPTH_TEST);
-			glDepthFunc(GL_LESS);
-			glClearColor(0.0, 1.0, 1.0, 0.0);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            // Render the subsystems.
-			for (auto &sys : _self->_subsystems)
-			{
-				sys.second.render();
-			}
-
-
-			SDL_GL_SetSwapInterval(1);
-
-			SDL_GL_SwapWindow(gWindow);
         }
 
 
@@ -310,3 +375,6 @@ public:
         // Engine will now exit.
     }
 };
+
+
+
