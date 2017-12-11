@@ -28,11 +28,17 @@ private:
 	render_data *_data;
 
 	entity &_parent;
+
+	entity Test;
+
 public:
 	render_component(entity &e, render_data *data) : _parent(e), _data(data)
 	{
 		_data->visible = true;
+		Test = _parent;
+
 	}
+	
 
 	bool initialise()
 	{
@@ -56,7 +62,7 @@ public:
 
 
 			//sets transform
-			_data->Transform = _parent.get_trans().Transform;
+			_data->Transform = Test.get_trans().Transform;
 			
 			
 			

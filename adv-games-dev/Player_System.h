@@ -53,7 +53,6 @@ public:
 	{
 		_data->active = true;
 		_data->SetActive();
-	
 	}
 
 
@@ -66,11 +65,11 @@ public:
 	void shoot()
 	{
 	
-		auto test = entity_manager::get().create("ENTITY", "TestSpawn");
+		auto test = entity_manager::get().create("ENTITY", "Testr");
 
-		test.add_component<physics_component>(physics_system::get().create("RIGID", test, glm::dvec3(_data->get_pos().x, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(0.50, 1.0, 1.0)));
+		test.add_component<physics_component>(physics_system::get().create("RIGID", test, glm::dvec3(_data->position.x, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(0.50, 1.0, 1.0)));
+		test.add_component<render_component>(renderer::get().create("REER", test, "PlayerShip.obj", "basic", 1));
 
-		
 	}
 
 
@@ -88,8 +87,8 @@ public:
 
 		_parent->get_component<physics_component>().set_pos(_data->get_pos());
 
+		shoot();
 		
-		//shoot();
 
 	}
 

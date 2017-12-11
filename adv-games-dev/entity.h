@@ -78,7 +78,7 @@ public:
 
     void render()
     {
-        //std::cout << "Entity " << _self->_id << " rendering" << std::endl;
+       std::cout << "Entity " << _self->_id << " rendering" << std::endl;
         for (auto &c : _self->_components)
             c.second.render();
     }

@@ -237,7 +237,7 @@ public:
     void run()
     {
 		
-
+/*
         // Initialise all the subsystems
         for (auto &sys : _self->_subsystems)
         {
@@ -257,7 +257,7 @@ public:
                 return;
             }
         }
-
+*/
 		static unsigned int captureTypes[] =
 		{
 			SDL_KEYDOWN,
