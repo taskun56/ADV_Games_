@@ -5,8 +5,8 @@
 #include <typeindex>
 #include <exception>
 #include "component.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include "../include/glm/glm.hpp"
+#include "../include/glm/gtc/matrix_transform.hpp"
 
 // We will just define an entity as a collection of components.
 class entity
@@ -17,12 +17,11 @@ public:
     struct transform
     {
         glm::dmat4 Transform;
-
     };
 
 private:
-    // Counter to ID entities
-    static size_t counter;
+
+	size_t counter;
 
     struct entity_impl
     {
@@ -48,55 +47,17 @@ public:
     transform& get_trans() { return _self->trans; }
 	void set_trans(const glm::dmat4 m4) { _self->trans.Transform = m4; }
 
-    bool initialise()
-    {
-        std::cout << "Entity " << _self->_id << " initialising" << std::endl;
-        // Call initialise on all components
-        for (auto &c : _self->_components)
-            if (!c.second.initialise())
-                return false;
-        return true;
-    }
+	bool initialise();
 
-    bool load_content()
-    {
-        std::cout << "Entity " << _self->_id << " loading content" << std::endl;
-        // Call load_content on all components
-        for (auto &c : _self->_components)
-            if (!c.second.load_content())
-                return false;
-        return true;
-    }
+	bool load_content();
 
-    void update(float delta_time)
-    {
-        //std::cout << "Entity " << _self->_id << " updating" << " " << _self->trans.x << std::endl;
-        //std::cout << _self->_components.size() << std::endl;
-        for (auto &c : _self->_components)
-            c.second.update(delta_time);
-    }
+	void update(float delta_time);
 
-    void render()
-    {
-       std::cout << "Entity " << _self->_id << " rendering" << std::endl;
-        for (auto &c : _self->_components)
-            c.second.render();
-    }
+	void render();
 
-    void unload_content()
-    {
-        //std::cout << "Entity " << _self->_id << " unloading content" << std::endl;
-        for (auto &c : _self->_components)
-            c.second.unload_content();
-    }
+	void unload_content();
 
-    void shutdown()
-    {
-        //std::cout << "Entity " << _self->_id << " shutting down" << std::endl;
-        for (auto &c : _self->_components)
-            c.second.shutdown();
-        _self->_components.clear();
-    }
+	void shutdown();
 
     template<typename T>
     bool add_component(T c, bool active = true, bool visible = true)
@@ -116,5 +77,3 @@ public:
         throw std::invalid_argument("Component not found");
     }
 };
-
-size_t entity::counter = 0;

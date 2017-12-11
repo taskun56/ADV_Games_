@@ -1,76 +1,10 @@
-#include <GL/glew.h>
-#include <vector>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <map>
-
-
-
-
-struct Shader
-{
-	std::string ShaderName;
-	void *Data;
-};
-
-struct Mesh
-{
-	std::vector<glm::vec3> Position;
-	std::vector<glm::vec3> Normal;
-	std::vector<glm::vec2> TexCoords;
-	std::vector<glm::vec4> colour;
-
-	void *Data;
-	std::vector<unsigned int> indices;
-};
-
-struct opengl_shader
-{
-	GLuint vert;
-	GLuint frag;
-	GLuint program;
-
-};
-
-struct opengl_mesh
-{
-	// The primitive geometry type used by the geometry
-	GLenum type;
-	// The OpenGL ID of the vertex array object
-	GLuint vao;
-	// The OpenGL IDs of the buffers used within the vertex array object
-	std::map<GLuint, GLuint> buffers;
-	// The OpenGL ID of the index buffer
-	GLuint index_buffer;
-	bool has_indices;
-	// The number of vertices in the geometry
-	// GLuint vertices;
-	// The number of indices in the index buffer
-	GLuint indice_count;
-	GLuint vertex_count;
-};
-
-enum BUFFERS
-{
-	POSITION_BUFFER = 0,
-	COLOUR_BUFFER = 1,
-	NORMAL_BUFFER = 2,
-	TEXTURE_COORDS_0 = 10
-};
+#include "OpenGlRender.h"
 
 //Random Colour used if no other colour thingy found
 const static glm::vec4 RandC[3] = { glm::vec4(0.533f, 0.898f, 0.231, 1.0f), glm::vec4(1.0f, 0.698f, 0.259, 1.0f),
 glm::vec4(0.412f, 0.227f, 0.702f, 1.0f) };
 
-
-bool add_buffer(opengl_mesh &om, const void *data, GLuint stride, GLuint size, GLuint index, GLenum buffer_type)
+bool GFX::add_buffer(opengl_mesh &om, const void *data, GLuint stride, GLuint size, GLuint index, GLenum buffer_type)
 {
 	// Check that index is viable
 	assert(index < 5);
@@ -93,14 +27,13 @@ bool add_buffer(opengl_mesh &om, const void *data, GLuint stride, GLuint size, G
 	glVertexAttribPointer(index, stride, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(index);
 
-
 	// Add buffer to map
 	om.buffers[index] = id;
 	return true;
 }
 
 
-bool add_index_buffer(opengl_mesh &om, const std::vector<GLuint> &buffer)
+bool GFX::add_index_buffer(opengl_mesh &om, const std::vector<GLuint> &buffer)
 {
 	// Check that buffer is not empty
 	assert(buffer.size() > 0);
@@ -119,24 +52,24 @@ bool add_index_buffer(opengl_mesh &om, const std::vector<GLuint> &buffer)
 }
 
 //TexCoords
-bool add_buffer(opengl_mesh &om, const std::vector<glm::vec2> &buffer, GLuint index, GLenum buffer_type = GL_STATIC_DRAW)
+bool GFX::add_buffer(opengl_mesh &om, const std::vector<glm::vec2> &buffer, GLuint index, GLenum buffer_type)
 {
 	return add_buffer(om, &buffer[0], 2, static_cast<GLuint>(buffer.size() * sizeof(glm::vec2)), index, buffer_type);
 }
 
 //Position and Normals
-bool add_buffer(opengl_mesh &om, const std::vector<glm::vec3> &buffer, GLuint index, GLenum buffer_type = GL_STATIC_DRAW)
+bool GFX::add_buffer(opengl_mesh &om, const std::vector<glm::vec3> &buffer, GLuint index, GLenum buffer_type)
 {
 	return add_buffer(om, &buffer[0], 3, static_cast<GLuint>(buffer.size() * sizeof(glm::vec3)), index, buffer_type);
 }
+
 //Colours
-bool add_buffer(opengl_mesh &om, const std::vector<glm::vec4> &buffer, GLuint index, GLenum buffer_type = GL_STATIC_DRAW)
+bool GFX::add_buffer(opengl_mesh &om, const std::vector<glm::vec4> &buffer, GLuint index, GLenum buffer_type)
 {
 	return add_buffer(om, &buffer[0], 4, static_cast<GLuint>(buffer.size() * sizeof(glm::vec4)), index, buffer_type);
 }
 
-
-bool FindFile(std::string &path)
+bool GFX::FindFile(std::string &path)
 {
 	//Directories to check
 	static const std::string filedirs[] = { "" };
@@ -152,7 +85,7 @@ bool FindFile(std::string &path)
 	return false;
 }
 
-bool ReadFile(const std::string &filename, std::string &content)
+bool GFX::ReadFile(const std::string &filename, std::string &content)
 {
 	std::ifstream file(filename, std::ios_base::in);
 	// Check that file exists.  If not, return false
@@ -170,13 +103,9 @@ bool ReadFile(const std::string &filename, std::string &content)
 	// Close file and return true
 	file.close();
 	return true;
-
 }
 
-
-
-
-void LoadShader(Shader *shade, const std::string &vert, const std::string &frag)
+void GFX::LoadShader(Shader *shade, const std::string &vert, const std::string &frag)
 {
 	GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 	GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
@@ -237,10 +166,9 @@ void LoadShader(Shader *shade, const std::string &vert, const std::string &frag)
 	}
 
 	shade->Data = sh;
-
 }
 
-void LoadModel(Mesh *msh)
+void GFX::LoadModel(Mesh *msh)
 {
 	opengl_mesh *opmesh = new opengl_mesh();
 	msh->Data = opmesh;
@@ -252,7 +180,6 @@ void LoadModel(Mesh *msh)
 	if (msh->Normal.size() != 0)
 	{
 		add_buffer(*opmesh, msh->Normal, BUFFERS::NORMAL_BUFFER);
-
 	}
 	if (msh->TexCoords.size() != 0)
 	{
@@ -267,12 +194,9 @@ void LoadModel(Mesh *msh)
 	{
 		opmesh->vertex_count = msh->Position.size();
 	}
-
-
 }
 
-
-void GLRender(Mesh *msh, Shader *shade, glm::mat4 MVP)
+void GFX::GLRender(Mesh *msh, Shader *shade, glm::mat4 MVP)
 {
 	opengl_mesh *omash = static_cast<opengl_mesh *>(msh->Data);
 	opengl_shader *sh = static_cast<opengl_shader *>(shade->Data);
@@ -286,7 +210,6 @@ void GLRender(Mesh *msh, Shader *shade, glm::mat4 MVP)
 
 	// Bind the vertex array object for the
 	glBindVertexArray(omash->vao);
-
 
 	// If there is an index buffer then use to render
 	if (omash->has_indices)
@@ -304,9 +227,7 @@ void GLRender(Mesh *msh, Shader *shade, glm::mat4 MVP)
 	}
 }
 
-
-
-Shader *GetShaders(const std::string &file)
+GFX::Shader* GFX::GetShaders(const std::string &file)
 {
 	//vert and frag shader
 	std::string vert = file + ".vert";
@@ -336,7 +257,7 @@ Shader *GetShaders(const std::string &file)
 	return shade;
 }
 
-Mesh *GetMesh(const std::string &file)
+GFX::Mesh* GFX::GetMesh(const std::string &file)
 {
 	//look for file
 	std::string path = file;
@@ -387,9 +308,7 @@ Mesh *GetMesh(const std::string &file)
 			}
 			else
 			{
-	
 				nw->colour.push_back(RandC[j % 3]);
-
 			}
 			//see if mesh has normals
 			if (mesh->HasNormals())
@@ -401,7 +320,6 @@ Mesh *GetMesh(const std::string &file)
 				tempNorm.z = mesh->mNormals[j].z;
 
 				nw->Normal.push_back(glm::vec3(tempNorm.x, tempNorm.y, tempNorm.z));
-
 			}
 			//see if mesh has tex coords
 			if (mesh->HasTextureCoords(0))
@@ -413,8 +331,6 @@ Mesh *GetMesh(const std::string &file)
 
 				nw->TexCoords.push_back(glm::vec2(tempTex.x, tempTex.y));
 			}
-
-
 		}
 		//see if mesh has faces
 		if (mesh->HasFaces())
@@ -436,7 +352,6 @@ Mesh *GetMesh(const std::string &file)
 	}
 	//pass mesh into loadModel
 	LoadModel(nw);
-
 
 	return nw;
 }

@@ -1,24 +1,23 @@
 #pragma once
+
 #include <iostream>
 #include <vector>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include "../include/glm/glm.hpp"
+#include "../include/glm/gtc/matrix_transform.hpp"
 #include <functional>
 #include <string>
 #include <sstream>
 #include "singleton.h"
 #include "factory.h"
 #include "entity.h"
-#include "OpenGLRender.cpp"
-
+#include "OpenGLRender.h"
 
 struct render_data
 {
-
 	glm::dmat4 Transform;
 	bool visible = false;
-	Mesh *mesh;
-	Shader *shade;
+	GFX::Mesh *mesh;
+	GFX::Shader *shade;
 	int flag;
 };
 
@@ -101,8 +100,8 @@ public:
 	render_component build_component(entity &e, std::string shape, std::string shader, int state)
 	{
 		_self->_data.push_back(new render_data());
-		_self->_data.back()->mesh = GetMesh(shape);
-		_self->_data.back()->shade = GetShaders(shader);
+		_self->_data.back()->mesh = GFX::GetMesh(shape);
+		_self->_data.back()->shade = GFX::GetShaders(shader);
 		_self->_data.back()->flag = state;
 		return render_component(e, _self->_data.back());
 	}

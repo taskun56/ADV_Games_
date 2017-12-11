@@ -10,6 +10,7 @@
 #include "Player_System.h"
 #include "Spawn_System.h"
 #include "engine.h"
+#include "OpenGlRender.h"
 
 
 using namespace std;

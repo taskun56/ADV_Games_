@@ -1,19 +1,15 @@
+#pragma once
+
 #include <iostream>
 #include <vector>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include "../include/glm/glm.hpp"
+#include "../include/glm/gtc/matrix_transform.hpp"
 #include <functional>
 #include <string>
 #include <sstream>
 #include "singleton.h"
 #include "factory.h"
 #include "entity.h"
-
-
-
-
-
-
 
 struct Enemy_data
 {
@@ -32,7 +28,6 @@ public:
 
 };
 
-
 struct Enemy_component
 {
 private:
@@ -41,20 +36,16 @@ private:
 
 	entity &_parent;
 
-
-
 public:
 
 
 	Enemy_component(entity &e, Enemy_data *data) : _parent(e), _data(data)
 	{
 		_data->active = true;
-
 	}
 
 	bool initialise()
 	{
-
 		return true;
 	}
 
@@ -66,7 +57,6 @@ public:
 
 	void update(float delta_time)
 	{
-
 
 	}
 
@@ -106,7 +96,6 @@ public:
 	Enemy_component build_component(entity &e)
 	{
 		_self->_data.push_back(new Enemy_data());
-
 		return Enemy_component(e, _self->_data.back());
 	}
 

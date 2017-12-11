@@ -1,11 +1,12 @@
 #pragma once
+
 #include <unordered_map>
 #include <string>
 #include <memory>
 #include "entity.h"
 #include "singleton.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include "../include/glm/glm.hpp"
+#include "../include/glm/gtc/matrix_transform.hpp"
 
 // entity manager just holds our entities in a lookup table.
 // This is a simple system - you might want more.

@@ -8,11 +8,11 @@
 #include "factory.h"
 #include "entity.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/quaternion.hpp>
-#include <glm/gtx/euler_angles.hpp>
-#include <glm/gtx/transform.hpp>
+#include "../include/glm/glm.hpp"
+#include "../include/glm/gtc/matrix_transform.hpp"
+#include "../include/glm/gtc/quaternion.hpp"
+#include "../include/glm/gtx/euler_angles.hpp"
+#include "../include/glm/gtx/transform.hpp"
 
 struct physics_data
 {
@@ -23,10 +23,6 @@ struct physics_data
 	glm::dvec3 Scale;
 
 };
-
-
-
-
 
 struct physics_component
 {

@@ -7,8 +7,8 @@
 #include "singleton.h"
 #include "factory.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include "../include/glm/glm.hpp"
+#include "../include/glm/gtc/matrix_transform.hpp"
 
 // entity manager just holds our entities in a lookup table.
 // This is a simple system - you might want more.

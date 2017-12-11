@@ -1,5 +1,5 @@
-#include <SDL.h>
-#include <SDL_ttf.h>
+#include "../include/SDL.h"
+#include "../include/SDL_ttf.h"
 #include <iostream>
 
 class Control

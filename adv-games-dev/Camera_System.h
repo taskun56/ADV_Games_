@@ -1,18 +1,18 @@
 #pragma once
+
 #include <iostream>
 #include <vector>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include "../include/glm/glm.hpp"
+#include "../include/glm/gtc/matrix_transform.hpp"
 #include <functional>
 #include <string>
 #include <sstream>
 #include "entity.h"
-
-
+#include "singleton.h"
+#include "factory.h"
 
 struct Camera_data
 {
-
 public:
 
 	bool active = false;
@@ -20,7 +20,6 @@ public:
 	glm::dmat4 ViewMatrix;
 	static Camera_data *ActiveCam_; 
 	
-
 	Camera_data::Camera_data()
 	{
 		ProjMatrix = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
@@ -52,54 +51,23 @@ private:
 
 public:
 	
-
 	Camera_component(entity &e, Camera_data *data) : _parent(e), _data(data)
 	{
 		_data->active = true;
 		_data->SetActive();
-		
 	}
 
-	bool initialise()
-	{
+	bool initialise();
 
-		return true;
-	}
+	bool load_content();
 
-	bool load_content()
-	{
-		return true;
-	}
+	void update(float delta_time);
 
-	void update(float delta_time)
-	{
-	
-		PositionX.x = PositionX.x + 0.1;
+	void render();
 
+	void unload_content();
 
-		_data->ViewMatrix = glm::lookAt(
-			glm::dvec3(PositionX.x, 50, 1), // Camera is at (Player, 20, 1), in World Space
-			glm::dvec3(PositionX.x, 0, 0), // and looks at the origin
-			glm::dvec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
-		);
-
-	
-	}
-
-	void render()
-	{
-
-	}
-
-	void unload_content()
-	{
-
-	}
-
-	void shutdown()
-	{
-
-	}
+	void shutdown();
 };
 
 class Camera_System : public singleton<Camera_System>, public factory<Camera_component, std::string, entity&>
@@ -126,39 +94,15 @@ public:
 		return Camera_component(e, _self->_data.back());
 	}
 
-	bool initialise()
-	{
-		//std::cout << "Renderer initialising" << std::endl;
-		return true;
-	}
+	bool initialise();
 
-	bool load_content()
-	{
-		//std::cout << "Renderer loading content" << std::endl;
-		return true;
-	}
+	bool load_content();
 
-	void update(float delta_time)
-	{
+	void update(float);
 
+	void render();
 
+	void unload_content();
 
-	}
-
-	void render()
-	{
-
-	}
-
-	void unload_content()
-	{
-		//std::cout << "Renderer unloading content" << std::endl;
-	}
-
-	void shutdown()
-	{
-		//std::cout << "Renderer shutting down" << std::endl;
-	}
+	void shutdown();
 };
-
-Camera_data *Camera_data::ActiveCam_ = nullptr;

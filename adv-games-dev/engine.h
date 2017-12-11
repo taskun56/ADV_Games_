@@ -1,5 +1,7 @@
+#pragma once
+
 #include "input_handler.h"
-#include <gl\glew.h>
+#include "../include/gl/glew.h"
 #include <memory>
 #include <typeindex>
 #include <unordered_map>
@@ -7,17 +9,14 @@
 #include "subsystem.h"
 #include "singleton.h"
 #include "state_machine.h"
-#include "SDL.h"
-#include "SDL_opengl.h"
-#include <SDL_ttf.h>
+#include "../include/SDL.h"
+#include "../include/SDL_opengl.h"
+#include "../include/SDL_ttf.h"
 #include <GL\GLU.h>
 #include "Menu.cpp"
 #include "Options.cpp"
 #include "Controls.cpp"
 #include "Resolution.cpp"
-
-
-
 
 class engine : public singleton<engine>, public state_machine<engine>
 {
