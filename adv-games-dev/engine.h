@@ -361,8 +361,8 @@ public:
 				entity_manager::get().update_all_colliders();
 
 				//R//Temporarily the "cycle through entities" method, but detect collisions here
-				//entity_manager::get().entity_manager::CycleThroughEntities();
-				//entity_manager::get().CycleThroughEntities("ob1");
+				//entity_manager::get().entity_manager::DetectCollisions();
+				//entity_manager::get().DetectCollisions("ob1");
 
 				string ob1 = "ob1";
 				string ob2 = "ob2";
@@ -370,17 +370,13 @@ public:
 				string p1 = "Player1";
 				string p2 = "Player2";
 
-				//entity_manager::get().CycleThroughEntities(p1);
-				//entity_manager::get().CycleThroughEntities(p2);
-				//entity_manager::get().CycleThroughEntities(test);
+				//entity_manager::get().DetectCollisions(p1);
+				//entity_manager::get().DetectCollisions(p2);
+				//entity_manager::get().DetectCollisions(test);
 
-				//int r = 0;
-				//while (r < 1)
-				{
-					threads.push_back(thread(&entity_manager::CycleThroughEntities, entity_manager::get(), ob1));
-					threads.push_back(thread(&entity_manager::CycleThroughEntities, entity_manager::get(), ob2));
-					//r++;
-				}
+				threads.push_back(thread(&entity_manager::DetectCollisions, entity_manager::get(), ob1));
+				threads.push_back(thread(&entity_manager::DetectCollisions, entity_manager::get(), ob2));
+				
 
 				for (auto &t : threads)
 				{

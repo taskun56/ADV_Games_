@@ -133,7 +133,7 @@ public:
 
 
 	//void CycleThroughEntities()
-	void CycleThroughEntities(std::string playername)
+	void DetectCollisions(std::string playername)
 	{
 		//R//Find the player (to compare against everything else for collisions
 		//auto player = _self->_entities.find("ob1");// ->second._self->;
