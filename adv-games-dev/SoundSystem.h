@@ -28,7 +28,7 @@ public:
 	void PlayGameMusic(int volume)
 	{
 		waveOutSetVolume(0, volume);
-		PlaySound(TEXT("filename.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+		PlaySound(TEXT("bgm-platformer.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	}
 
 	//Keep SFX volume to normal but let the music be alterable

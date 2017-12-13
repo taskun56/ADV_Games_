@@ -42,7 +42,7 @@ add_custom_target(copy_resources ALL
 		  COMMAND ${CMAKE_COMMAND} -E copy_directory
 		  "${PROJECT_SOURCE_DIR}/Font" "${CMAKE_BINARY_DIR}"
 		  COMMAND ${CMAKE_COMMAND} -E copy_directory
-          "${PROJECT_SOURCE_DIR}/sounds" "${CMAKE_BINARY_DIR}"
+          "${PROJECT_SOURCE_DIR}/audio" "${CMAKE_BINARY_DIR}"
           COMMAND ${CMAKE_COMMAND} -E copy_directory
           "${CMAKE_SOURCE_DIR}/dll" "${EXE_LOCATION}/Debug"
 		  COMMAND ${CMAKE_COMMAND} -E copy_directory
