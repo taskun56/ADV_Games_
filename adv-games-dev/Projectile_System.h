@@ -25,7 +25,8 @@ public:
 	bool active = false;
 	glm::dvec3 position;
 	int type;
-
+	std::string Player = "Player";
+	std::string Enemy = "Enemy";
 
 	glm::dvec3 get_pos() { return position; }
 	void set_pos(const glm::dvec3 v3) { position = v3; }
@@ -39,14 +40,14 @@ private:
 
 	Projectile_data *_data;
 
-	entity &_parent;
+	entity *_parent;
 
 
 
 public:
 
 
-	Projectile_component(entity &e, Projectile_data *data) : _parent(e), _data(data)
+	Projectile_component(entity *e, Projectile_data *data) : _parent(e), _data(data)
 	{
 		_data->active = true;
 
@@ -67,7 +68,25 @@ public:
 	void update(float delta_time)
 	{
 
-		_parent.get_trans();
+		_data->set_pos(_parent->get_component<physics_component>().get_pos());
+
+		std::cout << _parent->get_name() << std::endl;
+		std::cout << _data->Player << std::endl;
+
+		if (_parent->get_name().compare(0, 6, _data->Player) == 0)
+		{
+			_data->set_pos(glm::dvec3(_data->position.x + 0.5f, _data->position.y, _data->position.z));
+		}
+		else
+		{
+			_data->set_pos(glm::dvec3(_data->position.x - 0.5f, _data->position.y, _data->position.z));
+		}
+		
+
+		
+
+		_parent->get_component<physics_component>().set_pos(_data->get_pos());
+
 	}
 
 	void render()
@@ -107,7 +126,7 @@ public:
 	{
 		_self->_data.push_back(new Projectile_data());
 
-		return Projectile_component(e, _self->_data.back());
+		return Projectile_component(&e, _self->_data.back());
 	}
 
 	bool initialise()

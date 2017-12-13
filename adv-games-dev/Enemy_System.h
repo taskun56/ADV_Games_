@@ -22,6 +22,7 @@ public:
 	int Type;
 	int WType;
 	int Score;
+	int shots;
 
 	glm::dvec3 get_pos() { return position; }
 	void set_pos(const glm::dvec3 v3) { position = v3; }
@@ -36,6 +37,8 @@ private:
 
 	entity &_parent;
 
+	entity shot[1000];
+
 public:
 
 
@@ -49,6 +52,16 @@ public:
 		return true;
 	}
 
+	void shoot()
+	{
+		_data->shots++;
+
+		shot[_data->shots] = entity_manager::get().create("ENTITY", "PlayerShot" + std::to_string(_data->shots));
+		shot[_data->shots].add_component<physics_component>(physics_system::get().create("RIGID", shot[_data->shots], glm::dvec3(_data->position.x, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(0.50, 1.0, 1.0)));
+		shot[_data->shots].add_component<render_component>(renderer::get().create("REER", shot[_data->shots], "PlayerShip.obj", "basic", 1));
+		shot[_data->shots].add_component<Projectile_component>(Projectile_System::get().create("BasicProjectile", shot[_data->shots]));
+	}
+
 
 	bool load_content()
 	{
@@ -57,6 +70,15 @@ public:
 
 	void update(float delta_time)
 	{
+
+
+		_data->set_pos(_parent.get_component<physics_component>().get_pos());
+
+		_data->set_pos(glm::dvec3(_data->position.x, _data->position.y, _data->position.z));
+
+		_parent.get_component<physics_component>().set_pos(_data->get_pos());
+
+
 
 	}
 

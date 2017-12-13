@@ -67,6 +67,13 @@ public:
 	{
 
 
+		_data->set_pos(_parent.get_component<physics_component>().get_pos());
+
+		_data->set_pos(glm::dvec3(_data->position.x, _data->position.y, _data->position.z));
+
+		_parent.get_component<physics_component>().set_pos(_data->get_pos());
+
+
 	}
 
 	void render()

@@ -25,6 +25,7 @@ public:
 	int WType;
 	static Player_data *ActivePlayer_;
     glm::dvec3 position;
+	int shots;
 
 	void SetActive() { ActivePlayer_ = this; }
 	glm::dvec3 get_pos() { return position; }
@@ -44,7 +45,8 @@ private:
 
 	entity *_parent;
 
-
+	entity shot[1000];
+	
 
 public:
 
@@ -55,23 +57,24 @@ public:
 	{
 		_data->active = true;
 		_data->SetActive();
+
 	}
 
 
 	bool initialise()
 	{
-
 		return true;
 	}
 
 	void shoot()
 	{
 	
-		auto test = entity_manager::get().create("ENTITY", "Testr");
+		shot[_data->shots] = entity_manager::get().create("ENTITY", "PlayerShot" + std::to_string(_data->shots));
+		shot[_data->shots].add_component<physics_component>(physics_system::get().create("RIGID", shot[_data->shots], glm::dvec3(_data->position.x, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(0.50, 1.0, 1.0)));
+		shot[_data->shots].add_component<render_component>(renderer::get().create("REER", shot[_data->shots], "PlayerShip.obj", "basic", 1));
+		shot[_data->shots].add_component<Projectile_component>(Projectile_System::get().create("BasicProjectile", shot[_data->shots]));
 
-		test.add_component<physics_component>(physics_system::get().create("RIGID", test, glm::dvec3(_data->position.x, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(0.50, 1.0, 1.0)));
-		test.add_component<render_component>(renderer::get().create("REER", test, "PlayerShip.obj", "basic", 1));
-
+		_data->shots++;
 	}
 
 
@@ -85,12 +88,41 @@ public:
 
 		_data->set_pos(_parent->get_component<physics_component>().get_pos());
 
-		_data->set_pos(glm::dvec3(_data->position.x + 0.1f, _data->position.y, _data->position.z));
+
+		/*
+		//Right
+		if (SDL_GetKeyFromName("D"))
+		{
+			_data->set_pos(glm::dvec3(_data->position.x + 0.1f, _data->position.y, _data->position.z));
+		}
+
+		//Left
+		if (SDL_GetKeyFromName("A"))
+		{
+			_data->set_pos(glm::dvec3(_data->position.x - 0.1f, _data->position.y, _data->position.z));
+		}
+
+		//Up
+		if (SDL_GetKeyFromName("W"))
+		{
+			_data->set_pos(glm::dvec3(_data->position.x, _data->position.y, _data->position.z - 0.1f));
+		}
+
+		//Down
+		if (SDL_GetKeyFromName("S"))
+		{
+			_data->set_pos(glm::dvec3(_data->position.x, _data->position.y, _data->position.z + 0.1f));
+		}
+
+		if (SDL_GetKeyFromName("Space"))
+		{
+			shoot();
+		}
+
+		*/
+
 
 		_parent->get_component<physics_component>().set_pos(_data->get_pos());
-
-		shoot();
-		
 
 	}
 

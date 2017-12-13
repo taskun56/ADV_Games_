@@ -34,15 +34,16 @@ private:
 	glm::dmat4 transform;
 
     // We'll also keep a reference to the parent entity
-    entity &_parent;
+    entity *const _parent;
 	entity Test;
 
 public:
-    physics_component(entity &e, physics_data *data) : _parent(e), _data(data)
+    physics_component(entity &e, physics_data *data) : _parent(&e), _data(data)
     {
         _data->active = true;
-		Test = _parent;
+		
     }
+	physics_component() = delete;
 
 	glm::dvec3 get_pos() { return _data->Position; }
 	void set_pos(const glm::dvec3 v3) { _data->Position = v3; }
@@ -59,9 +60,9 @@ public:
 
     void update(float delta_time)
     {
-		//std::cout << &_parent << std::endl;
+		//std::cout << &_parent << std::endl;	
 		transform = glm::translate(_data->Position) * glm::mat4_cast(_data->Rotation) * glm::scale(_data->Scale);
-		Test.set_trans(transform);
+		_parent->set_trans(transform);	
     }
 
     void render()
@@ -130,7 +131,7 @@ public:
             // Updates the entity so change pos rot and scale here   
             if (d->active)
             {
-				d->Position = glm::dvec3(d->Position.x + 0.1f, d->Position.y , d->Position.z + 0.10);
+			//	d->Position = glm::dvec3(d->Position.x + 0.1f, d->Position.y , d->Position.z);
 			//	d->Rotation = glm::dquat(d->Rotation.x + 0.0001, d->Rotation.y, d->Rotation.z, d->Rotation.w);
 	
             }

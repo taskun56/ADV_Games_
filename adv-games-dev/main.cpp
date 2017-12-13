@@ -2,12 +2,12 @@
 #include "input_handler.h"
 #include "entity_manager.h"
 #include "physics_system.h"
-#include "Enemy_System.h"
 #include "Projectile_System.h"
 #include "PowerUp_System.h"
 #include "Camera_System.h"
 #include "renderer.h"
 #include "Player_System.h"
+#include "Enemy_System.h"
 #include "Spawn_System.h"
 #include "engine.h"
 #include "OpenGlRender.h"
@@ -241,18 +241,6 @@ int main(int arg, char **argv)
 	f.add_component<physics_component>(physics_system::get().create("RIGID", f, glm::dvec3(0.0, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(1.0, 1.0, 1.0)));
 	f.add_component<render_component>(renderer::get().create("RENDER", f, "EnemyShip2.obj", "basic", 1));
 	f.add_component<Player_component>(Player_System::get().create("Player", f));
-
-
-
-
-
-
-   auto e = entity_manager::get().create("ENTITY", "Test");
-
-
-	e.add_component<render_component>(renderer::get().create("REER", e, "PlayerShip.obj", "basic", 1));
-	e.add_component<physics_component>(physics_system::get().create("RIGID", e, glm::dvec3(0.0, 0.0, 0.0), glm::dquat(0.0,0.0,0.0,0.0) ,glm::dvec3(0.50, 1.0, 1.0)));
-	
 
 
 	

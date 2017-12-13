@@ -3,7 +3,7 @@
 #include "entity.h"
 #include <iostream>
 
-static size_t counter = 0;
+
 
 bool entity::initialise()
 {
@@ -35,7 +35,7 @@ void entity::update(float delta_time)
 
 void entity::render()
 {
-   std::cout << "Entity " << _self->_id << " rendering" << std::endl;
+   //std::cout << "Entity " << _self->_id << " rendering" << std::endl;
     for (auto &c : _self->_components)
         c.second.render();
 }

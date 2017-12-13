@@ -26,16 +26,14 @@ struct render_component
 private:
 	render_data *_data;
 
-	entity &_parent;
+	entity *_parent;
 
 	entity Test;
 
 public:
-	render_component(entity &e, render_data *data) : _parent(e), _data(data)
+	render_component(entity *e, render_data *data) : _parent(e), _data(data)
 	{
 		_data->visible = true;
-		Test = _parent;
-
 	}
 	
 
@@ -61,7 +59,7 @@ public:
 
 
 			//sets transform
-			_data->Transform = Test.get_trans().Transform;
+			_data->Transform = _parent->get_trans().Transform;
 			
 			
 			
@@ -103,7 +101,7 @@ public:
 		_self->_data.back()->mesh = GFX::GetMesh(shape);
 		_self->_data.back()->shade = GFX::GetShaders(shader);
 		_self->_data.back()->flag = state;
-		return render_component(e, _self->_data.back());
+		return render_component(&e, _self->_data.back());
 	}
 
 	bool initialise()
