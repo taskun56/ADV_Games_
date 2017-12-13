@@ -18,6 +18,18 @@
 #include "Controls.cpp"
 #include "Resolution.cpp"
 
+//R//Messing about with multi-threaded collision detection with two players
+#include <thread>
+#include <vector>
+using namespace std;
+vector<thread> threads;
+int num_threads = thread::hardware_concurrency();
+
+//R//Need this to alter volume in game loop
+#include "SoundSystem.h"
+SoundSystem Sounds;
+
+
 class engine : public singleton<engine>, public state_machine<engine>
 {
     friend class singleton<engine>;
@@ -338,6 +350,72 @@ public:
 				glDepthFunc(GL_LESS);
 				glClearColor(0.0, 1.0, 1.0, 0.0);
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+
+
+
+
+
+				//R//Trying to update all the entities' colliders every frame
+				entity_manager::get().update_all_colliders();
+
+				//R//Temporarily the "cycle through entities" method, but detect collisions here
+				//entity_manager::get().entity_manager::CycleThroughEntities();
+				//entity_manager::get().CycleThroughEntities("ob1");
+
+				string ob1 = "ob1";
+				string ob2 = "ob2";
+				//^^^^^^^^^^^^^^^^^^ these two will be replaced by the following when we have player1 and player2 set up
+				string p1 = "Player1";
+				string p2 = "Player2";
+
+				//entity_manager::get().CycleThroughEntities(p1);
+				//entity_manager::get().CycleThroughEntities(p2);
+				//entity_manager::get().CycleThroughEntities(test);
+
+				//int r = 0;
+				//while (r < 1)
+				{
+					threads.push_back(thread(&entity_manager::CycleThroughEntities, entity_manager::get(), ob1));
+					threads.push_back(thread(&entity_manager::CycleThroughEntities, entity_manager::get(), ob2));
+					//r++;
+				}
+
+				for (auto &t : threads)
+				{
+					if (t.joinable())
+					{
+						t.join();
+					}
+				}
+
+
+
+
+				//R// chuck in the volume changing stuff here
+				//Not sure what the relevance of the & 0x8000 is but it doesn't work properly without it
+				//Bumped from here https://stackoverflow.com/questions/41600981/how-do-i-check-if-a-key-is-pressed-on-c
+				if (GetKeyState('M') & 0x8000/*check if high-order bit is set (1 << 15)*/)
+				{
+					Sounds.MuteMusic();
+				}
+				if (GetKeyState(VK_OEM_PLUS) & 0x8000/*check if high-order bit is set (1 << 15)*/)
+				{
+					Sounds.TurnUpMusic();
+				}
+				if (GetKeyState(VK_OEM_MINUS) & 0x8000/*check if high-order bit is set (1 << 15)*/)
+				{
+					Sounds.TurnDownMusic();
+				}
+
+
+
+
+
+
+
+
 
 				// Render the subsystems.
 				for (auto &sys : _self->_subsystems)

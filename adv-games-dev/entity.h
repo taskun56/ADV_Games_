@@ -19,8 +19,15 @@ public:
         glm::dmat4 Transform;
     };
 
-private:
+	//R//Bounding circle (hitbox)	--Using SDL 29 circular collisions --Probably don't actually need this cause we could just set the radius and use the transform for the position
+	struct circle
+	{
+		glm::dmat4 Transform;
+		float radius = 2;
+	};
 
+private:
+	// Counter to ID entities
 	size_t counter;
 
     struct entity_impl
@@ -30,6 +37,8 @@ private:
         std::unordered_map<std::type_index, component> _components;
 
         transform trans;
+
+		circle collider;
     };
     
     std::shared_ptr<entity_impl> _self = nullptr;
@@ -44,8 +53,29 @@ public:
 
     entity() = default;
 
-    transform& get_trans() { return _self->trans; }
-	void set_trans(const glm::dmat4 m4) { _self->trans.Transform = m4; }
+    transform& get_trans() 
+	{ 
+		return _self->trans;
+	}
+
+	void set_trans(const glm::dmat4 m4) 
+	{ 
+		_self->trans.Transform = m4; 
+	}
+
+
+	//R//setup collider radius
+	void setColliderSize(float rad)
+	{
+		_self->collider.radius = rad;
+	}
+
+	//void update_collider(glm::dmat4 Transform)
+	void update_collider(glm::dmat4 Transform)
+	{
+		_self->collider.Transform = Transform;
+	}
+
 
 	bool initialise();
 
