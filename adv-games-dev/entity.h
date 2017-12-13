@@ -53,6 +53,11 @@ public:
 
     entity() = default;
 
+	std::string& get_name()
+	{
+		return _self->_name;
+	}
+
     transform& get_trans() 
 	{ 
 		return _self->trans;

@@ -132,7 +132,6 @@ public:
 
 
 
-	//void CycleThroughEntities()
 	void DetectCollisions(std::string playername)
 	{
 		//R//Find the player (to compare against everything else for collisions
@@ -141,10 +140,6 @@ public:
 		//R// For each entity in _entities
 		for (auto iterator = _self->_entities.begin(); iterator != _self->_entities.end(); iterator++)
 		{
-			//R//TEMPORARY
-			//update_all_colliders();
-
-
 			//R//If the current entity in _entities IS the player
 			//if (iterator->first == "ob1")
 			if (iterator->first == playername)
@@ -159,7 +154,7 @@ public:
 				continue;
 			}
 
-			//R//If the current entity in _entities IS the player
+			//R//If the current entity in _entities is the camera
 			if (iterator->first == "Camera")
 			{
 				//R//Print the name of the entity 
