@@ -1,5 +1,6 @@
 #include "../include/SDL.h"
 #include "../include/SDL_ttf.h"
+#include "../include/SDL_image.h"
 #include <iostream>
 
 class Options
@@ -16,6 +17,8 @@ public:
 		const int NUMMENU = 4;
 		const char *labels[NUMMENU] = { "OPTIONS","Resolution","Controls","Back" };
 		bool selected[NUMMENU] = { 0,0,0,0 };
+		SDL_Texture* background;
+		SDL_Surface* background_surface;
 		SDL_Texture * menu[NUMMENU];
 		SDL_Rect POS[NUMMENU];
 		SDL_Surface * temp[NUMMENU];
@@ -28,6 +31,11 @@ public:
 		{
 			printf("Font not found");
 		}
+
+
+		background_surface = IMG_Load("background.png");
+		background = SDL_CreateTextureFromSurface(gRenderer, background_surface);
+
 
 		for (int i = 0; i < NUMMENU; i++)
 		{
@@ -55,6 +63,8 @@ public:
 		{
 			SDL_RenderClear(gRenderer);
 			//do render stuff here
+
+			SDL_RenderCopy(gRenderer, background, NULL, NULL);
 
 			for (int i = 0; i < NUMMENU; i++)
 			{

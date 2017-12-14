@@ -172,7 +172,7 @@ void exit_state_5(engine &eng)
 	{
 		eng.new_state_set = "EXIT";
 	}
-	else if (next_state == 1)
+	else if (next_state == 3)
 	{
 		eng.new_state_set = "OPTIONS";
 	}
