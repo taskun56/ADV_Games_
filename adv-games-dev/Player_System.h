@@ -110,6 +110,7 @@ public:
 		else
 		{
 			_data->Invincible = false;
+			_data->InvincibleTimer = 0;
 		}
 
 		/*
@@ -147,25 +148,25 @@ public:
 		//Make sure player isnt too far back
 		if (_data->position.x < (Camera_data::ActiveCam_->PositionX.x - 30))
 		{
-
+			_data->set_pos(glm::dvec3(Camera_data::ActiveCam_->PositionX.x - 25, _data->position.y, _data->position.z));
 		}
 
 		//Make sure player isnt too far forward
 		if (_data->position.x > (Camera_data::ActiveCam_->PositionX.x + 30))
 		{
-
+			_data->set_pos(glm::dvec3(Camera_data::ActiveCam_->PositionX.x + 25, _data->position.y, _data->position.z));
 		}
 
 		//Make sure player isnt too far up
 		if (_data->position.z < (Camera_data::ActiveCam_->PositionX.z - 18))
 		{
-
+			_data->set_pos(glm::dvec3(_data->position.x, _data->position.y, Camera_data::ActiveCam_->PositionX.z - 13));
 		}
 
 		//Make sure player isnt too far down
 		if (_data->position.z > (Camera_data::ActiveCam_->PositionX.z + 18))
 		{
-
+			_data->set_pos(glm::dvec3(_data->position.x, _data->position.y, Camera_data::ActiveCam_->PositionX.z + 13));
 		}
 
 		if (_data->get_Health() == 0)
@@ -180,6 +181,9 @@ public:
 		
 
 		_parent->get_component<physics_component>().set_pos(_data->get_pos());
+
+		
+		
 
 	}
 

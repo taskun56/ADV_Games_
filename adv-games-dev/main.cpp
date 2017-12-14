@@ -63,7 +63,7 @@ void enter_state_2(engine &eng)
 void do_state_2(engine &eng)
 {
 	cout << "Continue to play Gameplay State." << endl;
-
+	eng.Score();
 
 }
 
@@ -307,7 +307,7 @@ int main(int arg, char **argv)
 
 	if(eng.get_joystick_status()) eng.get_subsystem<input_handler>().InitializeJoysticks();
 
-    eng.run();
+	eng.run();
     
     return 0;
 }

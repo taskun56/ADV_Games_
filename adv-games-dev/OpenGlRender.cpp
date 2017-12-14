@@ -1,6 +1,8 @@
 #include "OpenGlRender.h"
 
 //Random Colour used if no other colour thingy found
+const static glm::vec4 RandB[3] = { glm::vec4(0.2f, 0.3f, 0.7, 1.0f), glm::vec4(0.5f, 0.3f, 0.759, 1.0f),
+glm::vec4(0.812f, 0.427f, 0.302f, 1.0f) };
 const static glm::vec4 RandC[3] = { glm::vec4(0.533f, 0.898f, 0.231, 1.0f), glm::vec4(1.0f, 0.698f, 0.259, 1.0f),
 glm::vec4(0.412f, 0.227f, 0.702f, 1.0f) };
 
@@ -308,7 +310,14 @@ GFX::Mesh* GFX::GetMesh(const std::string &file)
 			}
 			else
 			{
-				nw->colour.push_back(RandC[j % 3]);
+				if (file == "PlayerShip.obj")
+				{
+					nw->colour.push_back(RandB[j % 3]);
+				}
+				else
+				{
+					nw->colour.push_back(RandC[j % 3]);
+				}
 			}
 			//see if mesh has normals
 			if (mesh->HasNormals())

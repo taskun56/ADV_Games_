@@ -69,7 +69,7 @@ public:
 		int randomNumberNeg = rand() % 19;
 
 		Enemy[_data->enemies] = entity_manager::get().create("ENTITY", "Enemy" + std::to_string(_data->enemies));
-		Enemy[_data->enemies].add_component<physics_component>(physics_system::get().create("RIGID", Enemy[_data->enemies], glm::dvec3(Camera_data::ActiveCam_->PositionX.x + 25.0f, 0.0, randomNumberPos - randomNumberNeg), glm::dquat(0.0, 0.0, 1.0, 0.0), glm::dvec3(0.50, 1.0, 1.0)));
+		Enemy[_data->enemies].add_component<physics_component>(physics_system::get().create("RIGID", Enemy[_data->enemies], glm::dvec3(Camera_data::ActiveCam_->PositionX.x + 28.0f, 0.0, randomNumberPos - randomNumberNeg), glm::dquat(0.0, 0.0, 1.0, 0.0), glm::dvec3(0.50, 1.0, 1.0)));
 		Enemy[_data->enemies].add_component<render_component>(renderer::get().create("REER", Enemy[_data->enemies], "EnemyShip1.obj", "basic", 1));
 		Enemy[_data->enemies].add_component<Enemy_component>(Enemy_System::get().create("BasicEnemy", Enemy[_data->enemies]));
 
@@ -84,7 +84,7 @@ public:
 		int randomNumberNeg = rand() % 19;
 
 		PowerUp[_data->powerups] = entity_manager::get().create("ENTITY", "PowerUp" + std::to_string(_data->powerups));
-		PowerUp[_data->powerups].add_component<physics_component>(physics_system::get().create("RIGID", PowerUp[_data->powerups], glm::dvec3(Camera_data::ActiveCam_->PositionX.x + 25.0f, 0.0, (randomNumberPos - randomNumberNeg)), glm::dquat(0.0, 0.0, 1.0, 0.0), glm::dvec3(0.50, 1.0, 1.0)));
+		PowerUp[_data->powerups].add_component<physics_component>(physics_system::get().create("RIGID", PowerUp[_data->powerups], glm::dvec3(Camera_data::ActiveCam_->PositionX.x + 28.0f, 0.0, (randomNumberPos - randomNumberNeg)), glm::dquat(0.0, 0.0, 1.0, 0.0), glm::dvec3(0.50, 1.0, 1.0)));
 		PowerUp[_data->powerups].add_component<render_component>(renderer::get().create("REER", PowerUp[_data->powerups], "PowerUp.obj", "basic", 1));
 		PowerUp[_data->powerups].add_component<PowerUp_component>(PowerUp_System::get().create("Shield", PowerUp[_data->powerups]));
 

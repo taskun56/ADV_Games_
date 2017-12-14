@@ -159,6 +159,12 @@ public:
 		return state;
 	}
 
+	void Score()
+	{
+
+
+	}
+
 
 	bool init()
 	{
@@ -343,6 +349,10 @@ public:
 
 			if (state_set == "GAME")
 			{
+
+
+
+
 				// Update the subsystems.  At the moment use dummy time of 1.0s.  You
 				// will want to use a proper timer.
 				for (auto &sys : _self->_subsystems)
@@ -361,14 +371,7 @@ public:
 					sys.second.render();
 				}
 
-				for (auto &sys : _self->_subsystems)
-				{
-					if (sys.second.get_active() == false && sys.second.get_visible() == false)
-					{
-						sys.second.unload_content();
-					}
-					
-				}
+
 
 
 				SDL_GL_SetSwapInterval(1);

@@ -171,8 +171,6 @@ public:
 								SDL_SetWindowSize(win, 1200, 800);
 							}
 
-
-
 							for (int i = 0; i < RESO_MENU; i++)
 							{
 								SDL_DestroyTexture(menu[i]);

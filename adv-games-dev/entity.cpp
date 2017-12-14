@@ -33,8 +33,12 @@ void entity::update(float delta_time)
 	{
 		for (auto &c : _self->_components)
 		{
-			c.second.update(delta_time);
+			c.second.update(delta_time);	
 		}
+	}
+	else
+	{
+		shutdown();
 	}
 }
 
@@ -48,6 +52,10 @@ void entity::render()
 			c.second.render();
 		}
 	}
+	else
+	{
+		shutdown();
+	}
 }
 
 void entity::unload_content()
@@ -59,8 +67,10 @@ void entity::unload_content()
 
 void entity::shutdown()
 {
-    //std::cout << "Entity " << _self->_id << " shutting down" << std::endl;
+   // std::cout << "Entity " << _self->_id << " shutting down" << std::endl;
     for (auto &c : _self->_components)
         c.second.shutdown();
     _self->_components.clear();
+
+	
 }

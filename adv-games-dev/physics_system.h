@@ -62,6 +62,11 @@ public:
     {
 		//std::cout << &_parent << std::endl;	
 		transform = glm::translate(_data->Position) * glm::mat4_cast(_data->Rotation) * glm::scale(_data->Scale);
+
+		//Collisions need to check for if player collides with anything   enemy ship and enemy projectiles will take off health of player and will then delete themselves can just make inactive using unloadcontent only problem is slow down as game goes on    powerUps will grant more health again make inactive  
+		//Projectiles need to check who they collide with if name matches with there own do nothing       else damage then make projectile inactive
+		//PowerUp
+
 		_parent->set_trans(transform);	
 
 
