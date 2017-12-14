@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <time.h>
 #include "../include/glm/glm.hpp"
 #include "../include/glm/gtc/matrix_transform.hpp"
 #include <functional>
@@ -23,9 +24,11 @@ public:
 	int WType;
 	float enemyTime;
 	int shots;
+	float move;
 
 	glm::dvec3 get_pos() { return position; }
 	void set_pos(const glm::dvec3 v3) { position = v3; }
+	void set_move(float m) { move = m; }
 
 };
 
@@ -44,12 +47,27 @@ public:
 
 	Enemy_component(entity &e, Enemy_data *data) : _parent(e), _data(data)
 	{
+
+		/* initialize random seed: */
+		srand(time(NULL));
+
+		int randomNumber = rand() % 2;
+
+		if (randomNumber == 1)
+		{
+			_data->set_move(0.1f);
+		}
+		else
+		{
+			_data->set_move(-0.1f);
+		}
 		_data->active = true;
 	}
 
 	bool initialise()
 	{
 		return true;
+
 	}
 
 	void shoot()
@@ -75,8 +93,19 @@ public:
 
 		_data->set_pos(_parent.get_component<physics_component>().get_pos());
 
-		_data->set_pos(glm::dvec3(_data->position.x, _data->position.y, _data->position.z));
-
+		if (_data->position.z > (Camera_data::ActiveCam_->PositionX.z + 17))
+		{
+			_data->move = -0.1f;
+		}
+		if(_data->position.z < (Camera_data::ActiveCam_->PositionX.z - 17))
+		{
+			_data->move = 0.1f;
+			
+		}
+		
+		
+		_data->set_pos(glm::dvec3(_data->position.x, _data->position.y, _data->position.z + _data->move));
+		
 
 		int randomNumber = rand() % 200 + 1;
 
@@ -85,6 +114,8 @@ public:
 			shoot();
 			
 		}
+
+		
 
 
 

@@ -63,7 +63,7 @@ void enter_state_2(engine &eng)
 void do_state_2(engine &eng)
 {
 	cout << "Continue to play Gameplay State." << endl;
-
+	eng.Score();
 
 }
 
@@ -184,6 +184,10 @@ void exit_state_5(engine &eng)
 	{
 		eng.new_state_set = "OPTIONS";
 	}
+	else if (next_state == 3)
+	{
+		eng.new_state_set = "OPTIONS";
+	}
 	else
 	{
 		eng.new_state_set = "EXIT";
@@ -293,7 +297,7 @@ int main(int arg, char **argv)
 
 	if(eng.get_joystick_status()) eng.get_subsystem<input_handler>().InitializeJoysticks();
 
-    eng.run();
+	eng.run();
     
     return 0;
 }

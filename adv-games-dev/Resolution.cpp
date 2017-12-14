@@ -138,7 +138,6 @@ public:
 							}
 
 							
-							
 							for (int i = 0; i < NUMMENU; i++)
 							{
 								SDL_DestroyTexture(menu[i]);
