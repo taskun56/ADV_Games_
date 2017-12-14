@@ -57,7 +57,7 @@ public:
 			menu[i] = SDL_CreateTextureFromSurface(gRenderer, temp[i]);
 		}
 
-
+		int opt_index = 0;
 
 		while (true)
 		{
@@ -147,6 +147,13 @@ public:
 							SDL_DestroyTexture(menu[i]);
 						}
 						return 0;
+
+					case SDLK_DOWN:
+
+						opt_index -= 1;
+						if (opt_index < 0) opt_index = 0;
+
+
 					}
 
 				}
