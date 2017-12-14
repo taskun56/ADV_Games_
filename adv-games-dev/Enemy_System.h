@@ -21,7 +21,8 @@ public:
 	glm::dvec3 position;
 	int Type;
 	int WType;
-	int Score;
+	float enemyTime;
+	int shots;
 
 	glm::dvec3 get_pos() { return position; }
 	void set_pos(const glm::dvec3 v3) { position = v3; }
@@ -36,6 +37,8 @@ private:
 
 	entity &_parent;
 
+	entity shot[1000];
+
 public:
 
 
@@ -49,6 +52,16 @@ public:
 		return true;
 	}
 
+	void shoot()
+	{
+		_data->shots++;
+
+		shot[_data->shots] = entity_manager::get().create("ENTITY", "EnemyShot" + _parent.get_name() + std::to_string(_data->shots));
+		shot[_data->shots].add_component<physics_component>(physics_system::get().create("RIGID", shot[_data->shots], glm::dvec3(_data->position.x, 0.0, _data->position.z), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(0.50, 1.0, 1.0)));
+		shot[_data->shots].add_component<render_component>(renderer::get().create("REER", shot[_data->shots], "Bullet.obj", "basic", 1));
+		shot[_data->shots].add_component<Projectile_component>(Projectile_System::get().create("BasicProjectile", shot[_data->shots]));
+	}
+
 
 	bool load_content()
 	{
@@ -57,6 +70,35 @@ public:
 
 	void update(float delta_time)
 	{
+
+		
+
+		_data->set_pos(_parent.get_component<physics_component>().get_pos());
+
+		_data->set_pos(glm::dvec3(_data->position.x, _data->position.y, _data->position.z));
+
+
+		int randomNumber = rand() % 200 + 1;
+
+		if (randomNumber == 5)
+		{
+			shoot();
+			
+		}
+
+
+
+		_parent.get_component<physics_component>().set_pos(_data->get_pos());
+
+		//delete
+		if (_data->position.x < (Camera_data::ActiveCam_->PositionX.x - 30))
+		{
+			_parent.get_component<physics_component>().unload_content();
+			_parent.get_component<render_component>().unload_content();
+			_parent.get_component<Enemy_component>().unload_content();
+		}
+
+
 
 	}
 
@@ -67,7 +109,7 @@ public:
 
 	void unload_content()
 	{
-
+		_data->active = false;
 	}
 
 	void shutdown()
@@ -129,6 +171,10 @@ public:
 	void shutdown()
 	{
 		//std::cout << "Renderer shutting down" << std::endl;
+		for (auto &d : _self->_data)
+		{
+			delete d;
+		}
 	}
 };
 

@@ -27,6 +27,7 @@ target_link_libraries(adv-games-dev
 "SDL2main"
 "SDL2"
 "SDL2_ttf"
+"SDL2_image"
 "SDL2test"
 "assimp-vc140-mt"
 )
@@ -38,6 +39,8 @@ add_custom_target(copy_resources ALL
           "${PROJECT_SOURCE_DIR}/objects" "${CMAKE_BINARY_DIR}"
 		  COMMAND ${CMAKE_COMMAND} -E copy_directory
           "${PROJECT_SOURCE_DIR}/shader" "${CMAKE_BINARY_DIR}"
+		  COMMAND ${CMAKE_COMMAND} -E copy_directory
+          "${PROJECT_SOURCE_DIR}/Images" "${CMAKE_BINARY_DIR}"
 		  COMMAND ${CMAKE_COMMAND} -E copy_directory
 		  "${PROJECT_SOURCE_DIR}/Font" "${CMAKE_BINARY_DIR}"
           COMMAND ${CMAKE_COMMAND} -E copy_directory

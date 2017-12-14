@@ -67,6 +67,21 @@ public:
 	{
 
 
+		_data->set_pos(_parent.get_component<physics_component>().get_pos());
+
+		_data->set_pos(glm::dvec3(_data->position.x, _data->position.y, _data->position.z));
+
+		_parent.get_component<physics_component>().set_pos(_data->get_pos());
+
+		//delete
+		if (_data->position.x < (Camera_data::ActiveCam_->PositionX.x - 30))
+		{
+			_parent.get_component<physics_component>().unload_content();
+			_parent.get_component<render_component>().unload_content();
+			_parent.get_component<PowerUp_component>().unload_content();
+
+		}
+
 	}
 
 	void render()
@@ -139,6 +154,10 @@ public:
 	void shutdown()
 	{
 		//std::cout << "Renderer shutting down" << std::endl;
+		for (auto &d : _self->_data)
+		{
+			delete d;
+		}
 	}
 };
 

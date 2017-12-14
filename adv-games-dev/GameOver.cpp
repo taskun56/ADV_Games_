@@ -3,20 +3,20 @@
 #include "../include/SDL_image.h"
 #include <iostream>
 
-class Control
+class GameOver
 {
 
 public:
 
-	int showcontrols(SDL_Surface *screen, SDL_Event e, SDL_Window *win)
+	int showmenu(SDL_Surface *screen, SDL_Event e, SDL_Window *win)
 	{
-		bool conRun = true;
+		bool menuRun = true;
 
 		Uint32 time;
 		int x, y;
-		const int NUMMENU = 4;
-		const char *labels[NUMMENU] = { "TO DO","TO DO","TO DO","TO DO" };
-		bool selected[NUMMENU] = { 0,0,0,0 };
+		const int NUMMENU = 3;
+		const char *labels[NUMMENU] = { "GameOver","SCORE","Exit" };
+		bool selected[NUMMENU] = { 0,0,0};
 		SDL_Texture* background;
 		SDL_Surface* background_surface;
 		SDL_Texture * menu[NUMMENU];
@@ -32,10 +32,6 @@ public:
 			printf("Font not found");
 		}
 
-
-		background_surface = IMG_Load("background.png");
-		background = SDL_CreateTextureFromSurface(gRenderer, background_surface);
-
 		for (int i = 0; i < NUMMENU; i++)
 		{
 			temp[i] = TTF_RenderText_Solid(font, labels[i], TextColour[0]);
@@ -45,10 +41,13 @@ public:
 
 		SDL_GetWindowSize(win, &w, &h);
 
-		POS[0] = { w / 2, h / 5 , 60, 60 };
-		POS[1] = { w / 2, (h / 5) * 2 , 60, 60 };
-		POS[2] = { w / 2, (h / 5) * 3 , 80, 60 };
-		POS[3] = { w / 2, (h / 5) * 4 , 60, 60 };
+		background_surface = IMG_Load("background.png");
+		background = SDL_CreateTextureFromSurface(gRenderer, background_surface);
+
+		POS[0] = { w / 2, h / 5 , 120, 60 };
+		POS[1] = { w / 2, (h / 5) * 2 , 100, 60 };
+		POS[2] = { w / 2, (h / 5) * 4 , 80, 60 };
+		
 
 
 		for (int i = 0; i < NUMMENU; i++)
@@ -62,7 +61,6 @@ public:
 		{
 			SDL_RenderClear(gRenderer);
 			//do render stuff here
-
 			SDL_RenderCopy(gRenderer, background, NULL, NULL);
 
 			for (int i = 0; i < NUMMENU; i++)
@@ -89,7 +87,7 @@ public:
 				case SDL_MOUSEMOTION:
 					x = e.motion.x;
 					y = e.motion.y;
-					for (int i = 1; i < NUMMENU; i++)
+					for (int i = 2; i < NUMMENU; i++)
 					{
 						if (x >= POS[i].x && x <= POS[i].x + POS[i].w && y >= POS[i].y && y <= POS[i].y + POS[i].h)
 						{
@@ -121,7 +119,7 @@ public:
 					x = e.button.x;
 					y = e.button.y;
 
-					for (int i = 1; i < NUMMENU; i++)
+					for (int i = 2; i < NUMMENU; i++)
 					{
 						if (x >= POS[i].x && x <= POS[i].x + POS[i].w && y >= POS[i].y && y <= POS[i].y + POS[i].h)
 						{
@@ -154,7 +152,8 @@ public:
 
 
 		}
-		SDL_DestroyRenderer(gRenderer);
+
+
 	}
 
 

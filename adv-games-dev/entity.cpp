@@ -3,7 +3,7 @@
 #include "entity.h"
 #include <iostream>
 
-static size_t counter = 0;
+
 
 bool entity::initialise()
 {
@@ -29,15 +29,25 @@ void entity::update(float delta_time)
 {
     //std::cout << "Entity " << _self->_id << " updating" << " " << _self->trans.x << std::endl;
     //std::cout << _self->_components.size() << std::endl;
-    for (auto &c : _self->_components)
-        c.second.update(delta_time);
+	if (_self->active == true)
+	{
+		for (auto &c : _self->_components)
+		{
+			c.second.update(delta_time);
+		}
+	}
 }
 
 void entity::render()
 {
-   std::cout << "Entity " << _self->_id << " rendering" << std::endl;
-    for (auto &c : _self->_components)
-        c.second.render();
+   //std::cout << "Entity " << _self->_id << " rendering" << std::endl;
+	if (_self->active == true)
+	{
+		for (auto &c : _self->_components)
+		{
+			c.second.render();
+		}
+	}
 }
 
 void entity::unload_content()

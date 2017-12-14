@@ -57,8 +57,10 @@ public:
     void update(float delta_time)
     {
         //std::cout << "Entity manager updating" << std::endl;
-        for (auto &e : _self->_entities)
-            e.second.update(delta_time);
+		for (auto &e : _self->_entities)
+		{
+			e.second.update(delta_time);		
+		}
     }
 
     void render()

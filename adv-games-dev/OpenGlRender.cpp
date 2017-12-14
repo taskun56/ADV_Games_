@@ -113,7 +113,7 @@ void GFX::LoadShader(Shader *shade, const std::string &vert, const std::string &
 	GLint Result = GL_FALSE;
 	int InfoLogLength;
 
-	printf("Compiling shader : %s\n", vert);
+	//printf("Compiling shader : %s\n", vert);
 	auto *VertexSourcePointer = vert.c_str();
 	glShaderSource(VertexShaderID, 1, &VertexSourcePointer, 0);
 	glCompileShader(VertexShaderID);
@@ -128,7 +128,7 @@ void GFX::LoadShader(Shader *shade, const std::string &vert, const std::string &
 		printf("%s\n", &VertexShaderErrorMessage[0]);
 	}
 
-	printf("Compiling shader : %s\n", frag);
+	//printf("Compiling shader : %s\n", frag);
 	auto *FragmentSourcePointer = frag.c_str();
 	glShaderSource(FragmentShaderID, 1, &FragmentSourcePointer, 0);
 	glCompileShader(FragmentShaderID);

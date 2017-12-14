@@ -17,6 +17,7 @@
 #include "Options.cpp"
 #include "Controls.cpp"
 #include "Resolution.cpp"
+#include "GameOver.cpp"
 
 class engine : public singleton<engine>, public state_machine<engine>
 {
@@ -46,6 +47,8 @@ private:
 	// SDL Event for taking all events each window
 	SDL_Event e;
 	bool _joy = false;
+	int x;
+	int y;
 
     // Private constructor.  Called when we call get.
     engine() : _self(new engine_impl())
@@ -147,6 +150,15 @@ public:
 
 	}
 
+	int GameOverMenu()
+	{
+		GameOver gam;
+
+		state = gam.showmenu(SDL_GetWindowSurface(gWindow), e, gWindow);
+
+		return state;
+	}
+
 
 	bool init()
 	{
@@ -206,7 +218,7 @@ public:
 					{
 						printf("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 					}
-					glViewport(0, 0, 1280, 720);
+					
 
 
 				}
@@ -323,6 +335,10 @@ public:
 			//	// will not be changed simply by button presses. there will be more logic to it than that. 
 			//	//std::cout << "state unchanged" << std::endl;
 			//}
+
+
+			SDL_GetWindowSize(gWindow, &x, &y);
+			glViewport(0, 0, x, y);
 			state_set = new_state_set;
 
 			if (state_set == "GAME")
@@ -343,6 +359,15 @@ public:
 				for (auto &sys : _self->_subsystems)
 				{
 					sys.second.render();
+				}
+
+				for (auto &sys : _self->_subsystems)
+				{
+					if (sys.second.get_active() == false && sys.second.get_visible() == false)
+					{
+						sys.second.unload_content();
+					}
+					
 				}
 
 

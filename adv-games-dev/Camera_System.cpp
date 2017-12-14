@@ -17,6 +17,7 @@ bool Camera_component::load_content()
 void Camera_component::update(float delta_time)
 {
 	PositionX.x = PositionX.x + 0.1;
+	_data->SetPositionX(PositionX);
 
 	_data->ViewMatrix = glm::lookAt(
 		glm::dvec3(PositionX.x, 50, 1), // Camera is at (Player, 20, 1), in World Space
@@ -70,4 +71,8 @@ void Camera_System::unload_content()
 void Camera_System::shutdown()
 {
 	//std::cout << "Renderer shutting down" << std::endl;
+	for (auto &d : _self->_data)
+	{
+		delete d;
+	}
 }
