@@ -222,6 +222,12 @@ public:
 						std::cout << opt_index << std::endl;
 						updateSelection(selected, menu, temp, gRenderer, font, labels, TextColour, opt_index);
 						break;
+
+					case SDLK_SPACE:
+						SDL_RenderClear(gRenderer);
+						SDL_DestroyRenderer(gRenderer);
+						return opt_index;
+						break;
 					}
 
 				}
