@@ -3,18 +3,47 @@
 #include "../include/SDL_image.h"
 #include <iostream>
 
+const int NUMMENU = 4;
+
 class Control
 {
+
+	void updateSelection(bool selected[], SDL_Texture* menu[], SDL_Surface* temp[], SDL_Renderer* gRenderer, TTF_Font* font, const char* labels[], SDL_Color TextColour[], int opt_index)
+	{
+		for (int j = 1; j < NUMMENU; j++)
+		{
+			selected[j] = false;
+		}
+
+		selected[opt_index] = true;
+
+		for (int i = 1; i < NUMMENU; i++)
+		{
+			if (!selected[i])
+			{
+				SDL_DestroyTexture(menu[i]);
+				temp[i] = TTF_RenderText_Solid(font, labels[i], TextColour[0]);
+				menu[i] = SDL_CreateTextureFromSurface(gRenderer, temp[i]);
+			}
+
+			if (selected[i])
+			{
+				SDL_DestroyTexture(menu[i]);
+				temp[i] = TTF_RenderText_Solid(font, labels[i], TextColour[1]);
+				menu[i] = SDL_CreateTextureFromSurface(gRenderer, temp[i]);
+			}
+		}
+	}
 
 public:
 
 	int showcontrols(SDL_Surface *screen, SDL_Event e, SDL_Window *win)
 	{
+		bool keyboard = true;
 		bool conRun = true;
 
 		Uint32 time;
 		int x, y;
-		const int NUMMENU = 4;
 		const char *labels[NUMMENU] = { "TO DO","TO DO","TO DO","TO DO" };
 		bool selected[NUMMENU] = { 0,0,0,0 };
 		SDL_Texture* background;
@@ -56,7 +85,9 @@ public:
 			menu[i] = SDL_CreateTextureFromSurface(gRenderer, temp[i]);
 		}
 
+		int opt_index = 1;
 
+		updateSelection(selected, menu, temp, gRenderer, font, labels, TextColour, opt_index);
 
 		while (true)
 		{
@@ -87,6 +118,9 @@ public:
 					return 0;
 
 				case SDL_MOUSEMOTION:
+
+					if (keyboard) break;
+
 					x = e.motion.x;
 					y = e.motion.y;
 					for (int i = 1; i < NUMMENU; i++)
@@ -118,6 +152,9 @@ public:
 					break;
 
 				case SDL_MOUSEBUTTONDOWN:
+
+					keyboard = false;
+
 					x = e.button.x;
 					y = e.button.y;
 
@@ -137,6 +174,7 @@ public:
 					break;
 
 				case SDL_KEYDOWN:
+					keyboard = true;
 					switch (e.key.keysym.sym)
 					{
 					case SDLK_ESCAPE:
@@ -146,6 +184,34 @@ public:
 							SDL_DestroyTexture(menu[i]);
 						}
 						return 0;
+
+					case SDLK_DOWN:
+
+						opt_index += 1;
+
+						if (opt_index > 3)
+						{
+							opt_index = 1;
+						}
+
+
+						std::cout << opt_index << std::endl;
+
+						updateSelection(selected, menu, temp, gRenderer, font, labels, TextColour, opt_index);
+						break;
+
+					case SDLK_UP:
+
+						opt_index -= 1;
+
+						if (opt_index < 1)
+						{
+							opt_index = 3;
+						}
+
+						std::cout << opt_index << std::endl;
+						updateSelection(selected, menu, temp, gRenderer, font, labels, TextColour, opt_index);
+						break;
 					}
 
 				}

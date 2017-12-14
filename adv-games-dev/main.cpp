@@ -148,6 +148,16 @@ void exit_state_4(engine &eng)
 	}
 	else if (next_state == 1)
 	{
+		cout << "SHOULD ASK FOR REBIND" << endl;
+		eng.new_state_set = "OPTIONS";
+	}
+	else if (next_state == 2)
+	{
+		cout << "SHOULD ASK FOR REBIND" << endl;
+		eng.new_state_set = "OPTIONS";
+	}
+	else if (next_state == 3)
+	{
 		eng.new_state_set = "OPTIONS";
 	}
 	else
