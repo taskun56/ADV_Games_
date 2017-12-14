@@ -1,6 +1,7 @@
 #include "../include/SDL.h"
 #include "../include/SDL_ttf.h"
 #include "../include/SDL_image.h"
+#include "input_handler.h"
 #include <iostream>
 
 const int CTRLMENU = 4;
@@ -38,6 +39,7 @@ public:
 
 	int showcontrols(SDL_Surface *screen, SDL_Event e, SDL_Window *win)
 	{
+		
 		bool keyboard = true;
 		bool conRun = true;
 
@@ -171,6 +173,50 @@ public:
 						}
 					}
 					break;
+
+					//if (e.type == SDL_JOYHATMOTION)
+					//{
+					//	Uint8 hat_move = SDL_JoystickGetHat(gGameController, 0);
+
+					//	switch (hat_move)
+					//	{
+					//	case 0:
+					//		//nothing
+					//		break;
+					//	case 1:
+					//		// UP
+					//		std::cout << "UP" << std::endl;
+					//		break;
+					//	case 2:
+					//		// RIGHT
+					//		std::cout << "RIGHT" << std::endl;
+					//		break;
+					//	case 4:
+					//		// DOWN
+					//		std::cout << "DOWN" << std::endl;
+					//		break;
+					//	case 8:
+					//		// LEFT
+					//		std::cout << "LEFT" << std::endl;
+					//		break;
+					//	case 3:
+					//		// UP-RIGHT
+					//		std::cout << "UP-RIGHT" << std::endl;
+					//		break;
+					//	case 6:
+					//		// RIGHT-DOWN
+					//		std::cout << "RIGHT-DOWN" << std::endl;
+					//		break;
+					//	case 12:
+					//		// DOWN-LEFT
+					//		std::cout << "DOWN-LEFT" << std::endl;
+					//		break;
+					//	case 9:
+					//		// UP-LEFT
+					//		std::cout << "UP-LEFT" << std::endl;
+					//		break;
+					//	}
+					//}
 
 				case SDL_KEYDOWN:
 					keyboard = true;

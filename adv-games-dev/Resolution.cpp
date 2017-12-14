@@ -183,6 +183,13 @@ public:
 					}
 					break;
 
+				//case SDL_JOYBUTTONDOWN:
+				//	switch (e.jbutton.button)
+				//	{
+				//		//case
+				//	}
+				//	break;
+
 				case SDL_KEYDOWN:
 					keyboard = true;
 					switch (e.key.keysym.sym)

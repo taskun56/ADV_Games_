@@ -29,6 +29,7 @@ public:
 	static Player_data *ActivePlayer_;
     glm::dvec3 position;
 	int shots;
+	glm::dvec3 vel;
 
 	void SetActive() { ActivePlayer_ = this; }
 	glm::dvec3 get_pos() { return position; }
@@ -44,7 +45,7 @@ struct Player_component
 {
 private:
 
-	Player_data *_data;
+
 
 	entity *_parent;
 
@@ -53,15 +54,13 @@ private:
 
 public:
 
-	
-
+	Player_data *_data;
 
 	Player_component(entity *e, Player_data *data) : _parent(e), _data(data)
 	{
 		_data->active = true;
 		_data->SetActive();
 		_data->Invincible = true;
-
 	}
 
 
@@ -79,6 +78,11 @@ public:
 		shot[_data->shots].add_component<Projectile_component>(Projectile_System::get().create("BasicProjectile", shot[_data->shots]));
 
 		_data->shots++;
+	}
+
+	void move(glm::dvec3 vel)
+	{
+		_data->set_pos(glm::dvec3(_data->position.x + vel.x, _data->position.y + vel.y, _data->position.z + vel.z));
 	}
 
 	void damage()
@@ -113,37 +117,41 @@ public:
 			_data->InvincibleTimer = 0;
 		}
 
-		/*
-		//Right
-		if (SDL_GetKeyFromName("D"))
-		{
-			_data->set_pos(glm::dvec3(_data->position.x + 0.1f, _data->position.y, _data->position.z));
-		}
 
-		//Left
-		if (SDL_GetKeyFromName("A"))
-		{
-			_data->set_pos(glm::dvec3(_data->position.x - 0.1f, _data->position.y, _data->position.z));
-		}
+		move(_data->vel);
+		std::cout << "updating player system" << std::endl;
 
-		//Up
-		if (SDL_GetKeyFromName("W"))
-		{
-			_data->set_pos(glm::dvec3(_data->position.x, _data->position.y, _data->position.z - 0.1f));
-		}
+		//
+		////Right
+		//if (SDL_GetKeyFromName("D"))
+		//{
+		//	_data->set_pos(glm::dvec3(_data->position.x + 0.1f, _data->position.y, _data->position.z));
+		//}
 
-		//Down
-		if (SDL_GetKeyFromName("S"))
-		{
-			_data->set_pos(glm::dvec3(_data->position.x, _data->position.y, _data->position.z + 0.1f));
-		}
+		////Left
+		//if (SDL_GetKeyFromName("A"))
+		//{
+		//	_data->set_pos(glm::dvec3(_data->position.x - 0.1f, _data->position.y, _data->position.z));
+		//}
 
-		if (SDL_GetKeyFromName("Space"))
-		{
-			shoot();
-		}
+		////Up
+		//if (SDL_GetKeyFromName("W"))
+		//{
+		//	_data->set_pos(glm::dvec3(_data->position.x, _data->position.y, _data->position.z - 0.1f));
+		//}
 
-		*/
+		////Down
+		//if (SDL_GetKeyFromName("S"))
+		//{
+		//	_data->set_pos(glm::dvec3(_data->position.x, _data->position.y, _data->position.z + 0.1f));
+		//}
+
+		//if (SDL_GetKeyFromName("Space"))
+		//{
+		//	shoot();
+		//}
+
+		
 
 		//Make sure player isnt too far back
 		if (_data->position.x < (Camera_data::ActiveCam_->PositionX.x - 30))
@@ -184,7 +192,7 @@ public:
 
 		
 		
-
+		_data->vel = glm::dvec3();
 	}
 
 	void render()
@@ -212,7 +220,7 @@ private:
 		std::vector<Player_data*> _data;
 	};
 
-	std::shared_ptr<Player_impl> _self = nullptr;
+
 
 	Player_System() : _self{ new Player_impl() }
 	{
@@ -220,6 +228,8 @@ private:
 	}
 
 public:
+	std::shared_ptr<Player_impl> _self = nullptr;
+
 	Player_component build_component(entity &e)
 	{
 		_self->_data.push_back(new Player_data());
@@ -262,6 +272,8 @@ public:
 			delete d;
 		}
 	}
+
+
 };
 
 Player_data *Player_data::ActivePlayer_ = nullptr;

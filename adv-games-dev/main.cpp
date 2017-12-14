@@ -249,6 +249,8 @@ void exit_state_7(engine &eng)
 
 //sdl main  102 - 106
 
+static SDL_Joystick* gGameController;
+
 
 int main(int arg, char **argv)
 {

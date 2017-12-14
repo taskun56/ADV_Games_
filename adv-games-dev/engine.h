@@ -303,10 +303,64 @@ public:
         // Loop until not running.
         while (_running)
         {
+
+			Uint8 hat_move = SDL_JoystickGetHat(this->get_subsystem<input_handler>()._self->gGameController_01, 0);
+
+			switch (hat_move)
+			{
+			case 0:
+				//nothing
+				break;
+			case 1:
+				// UP
+				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.z = -0.5;
+				std::cout << "UP" << std::endl;
+				break;
+			case 2:
+				// RIGHT
+				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.x = 0.5;
+				std::cout << "RIGHT" << std::endl;
+				break;
+			case 4:
+				// DOWN
+				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.z = 0.5;
+				std::cout << "DOWN" << std::endl;
+				break;
+			case 8:
+				// LEFT
+				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.x = -0.5;
+				std::cout << "LEFT" << std::endl;
+				break;
+			case 3:
+				// UP-RIGHT
+				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.z = -0.5;
+				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.x = 0.5;
+				std::cout << "UP-RIGHT" << std::endl;
+				break;
+			case 6:
+				// RIGHT-DOWN
+				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.z = 0.5;
+				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.x = 0.5;
+				std::cout << "RIGHT-DOWN" << std::endl;
+				break;
+			case 12:
+				// DOWN-LEFT
+				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.z = 0.5;
+				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.x = -0.5;
+				std::cout << "DOWN-LEFT" << std::endl;
+				break;
+			case 9:
+				// UP-LEFT
+				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.z = -0.5;
+				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.x = -0.5;
+				std::cout << "UP-LEFT" << std::endl;
+				break;
+			}
             //std::cout << "Engine Running" << std::endl;
 			
 			while (SDL_PollEvent(&e) != 0)
 			{
+				//std::cout << "still events" << std::endl;
 				///// Check all input and compare - current version checks ALL input so no events are lost.
 				///// Uncommented version compares only the input types we seek for checking if keys are pressed
 
@@ -319,6 +373,12 @@ public:
 				//		continue;
 				//	}
 				//}
+
+				//if (e.type == SDL_JOYBUTTONDOWN)
+				//{
+				//	std::cout << (int)e.jbutton.button << std::endl;
+				//}
+
 				//User requests quit
 				if (e.type == SDL_QUIT)
 				{

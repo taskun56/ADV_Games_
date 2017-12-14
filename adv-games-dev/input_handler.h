@@ -35,8 +35,6 @@ private:
 		int JOYSTICK_INIT_COUNT;
 	};
 
-	std::shared_ptr<joystick_data_impl> _self = nullptr;
-
 	input_handler() : _self{ new joystick_data_impl() }
 	{
 		_self->gGameController_01 = NULL;
@@ -55,7 +53,10 @@ private:
 		std::cout << "Input handler initialised. Controller and Haptics loaded and set." << std::endl;
 	}
 
+
 public:
+
+	std::shared_ptr<joystick_data_impl> _self = nullptr;
 
 	bool InitializeJoysticks()
 	{
