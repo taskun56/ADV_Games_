@@ -68,7 +68,8 @@ public:
 
 	void unload_content()
 	{
-
+		_data->visible = false;
+		_parent->set_active(_data->visible);
 	}
 
 	void shutdown()
@@ -148,5 +149,9 @@ public:
 	void shutdown()
 	{
 		//std::cout << "Renderer shutting down" << std::endl;
+		for (auto &d : _self->_data)
+		{
+			delete d;
+		}
 	}
 };

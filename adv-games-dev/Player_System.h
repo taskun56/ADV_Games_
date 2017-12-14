@@ -21,8 +21,11 @@ struct Player_data
 public:
 
 	bool active = false;
+	bool Invincible = false;
+	float InvincibleTimer = 0.0f;
 	int Health;
 	int WType;
+	int Score;
 	static Player_data *ActivePlayer_;
     glm::dvec3 position;
 	int shots;
@@ -57,6 +60,7 @@ public:
 	{
 		_data->active = true;
 		_data->SetActive();
+		_data->Invincible = true;
 
 	}
 
@@ -71,10 +75,20 @@ public:
 	
 		shot[_data->shots] = entity_manager::get().create("ENTITY", "PlayerShot" + std::to_string(_data->shots));
 		shot[_data->shots].add_component<physics_component>(physics_system::get().create("RIGID", shot[_data->shots], glm::dvec3(_data->position.x, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(0.50, 1.0, 1.0)));
-		shot[_data->shots].add_component<render_component>(renderer::get().create("REER", shot[_data->shots], "PlayerShip.obj", "basic", 1));
+		shot[_data->shots].add_component<render_component>(renderer::get().create("REER", shot[_data->shots], "Bullet.obj", "basic", 1));
 		shot[_data->shots].add_component<Projectile_component>(Projectile_System::get().create("BasicProjectile", shot[_data->shots]));
 
 		_data->shots++;
+	}
+
+	void damage()
+	{
+		if (_data->Invincible == false)
+		{
+			_data->Health - 1;
+			_data->Invincible = true;
+
+		}
 	}
 
 
@@ -87,7 +101,16 @@ public:
 	{
 
 		_data->set_pos(_parent->get_component<physics_component>().get_pos());
+		
 
+		if (_data->Invincible == true && _data->InvincibleTimer < 5.0f)
+		{
+			_data->InvincibleTimer += delta_time;
+		}
+		else
+		{
+			_data->Invincible = false;
+		}
 
 		/*
 		//Right
@@ -121,6 +144,40 @@ public:
 
 		*/
 
+		//Make sure player isnt too far back
+		if (_data->position.x < (Camera_data::ActiveCam_->PositionX.x - 30))
+		{
+
+		}
+
+		//Make sure player isnt too far forward
+		if (_data->position.x > (Camera_data::ActiveCam_->PositionX.x + 30))
+		{
+
+		}
+
+		//Make sure player isnt too far up
+		if (_data->position.z < (Camera_data::ActiveCam_->PositionX.z - 18))
+		{
+
+		}
+
+		//Make sure player isnt too far down
+		if (_data->position.z > (Camera_data::ActiveCam_->PositionX.z + 18))
+		{
+
+		}
+
+		if (_data->get_Health() == 0)
+		{
+			//GameOver
+			
+			
+
+		}
+
+		
+		
 
 		_parent->get_component<physics_component>().set_pos(_data->get_pos());
 
@@ -133,7 +190,7 @@ public:
 
 	void unload_content()
 	{
-
+		_data->active = false;
 	}
 
 	void shutdown()
@@ -196,6 +253,10 @@ public:
 	void shutdown()
 	{
 		//std::cout << "Renderer shutting down" << std::endl;
+		for (auto &d : _self->_data)
+		{
+			delete d;
+		}
 	}
 };
 

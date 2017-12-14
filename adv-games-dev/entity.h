@@ -29,7 +29,7 @@ private:
         size_t _id = 0;
         std::string _name = "";
         std::unordered_map<std::type_index, component> _components;
-
+		bool active = true;
         transform trans;
     };
     
@@ -45,6 +45,7 @@ public:
 
     entity() = default;
 
+	void set_active(bool Alive) { _self->active = Alive; }
 	std::string& get_name() { return _self->_name; }
     transform& get_trans() { return _self->trans; }
 	void set_trans(const glm::dmat4 m4) { _self->trans.Transform = m4; }

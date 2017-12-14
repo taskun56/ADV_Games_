@@ -2,10 +2,10 @@
 #include "input_handler.h"
 #include "entity_manager.h"
 #include "physics_system.h"
-#include "Projectile_System.h"
-#include "PowerUp_System.h"
 #include "Camera_System.h"
 #include "renderer.h"
+#include "Projectile_System.h"
+#include "PowerUp_System.h"
 #include "Player_System.h"
 #include "Enemy_System.h"
 #include "Spawn_System.h"
@@ -77,6 +77,10 @@ void exit_state_2(engine &eng)
 	else if (next_state == 1)
 	{
 		eng.new_state_set = "MAIN";
+	}
+	else if (next_state == 2)
+	{
+		eng.new_state_set = "GAMEOVER";
 	}
 	else
 	{
@@ -172,7 +176,11 @@ void exit_state_5(engine &eng)
 	{
 		eng.new_state_set = "EXIT";
 	}
-	else if (next_state == 3)
+	else if (next_state == 1)
+	{
+		eng.new_state_set = "OPTIONS";
+	}
+	else if (next_state == 2)
 	{
 		eng.new_state_set = "OPTIONS";
 	}
@@ -198,6 +206,32 @@ void exit_state_6(engine &eng)
 	cout << "State not implemented. State 4 Exit." << endl;
 }
 
+void enter_state_7(engine &eng)
+{
+	cout << "GameOver Called." << endl;
+	eng.update(eng);
+}
+
+void do_state_7(engine &eng)
+{
+	cout << "Continue Gameover" << endl;
+	next_state = eng.GameOverMenu();
+	eng.quit(eng);
+}
+
+void exit_state_7(engine &eng)
+{
+	cout << "Exit GameOver" << endl;
+	if (next_state == 2)
+	{
+		eng.new_state_set = "MAIN";
+	}
+	else
+	{
+		eng.new_state_set = "EXIT";
+	}
+}
+
 
 //sdl main  102 - 106
 
@@ -213,6 +247,7 @@ int main(int arg, char **argv)
 	eng.add_state("CONTROLS", enter_state_4, do_state_4, exit_state_4);
 	eng.add_state("RESOLUTION", enter_state_5, do_state_5, exit_state_5);
 	eng.add_state("EXIT", enter_state_6, do_state_6, exit_state_6);
+	eng.add_state("GAMEOVER", enter_state_7, do_state_7, exit_state_7);
 
     // Input handler does not render
     eng.add_subsystem(input_handler::get(), true, false);
@@ -239,7 +274,7 @@ int main(int arg, char **argv)
 	auto f = entity_manager::get().create("ENTITY", "ob1");
 
 	f.add_component<physics_component>(physics_system::get().create("RIGID", f, glm::dvec3(0.0, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(1.0, 1.0, 1.0)));
-	f.add_component<render_component>(renderer::get().create("RENDER", f, "EnemyShip2.obj", "basic", 1));
+	f.add_component<render_component>(renderer::get().create("RENDER", f, "PlayerShip.obj", "basic", 1));
 	f.add_component<Player_component>(Player_System::get().create("Player", f));
 
 
@@ -249,7 +284,7 @@ int main(int arg, char **argv)
 
 	auto camera = entity_manager::get().create("ENTITY", "Camera");
 	camera.add_component<Camera_component>(Camera_System::get().create("Camera", camera));
-
+	camera.add_component<Spawn_component>(Spawn_System::get().create("Spawn",camera));
 	
 	
 

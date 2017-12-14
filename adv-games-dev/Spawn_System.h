@@ -65,10 +65,12 @@ public:
 
 	void SpawnEnemy()
 	{
+		int randomNumberPos = rand() % 19;
+		int randomNumberNeg = rand() % 19;
 
 		Enemy[_data->enemies] = entity_manager::get().create("ENTITY", "Enemy" + std::to_string(_data->enemies));
-		Enemy[_data->enemies].add_component<physics_component>(physics_system::get().create("RIGID", Enemy[_data->enemies], glm::dvec3(0.0, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(0.50, 1.0, 1.0)));
-		Enemy[_data->enemies].add_component<render_component>(renderer::get().create("REER", Enemy[_data->enemies], "PlayerShip.obj", "basic", 1));
+		Enemy[_data->enemies].add_component<physics_component>(physics_system::get().create("RIGID", Enemy[_data->enemies], glm::dvec3(Camera_data::ActiveCam_->PositionX.x + 25.0f, 0.0, randomNumberPos - randomNumberNeg), glm::dquat(0.0, 0.0, 1.0, 0.0), glm::dvec3(0.50, 1.0, 1.0)));
+		Enemy[_data->enemies].add_component<render_component>(renderer::get().create("REER", Enemy[_data->enemies], "EnemyShip1.obj", "basic", 1));
 		Enemy[_data->enemies].add_component<Enemy_component>(Enemy_System::get().create("BasicEnemy", Enemy[_data->enemies]));
 
 		_data->enemies++;
@@ -78,10 +80,12 @@ public:
 
 	void SpawnPowerUp()
 	{
+		int randomNumberPos = rand() % 19;
+		int randomNumberNeg = rand() % 19;
 
 		PowerUp[_data->powerups] = entity_manager::get().create("ENTITY", "PowerUp" + std::to_string(_data->powerups));
-		PowerUp[_data->powerups].add_component<physics_component>(physics_system::get().create("RIGID", PowerUp[_data->powerups], glm::dvec3(0.0, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(0.50, 1.0, 1.0)));
-		PowerUp[_data->powerups].add_component<render_component>(renderer::get().create("REER", PowerUp[_data->powerups], "PlayerShip.obj", "basic", 1));
+		PowerUp[_data->powerups].add_component<physics_component>(physics_system::get().create("RIGID", PowerUp[_data->powerups], glm::dvec3(Camera_data::ActiveCam_->PositionX.x + 25.0f, 0.0, (randomNumberPos - randomNumberNeg)), glm::dquat(0.0, 0.0, 1.0, 0.0), glm::dvec3(0.50, 1.0, 1.0)));
+		PowerUp[_data->powerups].add_component<render_component>(renderer::get().create("REER", PowerUp[_data->powerups], "PowerUp.obj", "basic", 1));
 		PowerUp[_data->powerups].add_component<PowerUp_component>(PowerUp_System::get().create("Shield", PowerUp[_data->powerups]));
 
 		_data->powerups++;
@@ -99,37 +103,22 @@ public:
 		_data->enemyTime += delta_time;
 		_data->powerUpTime += delta_time;
 
+
 		
-		int randomNumber = rand() % 10 + 1;
+		int randomNumberEnemy = rand() % 100 + 1;
+		int randomNumberPowerUp = rand() % 500 + 1;
 
-		if (_data->enemyTime == 5.0f)
-		{
-			SpawnEnemy();
-			_data->enemyTime = 0.0f;
-		}
-		else if(randomNumber == 5)
+
+		if(randomNumberEnemy == 5)
 		{
 			SpawnEnemy();
 		}
-		else
-		{
 
-		}
 
-		if (_data->powerUpTime == 10.0f)
-		{
-			SpawnPowerUp();
-			_data->enemyTime = 0.0f;
-		}
-		else if (randomNumber == 5)
+	    if (randomNumberPowerUp == 2)
 		{
 			SpawnPowerUp();
 		}
-		else
-		{
-
-		}
-
 
 	}
 
@@ -203,6 +192,10 @@ public:
 	void shutdown()
 	{
 		//std::cout << "Renderer shutting down" << std::endl;
+		for (auto &d : _self->_data)
+		{
+			//delete d;
+		}
 	}
 };
 

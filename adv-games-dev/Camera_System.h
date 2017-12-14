@@ -18,6 +18,7 @@ public:
 	bool active = false;
 	glm::dmat4 ProjMatrix;
 	glm::dmat4 ViewMatrix;
+	glm::dvec3 PositionX;
 	static Camera_data *ActiveCam_; 
 	
 	Camera_data::Camera_data()
@@ -31,6 +32,10 @@ public:
 		);
 	}
 	
+	void SetPositionX(const glm::dvec3 v3)
+	{
+		PositionX = v3;
+	}
 	void SetActive() { ActiveCam_ = this; }
 	glm::dmat4 Camera_data::getVP() const
 	{

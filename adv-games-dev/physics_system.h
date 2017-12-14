@@ -63,6 +63,8 @@ public:
 		//std::cout << &_parent << std::endl;	
 		transform = glm::translate(_data->Position) * glm::mat4_cast(_data->Rotation) * glm::scale(_data->Scale);
 		_parent->set_trans(transform);	
+
+
     }
 
     void render()
@@ -71,6 +73,7 @@ public:
 
     void unload_content()
     {
+		_data->active = false;
     }
 
     void shutdown()
@@ -158,6 +161,10 @@ public:
     void shutdown()
     {
         //std::cout << "Physics system shutting down" << std::endl;
+		for (auto &d : _self->_data)
+		{
+			delete d;
+		}
     }
 
 };

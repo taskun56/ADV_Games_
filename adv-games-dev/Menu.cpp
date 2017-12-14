@@ -22,7 +22,7 @@ public:
 		SDL_Texture * menu[NUMMENU];
 		SDL_Rect POS[NUMMENU];
 		SDL_Surface * temp[NUMMENU];
-		SDL_Color TextColour[2] = { { 0, 150, 0 },{ 200, 200, 200 } };
+		SDL_Color TextColour[2] = { { 150, 0, 0 },{ 200, 200, 200 } };
 
 		SDL_Renderer * gRenderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 
@@ -44,10 +44,10 @@ public:
 		background_surface = IMG_Load("background.png");
 		background = SDL_CreateTextureFromSurface(gRenderer, background_surface);
 
-		POS[0] = { w / 2, h / 16 , 60, 60 };
-		POS[1] = { w / 2, h - 500 , 60, 60 };
-		POS[2] = { w / 2, h - 400 , 80, 60 };
-		POS[3] = { w / 2, h - 300 , 60, 60 };
+		POS[0] = { w / 2, h / 5 , 60, 60 };
+		POS[1] = { w / 2, (h / 5) * 2 , 60, 60 };
+		POS[2] = { w / 2, (h / 5) * 3 , 80, 60 };
+		POS[3] = { w / 2, (h / 5) * 4 , 60, 60 };
 
 
 		for (int i = 0; i < NUMMENU; i++)

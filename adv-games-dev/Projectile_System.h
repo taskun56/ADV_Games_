@@ -70,8 +70,8 @@ public:
 
 		_data->set_pos(_parent->get_component<physics_component>().get_pos());
 
-		std::cout << _parent->get_name() << std::endl;
-		std::cout << _data->Player << std::endl;
+
+	
 
 		if (_parent->get_name().compare(0, 6, _data->Player) == 0)
 		{
@@ -83,9 +83,15 @@ public:
 		}
 		
 
-		
-
 		_parent->get_component<physics_component>().set_pos(_data->get_pos());
+
+		//delete 
+		if (_data->position.x < (Camera_data::ActiveCam_->PositionX.x - 30))
+		{
+			_parent->get_component<physics_component>().unload_content();
+			_parent->get_component<render_component>().unload_content();
+			_parent->get_component<Projectile_component>().unload_content();
+		}
 
 	}
 
@@ -96,6 +102,7 @@ public:
 
 	void unload_content()
 	{
+		_data->active = false;
 
 	}
 
@@ -159,6 +166,10 @@ public:
 	void shutdown()
 	{
 		//std::cout << "Renderer shutting down" << std::endl;
+		for (auto &d : _self->_data)
+		{
+			delete d;
+		}
 	}
 };
 
