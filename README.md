@@ -8,7 +8,7 @@ WASD for moving ship in game.
 Space to shoot.
 ESC to force close game. 
 
-Optionally you may use a controller to control the menus. Any XInput controller will work. DPad controls menus and ship movement. A button wil fire/accept on menu.
+Optionally you may use a controller to control the menus. Any XInput controller will work. DPad controls menus and ship movement. A button will fire/accept on menu.
 Start Button quits.
 
 
