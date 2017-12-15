@@ -30,6 +30,7 @@ public:
     glm::dvec3 position;
 	int shots;
 	glm::dvec3 vel;
+	bool shooting = false;
 
 	void SetActive() { ActivePlayer_ = this; }
 	glm::dvec3 get_pos() { return position; }
@@ -105,6 +106,12 @@ public:
 	{
 
 		_data->set_pos(_parent->get_component<physics_component>().get_pos());
+
+		if (_data->shooting)
+		{
+			shoot();
+			_data->shooting = false;
+		}
 		
 
 		if (_data->Invincible == true && _data->InvincibleTimer < 5.0f)
@@ -119,7 +126,6 @@ public:
 
 
 		move(_data->vel);
-		std::cout << "updating player system" << std::endl;
 
 		//
 		////Right

@@ -94,10 +94,10 @@ private:
     struct physics_system_impl
     {
         // Maintain a vector of physics_data
-        std::vector<physics_data*> _data;
+		std::vector<physics_data*> _data;
     };
 
-    std::shared_ptr<physics_system_impl> _self = nullptr;
+
 
     physics_system()
     : _self{new physics_system_impl()}
@@ -106,7 +106,7 @@ private:
     }
 
 public:
-
+	std::shared_ptr<physics_system_impl> _self = nullptr;
 
 
     physics_component build_component(entity &e, glm::dvec3 pos, glm::dquat rot, glm::dvec3 scal)

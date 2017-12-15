@@ -45,6 +45,17 @@ add_custom_target(copy_resources ALL
 		  "${PROJECT_SOURCE_DIR}/Font" "${CMAKE_BINARY_DIR}"
           COMMAND ${CMAKE_COMMAND} -E copy_directory
           "${CMAKE_SOURCE_DIR}/dll" "${EXE_LOCATION}/Debug"
+		  COMMAND ${CMAKE_COMMAND} -E copy_directory
+          "${CMAKE_SOURCE_DIR}/dll" "${EXE_LOCATION}/Release"
+
+		  COMMAND ${CMAKE_COMMAND} -E copy_directory
+          "${PROJECT_SOURCE_DIR}/objects" "${EXE_LOCATION}/Release"
+		  COMMAND ${CMAKE_COMMAND} -E copy_directory
+          "${PROJECT_SOURCE_DIR}/shader" "${EXE_LOCATION}/Release"
+		  COMMAND ${CMAKE_COMMAND} -E copy_directory
+          "${PROJECT_SOURCE_DIR}/Images" "${EXE_LOCATION}/Release"
+		  COMMAND ${CMAKE_COMMAND} -E copy_directory
+		  "${PROJECT_SOURCE_DIR}/Font" "${EXE_LOCATION}/Release"
           )
 
 add_dependencies(adv-games-dev  copy_resources)

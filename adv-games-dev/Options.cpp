@@ -111,6 +111,40 @@ public:
 			{
 				switch (e.type)
 				{
+
+				case SDL_JOYHATMOTION:
+					//std::cout << "test" <<  (int)e.jhat.value << std::endl;
+					if (e.jhat.value == 4)
+					{
+						opt_index += 1;
+
+						if (opt_index > 3)
+						{
+							opt_index = 1;
+						}
+
+
+						std::cout << opt_index << std::endl;
+
+						updateSelection(selected, menu, temp, gRenderer, font, labels, TextColour, opt_index);
+						break;
+					}
+					if (e.jhat.value == 1)
+					{
+						opt_index -= 1;
+
+						if (opt_index < 1)
+						{
+							opt_index = 3;
+						}
+
+						std::cout << opt_index << std::endl;
+						updateSelection(selected, menu, temp, gRenderer, font, labels, TextColour, opt_index);
+						break;
+					}
+
+					break;
+
 				case SDL_QUIT:
 					for (int i = 0; i < OPTS_MENU; i++)
 					{
@@ -171,6 +205,16 @@ public:
 							SDL_DestroyRenderer(gRenderer);
 							return i;
 						}
+					}
+					break;
+
+				case SDL_JOYBUTTONDOWN:
+					if (e.jbutton.button == (Uint8)0)
+					{
+						SDL_RenderClear(gRenderer);
+						SDL_DestroyRenderer(gRenderer);
+						return opt_index;
+						break;
 					}
 					break;
 

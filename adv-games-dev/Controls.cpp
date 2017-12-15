@@ -45,7 +45,7 @@ public:
 
 		Uint32 time;
 		int x, y;
-		const char *labels[CTRLMENU] = { "TO DO","TO DO","TO DO","TO DO" };
+		const char *labels[CTRLMENU] = { "Remap Controls","FIRE / ACCEPT","QUIT","BACK" };
 		bool selected[CTRLMENU] = { 0,0,0,0 };
 		SDL_Texture* background;
 		SDL_Surface* background_surface;
@@ -75,8 +75,8 @@ public:
 
 		SDL_GetWindowSize(win, &w, &h);
 
-		POS[0] = { w / 2, h / 5 , 60, 60 };
-		POS[1] = { w / 2, (h / 5) * 2 , 60, 60 };
+		POS[0] = { w / 2, h / 5 , 200, 60 };
+		POS[1] = { w / 2, (h / 5) * 2 , 120, 60 };
 		POS[2] = { w / 2, (h / 5) * 3 , 80, 60 };
 		POS[3] = { w / 2, (h / 5) * 4 , 60, 60 };
 
@@ -111,6 +111,39 @@ public:
 			{
 				switch (e.type)
 				{
+
+				case SDL_JOYHATMOTION:
+					if (e.jhat.value == 4)
+					{
+						opt_index += 1;
+
+						if (opt_index > 3)
+						{
+							opt_index = 1;
+						}
+
+
+						std::cout << opt_index << std::endl;
+
+						updateSelection(selected, menu, temp, gRenderer, font, labels, TextColour, opt_index);
+						break;
+					}
+					if (e.jhat.value == 1)
+					{
+						opt_index -= 1;
+
+						if (opt_index < 1)
+						{
+							opt_index = 3;
+						}
+
+						std::cout << opt_index << std::endl;
+						updateSelection(selected, menu, temp, gRenderer, font, labels, TextColour, opt_index);
+						break;
+					}
+
+					break;
+
 				case SDL_QUIT:
 					for (int i = 0; i < CTRLMENU; i++)
 					{
@@ -173,6 +206,15 @@ public:
 						}
 					}
 					break;
+
+				case SDL_JOYBUTTONDOWN:
+					if (e.jbutton.button == (Uint8)0)
+					{
+						SDL_RenderClear(gRenderer);
+						SDL_DestroyRenderer(gRenderer);
+						return opt_index;
+						break;
+					}
 
 					//if (e.type == SDL_JOYHATMOTION)
 					//{

@@ -303,8 +303,20 @@ public:
         // Loop until not running.
         while (_running)
         {
-
+			bool moved = false;
 			Uint8 hat_move = SDL_JoystickGetHat(this->get_subsystem<input_handler>()._self->gGameController_01, 0);
+			Uint8 fire_button = SDL_JoystickGetButton(this->get_subsystem<input_handler>()._self->gGameController_01, 0);
+			Uint8 start_button = SDL_JoystickGetButton(this->get_subsystem<input_handler>()._self->gGameController_01, 7);
+
+			if (fire_button)
+			{
+				this->get_subsystem<Player_System>()._self->_data.at(0)->shooting = true;
+			}
+
+			if (start_button)
+			{
+				_running = false;
+			}
 
 			switch (hat_move)
 			{
@@ -314,46 +326,46 @@ public:
 			case 1:
 				// UP
 				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.z = -0.5;
-				std::cout << "UP" << std::endl;
+				moved = true;
 				break;
 			case 2:
 				// RIGHT
 				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.x = 0.5;
-				std::cout << "RIGHT" << std::endl;
+				moved = true;
 				break;
 			case 4:
 				// DOWN
 				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.z = 0.5;
-				std::cout << "DOWN" << std::endl;
+				moved = true;
 				break;
 			case 8:
 				// LEFT
 				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.x = -0.5;
-				std::cout << "LEFT" << std::endl;
+				moved = true;
 				break;
 			case 3:
 				// UP-RIGHT
 				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.z = -0.5;
 				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.x = 0.5;
-				std::cout << "UP-RIGHT" << std::endl;
+				moved = true;
 				break;
 			case 6:
 				// RIGHT-DOWN
 				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.z = 0.5;
 				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.x = 0.5;
-				std::cout << "RIGHT-DOWN" << std::endl;
+				moved = true;
 				break;
 			case 12:
 				// DOWN-LEFT
 				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.z = 0.5;
 				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.x = -0.5;
-				std::cout << "DOWN-LEFT" << std::endl;
+				moved = true;
 				break;
 			case 9:
 				// UP-LEFT
 				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.z = -0.5;
 				this->get_subsystem<Player_System>()._self->_data.at(0)->vel.x = -0.5;
-				std::cout << "UP-LEFT" << std::endl;
+				moved = true;
 				break;
 			}
             //std::cout << "Engine Running" << std::endl;
@@ -363,7 +375,77 @@ public:
 				//std::cout << "still events" << std::endl;
 				///// Check all input and compare - current version checks ALL input so no events are lost.
 				///// Uncommented version compares only the input types we seek for checking if keys are pressed
+			if(e.type == SDL_JOYDEVICEADDED)
+			{
+				if (this->get_subsystem<input_handler>()._self->JOYSTICK_ACCUM < this->get_subsystem<input_handler>()._self->JOYSTICK_INIT_COUNT)
+				{
+					this->get_subsystem<input_handler>()._self->JOYSTICK_ACCUM += 1;
+					std::cout << "Continue Init Joystick... Count is " << this->get_subsystem<input_handler>()._self->JOYSTICK_ACCUM << std::endl;
+					if (this->get_subsystem<input_handler>()._self->JOYSTICK_ACCUM == this->get_subsystem<input_handler>()._self->JOYSTICK_INIT_COUNT)
+						this->get_subsystem<input_handler>()._self->JOYSTICK_INIT_FLAG = true;
+					break;
+				}
+				else
+				{
+					std::cout << "Device added beyond init. Handling re-initialization." << std::endl;
+					this->get_subsystem<input_handler>().InitializeJoysticks();
+					break;
+				}
+			}
+			// When a controller is removed
+			if (e.type == SDL_JOYDEVICEREMOVED)
+			{
+				// Which player device was removed?
 
+				// Player One
+				// always Pause and offer for a controller reconnect
+				// if reconnect not applicable or wanted, then select to continue game without player 1 controller
+
+				// Player Two
+				// Was Player 2 active?
+				// YES - resolve, Pause and ask to re-input - or offer dropout of player two
+				// NO - ignore - inconsequential
+
+				// device removed
+				std::cout << "Device removed." << std::endl;
+				break;
+			}
+
+				if (e.type == SDL_KEYDOWN)
+				{
+					switch (e.key.keysym.sym)
+					{
+					case SDLK_w:
+						std::cout << "W" << std::endl;
+						this->get_subsystem<Player_System>()._self->_data.at(0)->vel.z = -0.5;
+						break;
+
+					case SDLK_s:
+						this->get_subsystem<Player_System>()._self->_data.at(0)->vel.z = 0.5;
+						break;
+
+					case SDLK_a:
+						this->get_subsystem<Player_System>()._self->_data.at(0)->vel.x = -0.5;
+						break;
+
+					case SDLK_d:
+						this->get_subsystem<Player_System>()._self->_data.at(0)->vel.x = 0.5;
+						break;
+
+					case SDLK_SPACE:
+						this->get_subsystem<Player_System>()._self->_data.at(0)->shooting = true;
+						break;
+					}
+
+					if (e.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+					{
+						for (int i = 0; i < 10; i++)
+						{
+							std::cout << "WUITTING" << std::endl;
+						}
+						_running = false;
+					}
+				}
 				//for (const auto &etype : captureTypes)
 				//{
 				//	if (e.type == etype)
