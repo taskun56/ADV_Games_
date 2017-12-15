@@ -30,6 +30,7 @@ target_link_libraries(adv-games-dev
 "SDL2_image"
 "SDL2test"
 "assimp-vc140-mt"
+"winmm"
 )
 
 
@@ -43,6 +44,8 @@ add_custom_target(copy_resources ALL
           "${PROJECT_SOURCE_DIR}/Images" "${CMAKE_BINARY_DIR}"
 		  COMMAND ${CMAKE_COMMAND} -E copy_directory
 		  "${PROJECT_SOURCE_DIR}/Font" "${CMAKE_BINARY_DIR}"
+		  COMMAND ${CMAKE_COMMAND} -E copy_directory
+		  "${PROJECT_SOURCE_DIR}/audio" "${CMAKE_BINARY_DIR}"
           COMMAND ${CMAKE_COMMAND} -E copy_directory
           "${CMAKE_SOURCE_DIR}/dll" "${EXE_LOCATION}/Debug"
 		  COMMAND ${CMAKE_COMMAND} -E copy_directory
@@ -56,6 +59,8 @@ add_custom_target(copy_resources ALL
           "${PROJECT_SOURCE_DIR}/Images" "${EXE_LOCATION}/Release"
 		  COMMAND ${CMAKE_COMMAND} -E copy_directory
 		  "${PROJECT_SOURCE_DIR}/Font" "${EXE_LOCATION}/Release"
+		  COMMAND ${CMAKE_COMMAND} -E copy_directory
+		  "${PROJECT_SOURCE_DIR}/audio" "${EXE_LOCATION}/Release"
           )
 
 add_dependencies(adv-games-dev  copy_resources)

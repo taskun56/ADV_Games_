@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <unordered_map>
 #include <typeinfo>
 #include <typeindex>
@@ -20,6 +21,13 @@ public:
         glm::dmat4 Transform;
     };
 
+	//R//Bounding circle (hitbox)	--Using SDL 29 circular collisions --Probably don't actually need this cause we could just set the radius and use the transform for the position
+	struct circle
+	{
+		glm::dmat4 Transform;
+		float radius = 2;
+	};
+
 private:
 
 	
@@ -31,6 +39,10 @@ private:
         std::unordered_map<std::type_index, component> _components;
 		bool active = true;
         transform trans;
+		circle collider;
+
+		//R// trying to hack damage dealing, nothing to see here
+		bool dirtyhackycheatz = false;
     };
     
     std::shared_ptr<entity_impl> _self = nullptr;
@@ -48,7 +60,41 @@ public:
 	void set_active(bool Alive) { _self->active = Alive; }
 	std::string& get_name() { return _self->_name; }
     transform& get_trans() { return _self->trans; }
+	circle& get_collider() { return _self->collider; }
 	void set_trans(const glm::dmat4 m4) { _self->trans.Transform = m4; }
+
+	//R//setup collider radius
+	void setColliderSize(float rad)
+	{
+		_self->collider.radius = rad;
+	}
+
+	//void update_collider(glm::dmat4 Transform)
+	void update_collider(glm::dmat4 Transform)
+	{
+		_self->collider.Transform = Transform;
+	}
+
+	//R// trying to hack damage dealing, nothing to see here
+	void setDamageBool(bool booly)
+	{
+		if (booly)
+		{
+			std::cout << "True" << std::endl;
+			_self->dirtyhackycheatz = true;
+		}
+		else
+		{
+			//std::cout << "false" << std::endl;
+			_self->dirtyhackycheatz = false;
+		}
+	}
+	//R// trying to hack damage dealing, nothing to see here
+	bool getDamageBool()
+	{
+		return _self->dirtyhackycheatz;
+	}
+
 
 	bool initialise();
 

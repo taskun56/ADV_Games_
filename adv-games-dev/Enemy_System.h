@@ -18,7 +18,7 @@ struct Enemy_data
 public:
 
 	bool active = false;
-	int Health;
+	int Health = 0;
 	glm::dvec3 position;
 	int Type;
 	int WType;
@@ -38,14 +38,14 @@ private:
 
 	Enemy_data *_data;
 
-	entity &_parent;
+	entity *_parent;
 
 	entity shot[1000];
 
 public:
 
 
-	Enemy_component(entity &e, Enemy_data *data) : _parent(e), _data(data)
+	Enemy_component(entity *e, Enemy_data *data) : _parent(e), _data(data)
 	{
 
 		/* initialize random seed: */
@@ -74,10 +74,23 @@ public:
 	{
 		_data->shots++;
 
-		shot[_data->shots] = entity_manager::get().create("ENTITY", "EnemyShot" + _parent.get_name() + std::to_string(_data->shots));
+		shot[_data->shots] = entity_manager::get().create("ENTITY", "EnemyShot" + _parent->get_name() + std::to_string(_data->shots));
 		shot[_data->shots].add_component<physics_component>(physics_system::get().create("RIGID", shot[_data->shots], glm::dvec3(_data->position.x, 0.0, _data->position.z), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(0.50, 1.0, 1.0)));
 		shot[_data->shots].add_component<render_component>(renderer::get().create("REER", shot[_data->shots], "Bullet.obj", "basic", 1));
 		shot[_data->shots].add_component<Projectile_component>(Projectile_System::get().create("BasicProjectile", shot[_data->shots]));
+	}
+
+	void damage()
+	{
+		_data->Health -= 1;
+
+		//R//
+		std::cout << "Doing Damage to an enemy" << std::endl << std::endl;
+
+		if (_data->Health < 0)
+		{
+			std::cout << "RIP enemy bruh" << std::endl << std::endl << std::endl;
+		}
 	}
 
 
@@ -88,45 +101,52 @@ public:
 
 	void update(float delta_time)
 	{
+		//R//Trying to hack damage dealing, nothing to see here
+		if (_parent->getDamageBool() == true)
+		{
+			damage();
+			std::cout << "Damage being dealt to an enemy" << std::endl << std::endl << std::endl << std::endl;
+		}
 
-		
+		_parent->setDamageBool(false);
 
-		_data->set_pos(_parent.get_component<physics_component>().get_pos());
+
+		_data->set_pos(_parent->get_component<physics_component>().get_pos());
 
 		if (_data->position.z > (Camera_data::ActiveCam_->PositionX.z + 17))
 		{
 			_data->move = -0.1f;
 		}
-		if(_data->position.z < (Camera_data::ActiveCam_->PositionX.z - 17))
+		if (_data->position.z < (Camera_data::ActiveCam_->PositionX.z - 17))
 		{
 			_data->move = 0.1f;
-			
+
 		}
-		
-		
+
+
 		_data->set_pos(glm::dvec3(_data->position.x, _data->position.y, _data->position.z + _data->move));
-		
+
 
 		int randomNumber = rand() % 200 + 1;
 
 		if (randomNumber == 5)
 		{
 			shoot();
-			
+
 		}
 
-		
 
 
 
-		_parent.get_component<physics_component>().set_pos(_data->get_pos());
+
+		_parent->get_component<physics_component>().set_pos(_data->get_pos());
 
 		//delete
 		if (_data->position.x < (Camera_data::ActiveCam_->PositionX.x - 30))
 		{
-			_parent.get_component<physics_component>().unload_content();
-			_parent.get_component<render_component>().unload_content();
-			_parent.get_component<Enemy_component>().unload_content();
+			_parent->get_component<physics_component>().unload_content();
+			_parent->get_component<render_component>().unload_content();
+			_parent->get_component<Enemy_component>().unload_content();
 		}
 
 
@@ -169,7 +189,7 @@ public:
 	Enemy_component build_component(entity &e)
 	{
 		_self->_data.push_back(new Enemy_data());
-		return Enemy_component(e, _self->_data.back());
+		return Enemy_component(&e, _self->_data.back());
 	}
 
 	bool initialise()

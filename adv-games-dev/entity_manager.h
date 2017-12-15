@@ -16,19 +16,36 @@ class entity_manager : public singleton<entity_manager>, public factory<entity, 
 {
     friend class singleton<entity_manager>;
 private:
-    struct entity_manager_impl
-    {
-        std::unordered_map<std::string, entity> _entities;
-    };
+	/* struct entity_manager_impl
+	{
+	std::unordered_map<std::string, entity> _entities;
+	};
 
-    std::shared_ptr<entity_manager_impl> _self = nullptr;
+	std::shared_ptr<entity_manager_impl> _self = nullptr;
 
-    entity_manager() : _self{new entity_manager_impl()} 
-    { 
-        register_constructor("ENTITY", [this](std::string name){ return this->create_entity(name); });
-    }
+	entity_manager() : _self{new entity_manager_impl()}
+	{
+	register_constructor("ENTITY", [this](std::string name){ return this->create_entity(name); });
+	}*/
 
+	//^^^^^^^^^^^ Moving to public
 public:
+
+	struct entity_manager_impl
+	{
+		std::unordered_map<std::string, entity> _entities;
+	};
+
+	std::shared_ptr<entity_manager_impl> _self = nullptr;
+
+	entity_manager() : _self{ new entity_manager_impl() }
+	{
+		register_constructor("ENTITY", [this](std::string name) { return this->create_entity(name); });
+	}
+
+
+
+
 
     entity create_entity(std::string name)
     {
