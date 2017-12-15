@@ -304,7 +304,8 @@ int main(int arg, char **argv)
 	
 	
 
-
+	//R//Sound
+	Sounds.PlayGameMusic(Sounds.LOW);	//Pass in a volume that's already been defined by the SoundSystem class
 
 
 	if(eng.get_joystick_status()) eng.get_subsystem<input_handler>().InitializeJoysticks();
