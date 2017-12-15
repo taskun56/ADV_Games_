@@ -44,7 +44,7 @@ public:
 
 		Uint32 time;
 		int x, y;
-		const char *labels[NUMMENU] = { "HSAЯT: SPACE WARRIOR","Start","Options","Quit" };
+		const char *labels[NUMMENU] = { "HƧAЯT: SPACE WARRIOR","Start","Options","Quit" };
 		bool selected[NUMMENU] = { 0,0,0,0 };
 		SDL_Texture* background;
 		SDL_Surface* background_surface;
