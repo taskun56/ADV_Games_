@@ -44,7 +44,7 @@ public:
 
 		Uint32 time;
 		int x, y;
-		const char *labels[NUMMENU] = { "HƧAЯT: SPACE WARRIOR","Start","Options","Quit" };
+		const char *labels[NUMMENU] = { "HSART: SPACE WARRIOR","Start","Options","Quit" };
 		bool selected[NUMMENU] = { 0,0,0,0 };
 		SDL_Texture* background;
 		SDL_Surface* background_surface;
@@ -73,7 +73,7 @@ public:
 		background_surface = IMG_Load("background.png");
 		background = SDL_CreateTextureFromSurface(gRenderer, background_surface);
 
-		POS[0] = { w / 2, h / 5 , 60, 60 };
+		POS[0] = { w / 2, h / 5 , 240, 60 };
 		POS[1] = { w / 2, (h / 5) * 2 , 60, 60 };
 		POS[2] = { w / 2, (h / 5) * 3 , 80, 60 };
 		POS[3] = { w / 2, (h / 5) * 4 , 60, 60 };
