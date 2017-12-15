@@ -287,7 +287,7 @@ int main(int arg, char **argv)
 	eng.add_subsystem(Spawn_System::get(), true, false);
 
 
-	auto f = entity_manager::get().create("ENTITY", "ob1");
+	auto f = entity_manager::get().create("ENTITY", "PlayerOne");
 
 	f.add_component<physics_component>(physics_system::get().create("RIGID", f, glm::dvec3(0.0, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(1.0, 1.0, 1.0)));
 	f.add_component<render_component>(renderer::get().create("RENDER", f, "PlayerShip.obj", "basic", 1));

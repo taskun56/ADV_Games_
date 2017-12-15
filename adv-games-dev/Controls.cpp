@@ -137,7 +137,7 @@ public:
 							opt_index = 3;
 						}
 
-						std::cout << opt_index << std::endl;
+						//std::cout << opt_index << std::endl;
 						updateSelection(selected, menu, temp, gRenderer, font, labels, TextColour, opt_index);
 						break;
 					}

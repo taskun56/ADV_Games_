@@ -48,6 +48,152 @@ public:
 	glm::dvec3 get_pos() { return _data->Position; }
 	void set_pos(const glm::dvec3 v3) { _data->Position = v3; }
 
+
+	double SquaredDistance(float x1, float y1, float x2, float y2)
+	{
+		float deltaX = x2 - x1;
+		float deltaY = y2 - y1;
+
+		return deltaX*deltaX + deltaY*deltaY;
+	}
+
+	//R//Check for circle vs circle collisions
+	bool checkCollision(entity::circle& a, entity::circle& b)
+	{
+		//Calculate total radius squared
+		int SquaredTotalRadius = a.radius + b.radius;
+		SquaredTotalRadius *= SquaredTotalRadius;
+
+		//If the distance between the centers of the circles is less than the sum of their radii
+		if (SquaredDistance(a.Transform[3].x, a.Transform[3].z, b.Transform[3].x, b.Transform[3].z) < (SquaredTotalRadius))
+		{
+			//The circles have collided
+			//std::cout << "COLLISION DETECTED!" << std::endl;
+			return true;
+		}
+
+		return false;
+	}
+
+
+
+
+	//R// - Currently just updates the colliders to match entitiy position, needs to be changed so that it depends on whether or not there was a collision
+	void update_all_colliders()
+	{
+		//R// For each entity in _entities
+		for (auto iterator = entity_manager::get()._self->_entities.begin(); iterator != entity_manager::get()._self->_entities.end(); iterator++)
+		{
+			//std::cout << iterator->second._self->_name << " collider updating..." << std::endl << std::endl;
+			iterator->second.update_collider(iterator->second.get_trans().Transform);
+		}
+	}
+
+
+
+	void DetectCollisions()
+	{
+		//R//Find the player (to compare against everything else for collisions
+		//auto player = _self->_entities.find("ob1");// ->second._self->;
+		auto player = _parent;
+		//R// For each entity in _entities
+
+		for (auto iterator = entity_manager::get()._self->_entities.begin(); iterator != entity_manager::get()._self->_entities.end(); iterator++)
+		{
+			//R//If the current entity in _entities IS the player
+			//if (iterator->first == "ob1")
+			if (iterator->second.get_name() == player->get_name())
+			{
+				//R//Print the name of the entity 
+				//	std::cout << iterator->second._self->_name << std::endl;
+				//	std::cout << iterator->second.get_trans().Transform[3].x << " " << iterator->second.get_trans().Transform[3].y << " " << iterator->second.get_trans().Transform[3].z << std::endl;
+				//	//std::cout << "Found the player (ob1), skipping..." << std::endl << std::endl;
+				//	std::cout << "Found the player (" << playername << "), skipping..." << std::endl << std::endl;
+
+				//R//Skip that loop cycle and go to the next entity in _entities
+				continue;
+			}
+
+			//R//If the current entity in _entities is the camera
+			if (iterator->first == "Camera")
+			{
+				//R//Print the name of the entity 
+				//	std::cout << iterator->second._self->_name << std::endl;
+				//	std::cout << iterator->second.get_trans().Transform[3].x << " " << iterator->second.get_trans().Transform[3].y << " " << iterator->second.get_trans().Transform[3].z << std::endl;
+				//	std::cout << "Found the camera, skipping..." << std::endl << std::endl;
+
+				//R//Skip that loop cycle and go to the next entity in _entities
+				continue;
+			}
+
+
+			bool bewl = false;
+
+			//R//Enemies can collide freely with each other and enemy projectiles with out issues
+			if (_parent->get_name().find("Enemy") == 0 && iterator->first.find("Enemy" == 0))
+			{
+				//std::cout << "parent name starts with Enemy and so does what it collided with" << std::endl << std::endl;
+
+				continue;
+			}
+			//R//Player can collide with its own bullets freely without issues 
+			if (_parent->get_name().find("Player") == 0 && iterator->first.find("Player") == 0)
+			{
+				//std::cout << "parent name starts with Player and so does what it collided with" << std::endl << std::endl;
+
+				continue;
+			}
+
+
+
+
+
+
+			//R//Collision Detection
+			//R//player circle a, iterator->second._self circle b
+			bool check = checkCollision(_parent->get_collider(), iterator->second.get_collider());
+			if (check == true)
+			{
+				//std::cout << player->second._self->_name << " collided with " << iterator->second._self->_name << std::endl << std::endl;
+
+				//if (_parent->get_name().find("Enemy") == 0)
+				if (iterator->second.get_name().find("Enemy") == 0)
+				{
+					//_parent->get_component<Enemy_component>().damage();
+					bewl = true;
+					//_parent->setDamageBool(bewl);
+					_parent->setDamageBool(bewl);
+					iterator->second.setDamageBool(bewl);
+				}
+				//if (_parent->get_name().find("Player") == 0)
+				if (iterator->second.get_name().find("Player") == 0)
+				{
+					bewl = true;
+					_parent->setDamageBool(bewl);
+					iterator->second.setDamageBool(bewl);
+					//_parent->get_component<Player_component>().damage();
+				}
+			}
+
+			//player->second._self->
+
+			//R//Print the name of the entity 
+			//std::cout << iterator->second._self->_name << ": ";
+			//std::cout << iterator->second.get_trans().Transform[3].x << " " << iterator->second.get_trans().Transform[3].y << " " << iterator->second.get_trans().Transform[3].z << std::endl;
+			//std::cout << "collider: " << iterator->second._self->collider.Transform[3].x << " " << iterator->second._self->collider.Transform[3].y << " " << iterator->second._self->collider.Transform[3].z << std::endl;
+			//std::cout << "collider radius: " << iterator->second._self->collider.radius << std::endl << std::endl;
+
+			//auto player = _self->_entities.find("playerplayer");
+			//std::cout << player->second._self->_name << " has a position of " << player->second._self->trans.x << " " << player->second._self->trans.y << " " << player->second._self->trans.z << std::endl;
+
+			//R//We should now use this to check for collisions
+			//R//We need to find the player entity, and then cycle through the other entities and decide whether or not the player has collided with anything
+			//R//We can then worry about a second player at a later stage
+
+		}
+	}
+
+
     bool initialise()
     {
         return true;
@@ -69,7 +215,9 @@ public:
 
 		_parent->set_trans(transform);	
 
-
+		//R//
+		update_all_colliders();
+		DetectCollisions();
     }
 
     void render()

@@ -23,7 +23,7 @@ public:
 	bool active = false;
 	bool Invincible = false;
 	float InvincibleTimer = 0.0f;
-	int Health;
+	int Health = 0;
 	int WType;
 	int Score;
 	static Player_data *ActivePlayer_;
@@ -46,7 +46,7 @@ struct Player_component
 {
 private:
 
-
+	Player_data *_data;
 
 	entity *_parent;
 
@@ -55,13 +55,12 @@ private:
 
 public:
 
-	Player_data *_data;
-
 	Player_component(entity *e, Player_data *data) : _parent(e), _data(data)
 	{
 		_data->active = true;
 		_data->SetActive();
-		_data->Invincible = true;
+		_data->Invincible = false;
+		//_data->Invincible = true;
 	}
 
 
@@ -72,7 +71,7 @@ public:
 
 	void shoot()
 	{
-	
+
 		shot[_data->shots] = entity_manager::get().create("ENTITY", "PlayerShot" + std::to_string(_data->shots));
 		shot[_data->shots].add_component<physics_component>(physics_system::get().create("RIGID", shot[_data->shots], glm::dvec3(_data->position.x, 0.0, 0.0), glm::dquat(0.0, 0.0, 0.0, 0.0), glm::dvec3(0.50, 1.0, 1.0)));
 		shot[_data->shots].add_component<render_component>(renderer::get().create("REER", shot[_data->shots], "Bullet.obj", "basic", 1));
@@ -81,20 +80,28 @@ public:
 		_data->shots++;
 	}
 
+	void damage()
+	{
+		if (_data->Invincible == false)
+		{
+			_data->Health -= 1;
+			_data->Invincible = true;
+		}
+
+		//R//
+		std::cout << "Doing Damage" << std::endl << std::endl;
+
+		if (_data->Health < -10)
+		{
+			//std::cout << "RIP " << _parent->get_name() << std::endl << std::endl << std::endl;
+		}
+	}
+
 	void move(glm::dvec3 vel)
 	{
 		_data->set_pos(glm::dvec3(_data->position.x + vel.x, _data->position.y + vel.y, _data->position.z + vel.z));
 	}
 
-	void damage()
-	{
-		if (_data->Invincible == false)
-		{
-			_data->Health - 1;
-			_data->Invincible = true;
-
-		}
-	}
 
 
 	bool load_content()
@@ -104,6 +111,13 @@ public:
 
 	void update(float delta_time)
 	{
+		//R//Trying to hack damage dealing, nothing to see here
+		if (_parent->getDamageBool() == true)
+		{
+			damage();
+		}
+		_parent->setDamageBool(false);
+
 
 		_data->set_pos(_parent->get_component<physics_component>().get_pos());
 
