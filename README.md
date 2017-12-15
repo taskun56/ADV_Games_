@@ -1,5 +1,5 @@
 ## HƧAЯT: Space Warrior
-<a href="https://github.com/taskun56/Shmup_AdvGames/archive/0.1.zip">Download Game Here</a>
+<a href="https://github.com/taskun56/ADV_Games_HSART/raw/master/HSART_Space_Warrior.msi">Download Game Here</a>
 
 Compatible with Windows 10 (x64)
 
