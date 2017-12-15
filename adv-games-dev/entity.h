@@ -63,6 +63,11 @@ public:
 		return _self->trans;
 	}
 
+	circle& get_circ()
+	{
+		return _self->collider;
+	}
+
 	void set_trans(const glm::dmat4 m4) 
 	{ 
 		_self->trans.Transform = m4; 

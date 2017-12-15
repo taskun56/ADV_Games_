@@ -358,7 +358,7 @@ public:
 
 
 				//R//Trying to update all the entities' colliders every frame
-				entity_manager::get().update_all_colliders();
+			//	entity_manager::get().update_all_colliders();
 
 				//R//Temporarily the "cycle through entities" method, but detect collisions here
 				//entity_manager::get().entity_manager::DetectCollisions();
@@ -374,17 +374,17 @@ public:
 				//entity_manager::get().DetectCollisions(p2);
 				//entity_manager::get().DetectCollisions(test);
 
-				threads.push_back(thread(&entity_manager::DetectCollisions, entity_manager::get(), ob1));
-				threads.push_back(thread(&entity_manager::DetectCollisions, entity_manager::get(), ob2));
+				//threads.push_back(thread(&entity_manager::DetectCollisions, entity_manager::get(), ob1));
+				//threads.push_back(thread(&entity_manager::DetectCollisions, entity_manager::get(), ob2));
 				
 
-				for (auto &t : threads)
-				{
-					if (t.joinable())
-					{
-						t.join();
-					}
-				}
+				//for (auto &t : threads)
+				//{
+				//	if (t.joinable())
+				//	{
+				//		t.join();
+				//	}
+				//}
 
 
 
