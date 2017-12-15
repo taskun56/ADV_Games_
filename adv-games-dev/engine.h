@@ -421,7 +421,7 @@ public:
 					switch (e.key.keysym.sym)
 					{
 					case SDLK_w:
-						std::cout << "W" << std::endl;
+						//std::cout << "W" << std::endl;
 						this->get_subsystem<Player_System>()._self->_data.at(0)->vel.z = -0.5;
 						break;
 
@@ -446,7 +446,7 @@ public:
 					{
 						for (int i = 0; i < 10; i++)
 						{
-							std::cout << "WUITTING" << std::endl;
+							//std::cout << "WUITTING" << std::endl;
 						}
 						_running = false;
 					}

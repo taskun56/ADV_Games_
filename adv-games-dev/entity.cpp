@@ -17,7 +17,7 @@ bool entity::initialise()
 
 bool entity::load_content()
 {
-    std::cout << "Entity " << _self->_id << " loading content" << std::endl;
+    //std::cout << "Entity " << _self->_id << " loading content" << std::endl;
     // Call load_content on all components
     for (auto &c : _self->_components)
         if (!c.second.load_content())

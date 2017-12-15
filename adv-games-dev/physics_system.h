@@ -68,7 +68,7 @@ public:
 		if (SquaredDistance(a.Transform[3].x, a.Transform[3].z, b.Transform[3].x, b.Transform[3].z) < (SquaredTotalRadius))
 		{
 			//The circles have collided
-			std::cout << "COLLISION DETECTED!" << std::endl;
+			//std::cout << "COLLISION DETECTED!" << std::endl;
 			return true;
 		}
 
@@ -139,7 +139,7 @@ public:
 			//R//Player can collide with its own bullets freely without issues 
 			if (_parent->get_name().find("Player") == 0 && iterator->first.find("Player") == 0)
 			{
-				std::cout << "parent name starts with Player and so does what it collided with" << std::endl << std::endl;
+				//std::cout << "parent name starts with Player and so does what it collided with" << std::endl << std::endl;
 
 				continue;
 			}

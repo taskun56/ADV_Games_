@@ -93,7 +93,7 @@ public:
 
 		if (_data->Health < -10)
 		{
-			std::cout << "RIP " << _parent->get_name() << std::endl << std::endl << std::endl;
+			//std::cout << "RIP " << _parent->get_name() << std::endl << std::endl << std::endl;
 		}
 	}
 

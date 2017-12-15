@@ -85,11 +85,12 @@ public:
 		_data->Health -= 1;
 
 		//R//
-		std::cout << "Doing Damage to an enemy" << std::endl << std::endl;
+		//std::cout << "Doing Damage to an enemy" << std::endl << std::endl;
 
 		if (_data->Health < 0)
 		{
-			std::cout << "RIP enemy bruh" << std::endl << std::endl << std::endl;
+			//std::cout << "RIP enemy bruh" << std::endl << std::endl << std::endl;
+			_data->active = false;
 		}
 	}
 
@@ -105,7 +106,7 @@ public:
 		if (_parent->getDamageBool() == true)
 		{
 			damage();
-			std::cout << "Damage being dealt to an enemy" << std::endl << std::endl << std::endl << std::endl;
+			//std::cout << "Damage being dealt to an enemy" << std::endl << std::endl << std::endl << std::endl;
 		}
 
 		_parent->setDamageBool(false);
